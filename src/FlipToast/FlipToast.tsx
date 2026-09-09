@@ -1,13 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useTransform } from "motion/react";
-import {
-  X,
-  RotateCcw,
-  GripVertical,
-  Terminal,
-} from "lucide-react";
+import { X, RotateCcw } from "lucide-react";
 import { cn } from "../utils/cn";
-import { SWAY_SPRINGS } from "../utils/animationTokens";
 
 export type ToastType = "success" | "error" | "info" | "warning" | "loading";
 
@@ -34,7 +28,6 @@ export interface ToastItem {
   duration?: number;
   progress?: number;
   action?: ToastAction;
-  statusCode?: string;
   timestamp?: string;
 }
 
@@ -57,15 +50,15 @@ function getPositionStyles(pos: ToastPosition) {
 
   let containerClass = "fixed z-50 pointer-events-none ";
 
-  if (isTop) containerClass += "top-6 ";
-  if (isBottom) containerClass += "bottom-6 ";
+  if (isTop) containerClass += "top-5 ";
+  if (isBottom) containerClass += "bottom-5 ";
 
   if (isCenter) {
     containerClass += "left-1/2 -translate-x-1/2 items-center ";
   } else if (isLeft) {
-    containerClass += "left-6 items-start ";
+    containerClass += "left-5 items-start ";
   } else if (isRight) {
-    containerClass += "right-6 items-end ";
+    containerClass += "right-5 items-end ";
   }
 
   return {
@@ -79,7 +72,7 @@ function getPositionStyles(pos: ToastPosition) {
 }
 
 // ============================================================================
-// CONCEPT 1: DYNAMIC CAPSULE HUD (Tactile Studio Island)
+// CONCEPT 1: COMPACT DYNAMIC CAPSULE (Ultra-tight HUD Pill)
 // ============================================================================
 export function DynamicCapsuleToast({
   toasts,
@@ -94,35 +87,18 @@ export function DynamicCapsuleToast({
   const queueCount = Math.max(0, toasts.length - 1);
   const posConfig = getPositionStyles(position);
 
-  const getStatusColor = (type?: ToastType) => {
+  const getDotColor = (type?: ToastType) => {
     switch (type) {
       case "loading":
-        return "bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,0.6)]";
+        return "bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.7)]";
       case "success":
-        return "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.7)]";
+        return "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]";
       case "error":
-        return "bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.7)]";
+        return "bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.7)]";
       case "warning":
-        return "bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.7)]";
-      case "info":
+        return "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.7)]";
       default:
-        return "bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.7)]";
-    }
-  };
-
-  const getStatusBadge = (toast: ToastItem) => {
-    if (toast.statusCode) return toast.statusCode;
-    switch (toast.type) {
-      case "loading":
-        return "PROCESSING";
-      case "success":
-        return "200 OK";
-      case "error":
-        return "ERR_500";
-      case "warning":
-        return "WARN_LIMIT";
-      default:
-        return "EVENT";
+        return "bg-zinc-400";
     }
   };
 
@@ -135,68 +111,54 @@ export function DynamicCapsuleToast({
             layout
             drag="y"
             dragConstraints={{
-              top: posConfig.isTop ? -60 : 0,
-              bottom: posConfig.isBottom ? 60 : 0,
+              top: posConfig.isTop ? -35 : 0,
+              bottom: posConfig.isBottom ? 35 : 0,
             }}
             dragElastic={0.25}
             onDragEnd={(_, info) => {
-              if (posConfig.isTop ? info.offset.y < -35 : info.offset.y > 35) {
+              if (posConfig.isTop ? info.offset.y < -25 : info.offset.y > 25) {
                 onDismiss(activeToast.id);
               }
             }}
             initial={{
               opacity: 0,
-              y: posConfig.isTop ? -20 : 20,
-              scale: 0.92,
-              filter: "blur(6px)",
+              y: posConfig.isTop ? -16 : 16,
+              scale: 0.94,
+              filter: "blur(4px)",
             }}
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             exit={{
               opacity: 0,
-              y: posConfig.isTop ? -14 : 14,
+              y: posConfig.isTop ? -12 : 12,
               scale: 0.94,
               filter: "blur(4px)",
             }}
             transition={{
               type: "spring",
-              stiffness: SWAY_SPRINGS.modal.stiffness,
-              damping: SWAY_SPRINGS.modal.damping,
-              mass: SWAY_SPRINGS.modal.mass,
+              stiffness: 420,
+              damping: 30,
+              mass: 0.8,
             }}
             className={cn(
-              "pointer-events-auto relative flex items-center gap-3 overflow-hidden rounded-full p-1.5 pl-3 pr-2 shadow-2xl backdrop-blur-2xl cursor-grab active:cursor-grabbing select-none",
-              // Dark smoked glass with perimeter light ring
-              "bg-zinc-950/95 text-zinc-100 ring-1 ring-white/15",
-              "shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+              "pointer-events-auto relative flex items-center gap-2.5 overflow-hidden rounded-full py-1.5 px-3.5 shadow-xl backdrop-blur-xl cursor-grab active:cursor-grabbing select-none",
+              "bg-zinc-950/92 text-zinc-100 border border-white/15",
+              "shadow-[0_12px_30px_rgba(0,0,0,0.5)] max-w-[320px]"
             )}
           >
-            {/* Live Pulsing Beacon Dot */}
-            <div className="relative flex h-2 w-2 shrink-0 items-center justify-center">
-              <span
-                className={cn(
-                  "absolute h-3 w-3 rounded-full opacity-40 animate-ping",
-                  getStatusColor(activeToast.type)
-                )}
-              />
-              <span className={cn("h-1.5 w-1.5 rounded-full", getStatusColor(activeToast.type))} />
+            {/* Semantic Micro-Dot */}
+            <div className="flex items-center justify-center shrink-0">
+              <span className={cn("h-2 w-2 rounded-full", getDotColor(activeToast.type))} />
             </div>
 
-            {/* Status Monospace Badge */}
-            <span className="font-mono text-[9px] font-bold tracking-widest text-zinc-400 uppercase bg-zinc-900/90 px-1.5 py-0.5 rounded-md border border-white/10">
-              {getStatusBadge(activeToast)}
+            {/* Title */}
+            <span className="text-[12px] font-medium tracking-tight text-white truncate max-w-[140px]">
+              {activeToast.title}
             </span>
 
-            {/* Title / Main Action */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold tracking-tight text-white">
-                {activeToast.title}
-              </span>
-            </div>
-
-            {/* Optional Live Progress Bar */}
+            {/* Live Progress Mini-Bar */}
             {activeToast.progress !== undefined && (
-              <div className="flex items-center gap-2 font-mono text-[10px] text-zinc-400 pl-1">
-                <div className="h-1.5 w-14 overflow-hidden rounded-full bg-zinc-800">
+              <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
+                <div className="h-1 w-8 overflow-hidden rounded-full bg-zinc-800">
                   <motion.div
                     className="h-full bg-emerald-400"
                     initial={{ width: 0 }}
@@ -204,18 +166,13 @@ export function DynamicCapsuleToast({
                     transition={{ ease: "easeOut", duration: 0.2 }}
                   />
                 </div>
-                <span className="text-emerald-400 font-bold">{activeToast.progress}%</span>
+                <span className="font-mono text-[10px] text-emerald-400 font-semibold">
+                  {activeToast.progress}%
+                </span>
               </div>
             )}
 
-            {/* Secondary Message preview */}
-            {activeToast.message && activeToast.progress === undefined && (
-              <span className="hidden md:inline-block max-w-[210px] truncate text-[11px] text-zinc-400 border-l border-zinc-800 pl-2">
-                {activeToast.message}
-              </span>
-            )}
-
-            {/* Interactive Tactile Action Button */}
+            {/* Compact Action Button */}
             {activeToast.action && (
               <button
                 type="button"
@@ -224,21 +181,20 @@ export function DynamicCapsuleToast({
                   activeToast.action?.onClick();
                   onDismiss(activeToast.id);
                 }}
-                className="group/btn inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 px-2.5 py-1 text-[11px] font-semibold text-white transition-all cursor-pointer border border-white/10"
+                className="inline-flex items-center gap-1 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 px-2 py-0.5 text-[10px] font-medium text-white transition-all cursor-pointer border border-white/10 shrink-0"
               >
-                <RotateCcw size={10} className="text-amber-300 group-hover/btn:-rotate-45 transition-transform" />
                 <span>{activeToast.action.label}</span>
                 {activeToast.action.shortcut && (
-                  <kbd className="font-mono text-[9px] bg-black/40 px-1 py-0.2 rounded text-zinc-300 ml-0.5 border border-white/10">
+                  <kbd className="font-mono text-[8px] bg-black/40 px-1 rounded text-zinc-300">
                     {activeToast.action.shortcut}
                   </kbd>
                 )}
               </button>
             )}
 
-            {/* Multi-queue Counter indicator */}
+            {/* Multi-queue Counter */}
             {queueCount > 0 && (
-              <span className="font-mono text-[10px] font-semibold text-zinc-400 bg-zinc-800/80 px-1.5 py-0.5 rounded-full border border-white/5">
+              <span className="font-mono text-[9px] font-medium text-zinc-400 bg-zinc-800/90 px-1.5 py-0.5 rounded-full border border-white/5 shrink-0">
                 +{queueCount}
               </span>
             )}
@@ -247,7 +203,7 @@ export function DynamicCapsuleToast({
             <button
               type="button"
               onClick={() => onDismiss(activeToast.id)}
-              className="rounded-full p-1 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className="rounded-full p-0.5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0 ml-0.5"
               aria-label="Dismiss"
             >
               <X size={12} />
@@ -260,9 +216,9 @@ export function DynamicCapsuleToast({
 }
 
 // ============================================================================
-// CONCEPT 2: STUDIO SLIP / ENGINEERED TICKET STACK (Tangible Hardware Deck)
+// CONCEPT 2: MINIMALIST CARD STACK (Clean Swiss Precision Deck)
 // ============================================================================
-function StudioSlipCard({
+function MinimalCard({
   toast,
   index,
   total,
@@ -278,8 +234,7 @@ function StudioSlipCard({
   onDismiss: (id: string) => void;
 }) {
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-180, 0, 180], [-12, 0, 12]);
-  const opacity = useTransform(x, [-140, 0, 140], [0.2, 1, 0.2]);
+  const opacity = useTransform(x, [-120, 0, 120], [0.2, 1, 0.2]);
 
   const reverseIndex = total - 1 - index;
   const isTop = reverseIndex === 0;
@@ -288,25 +243,25 @@ function StudioSlipCard({
   // Vertical stack offset depending on top or bottom orientation
   const directionMultiplier = posConfig.isTop ? 1 : -1;
   const offset = isHovered
-    ? reverseIndex * (directionMultiplier * 78)
-    : reverseIndex * (directionMultiplier * 10);
+    ? reverseIndex * (directionMultiplier * 72)
+    : reverseIndex * (directionMultiplier * 9);
 
-  const scale = isHovered ? 1 : 1 - reverseIndex * 0.04;
+  const scale = isHovered ? 1 : 1 - reverseIndex * 0.05;
   const zIndex = 30 - reverseIndex;
-  const cardOpacity = isHovered ? 1 : Math.max(0.5, 1 - reverseIndex * 0.2);
+  const cardOpacity = isHovered ? 1 : Math.max(0.4, 1 - reverseIndex * 0.3);
 
-  const getAccentBorder = (type?: ToastType) => {
+  const getDotColor = (type?: ToastType) => {
     switch (type) {
       case "success":
-        return "border-l-emerald-500 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent";
+        return "bg-emerald-400";
       case "error":
-        return "border-l-rose-500 bg-gradient-to-r from-rose-500/10 via-transparent to-transparent";
+        return "bg-rose-400";
       case "warning":
-        return "border-l-amber-400 bg-gradient-to-r from-amber-400/10 via-transparent to-transparent";
+        return "bg-amber-400";
       case "loading":
-        return "border-l-indigo-500 bg-gradient-to-r from-indigo-500/10 via-transparent to-transparent";
+        return "bg-indigo-400 animate-pulse";
       default:
-        return "border-l-cyan-400 bg-gradient-to-r from-cyan-400/10 via-transparent to-transparent";
+        return "bg-zinc-400";
     }
   };
 
@@ -315,23 +270,21 @@ function StudioSlipCard({
       layout
       style={{
         x,
-        rotate: isTop ? rotate : 0,
         opacity: isTop ? opacity : cardOpacity,
         zIndex,
-        perspective: 1000,
       }}
       drag={isTop ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.6}
       onDragEnd={(_, info) => {
-        if (Math.abs(info.offset.x) > 90 || Math.abs(info.velocity.x) > 300) {
+        if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 280) {
           onDismiss(toast.id);
         }
       }}
       initial={{
         opacity: 0,
-        y: posConfig.isTop ? -30 : 30,
-        scale: 0.9,
+        y: posConfig.isTop ? -20 : 20,
+        scale: 0.94,
       }}
       animate={{
         y: offset,
@@ -340,78 +293,73 @@ function StudioSlipCard({
       }}
       exit={{
         opacity: 0,
-        x: x.get() >= 0 ? 220 : -220,
-        scale: 0.85,
-        transition: { duration: 0.18 },
+        x: x.get() >= 0 ? 180 : -180,
+        scale: 0.9,
+        transition: { duration: 0.16 },
       }}
       transition={{
         type: "spring",
-        stiffness: 450,
+        stiffness: 420,
         damping: 32,
         mass: 0.8,
       }}
       className={cn(
-        "absolute w-84 rounded-xl border border-zinc-200/80 bg-white/95 p-3.5 shadow-2xl backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-950/95 select-none transition-shadow",
-        "border-l-[3px]",
-        getAccentBorder(toast.type),
-        isTop ? "cursor-grab active:cursor-grabbing shadow-[0_20px_50px_rgba(0,0,0,0.35)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.8)]" : "pointer-events-none",
+        "absolute w-76 rounded-xl border border-zinc-200/90 bg-white/95 p-3.5 shadow-xl backdrop-blur-md dark:border-zinc-800/90 dark:bg-zinc-900/95 text-zinc-900 dark:text-zinc-100 select-none transition-shadow",
+        isTop ? "cursor-grab active:cursor-grabbing shadow-[0_16px_40px_rgba(0,0,0,0.25)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6)]" : "pointer-events-none",
         posConfig.isBottom ? "bottom-0" : "top-0",
         posConfig.isLeft ? "left-0" : posConfig.isRight ? "right-0" : "left-1/2 -translate-x-1/2"
       )}
     >
-      {/* Telemetry Header: Time + System Status */}
-      <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-zinc-800/80 mb-2.5">
-        <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-500 dark:text-zinc-400">
-          <Terminal size={11} className="text-zinc-400" />
-          <span>{toast.timestamp || "TELEMETRY"}</span>
-          {toast.statusCode && (
-            <>
-              <span>•</span>
-              <span className="font-semibold text-zinc-700 dark:text-zinc-200">{toast.statusCode}</span>
-            </>
-          )}
-        </div>
-
-        <div className="flex items-center gap-2">
-          {isTop && (
-            <div className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-wider text-zinc-400">
-              <GripVertical size={11} />
-              <span>Swipe</span>
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={() => onDismiss(toast.id)}
-            className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer p-0.5"
-            aria-label="Dismiss"
-          >
-            <X size={12} />
-          </button>
-        </div>
-      </div>
-
-      {/* Title & Body */}
-      <div>
-        <h5 className="text-xs font-semibold tracking-tight text-zinc-900 dark:text-white">
+      {/* Header: Semantic Dot + Title + Time + Close */}
+      <div className="flex items-center gap-2">
+        <span className={cn("h-2 w-2 rounded-full shrink-0", getDotColor(toast.type))} />
+        <h5 className="text-xs font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 truncate flex-1">
           {toast.title}
         </h5>
-        {toast.message && (
-          <p className="mt-1 text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-400 line-clamp-2">
-            {toast.message}
-          </p>
+        {toast.timestamp && (
+          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-normal shrink-0">
+            {toast.timestamp}
+          </span>
         )}
+        <button
+          type="button"
+          onClick={() => onDismiss(toast.id)}
+          className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors cursor-pointer p-0.5 -mr-1"
+          aria-label="Dismiss"
+        >
+          <X size={12} />
+        </button>
       </div>
 
-      {/* Optional Interactive Footer Action */}
+      {/* Body Message */}
+      {toast.message && (
+        <p className="mt-1.5 text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-400 line-clamp-2 pl-4">
+          {toast.message}
+        </p>
+      )}
+
+      {/* Progress Track */}
+      {toast.progress !== undefined && (
+        <div className="mt-2.5 h-1 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+          <motion.div
+            className="h-full bg-emerald-500"
+            initial={{ width: 0 }}
+            animate={{ width: `${toast.progress}%` }}
+            transition={{ ease: "easeOut", duration: 0.2 }}
+          />
+        </div>
+      )}
+
+      {/* Minimal Action */}
       {toast.action && (
-        <div className="mt-3 flex items-center justify-end pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
+        <div className="mt-2.5 flex items-center justify-end">
           <button
             type="button"
             onClick={() => {
               toast.action?.onClick();
               onDismiss(toast.id);
             }}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-3 py-1 text-[11px] font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 cursor-pointer transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-md bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 px-2.5 py-1 text-[11px] font-medium text-zinc-800 dark:text-zinc-200 transition-colors cursor-pointer"
           >
             <RotateCcw size={10} />
             <span>{toast.action.label}</span>
@@ -422,7 +370,7 @@ function StudioSlipCard({
   );
 }
 
-export function PhysicalStackToast({
+export function MinimalStackToast({
   toasts,
   onDismiss,
   position = "bottom-right",
@@ -439,11 +387,11 @@ export function PhysicalStackToast({
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={cn("h-36 w-84", posConfig.containerClass)}
+      className={cn("h-32 w-76", posConfig.containerClass)}
     >
       <AnimatePresence mode="popLayout">
         {visibleToasts.map((toast, idx) => (
-          <StudioSlipCard
+          <MinimalCard
             key={toast.id}
             toast={toast}
             index={idx}
@@ -457,6 +405,9 @@ export function PhysicalStackToast({
     </div>
   );
 }
+
+// Alias for backward compatibility
+export const PhysicalStackToast = MinimalStackToast;
 
 // ============================================================================
 // MAIN WRAPPER
@@ -480,7 +431,7 @@ export function FlipToast({
   }
 
   return (
-    <PhysicalStackToast
+    <MinimalStackToast
       toasts={toasts}
       onDismiss={onDismiss}
       position={position}

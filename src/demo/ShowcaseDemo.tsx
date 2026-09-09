@@ -348,6 +348,9 @@ export function ShowcaseDemo() {
               />
             )}
           </div>
+
+          {/* Page Footer with open-source credits and attribution */}
+          <ShowcaseFooter />
         </main>
       </div>
 
@@ -1074,5 +1077,128 @@ function GettingStartedView({
         </button>
       </div>
     </div>
+  );
+}
+
+// ============================================================================
+// SHOWCASE FOOTER & OPEN-SOURCE ATTRIBUTION
+// ============================================================================
+function ShowcaseFooter() {
+  return (
+    <footer className="mt-12 border-t border-zinc-200/80 bg-white/70 px-6 py-10 dark:border-zinc-800/80 dark:bg-zinc-950/60 lg:px-10">
+      <div className="mx-auto max-w-6xl space-y-8">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Column 1: Library Info */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-white" />
+              <span className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                Sway UI
+              </span>
+              <span className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
+                MIT License
+              </span>
+            </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Dual-engine animated UI component library for React 19 and Tailwind CSS. Combines Motion spring dynamics with GSAP FLIP matrix projections.
+            </p>
+            <p className="font-mono text-[11px] text-zinc-400">
+              React 19 • Tailwind CSS • TypeScript
+            </p>
+          </div>
+
+          {/* Column 2: Open Source Attribution & Disclaimer */}
+          <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
+            <span className="font-mono text-[10px] uppercase font-semibold text-zinc-600 dark:text-zinc-300 block">
+              Atribución de Motor &amp; Disclaimer
+            </span>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              El motor FLIP y el servicio de cálculo matricial para los modales teatrales provienen del proyecto open source{" "}
+              <a
+                href="https://github.com/srdavo/pretty-modal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-zinc-900 underline dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white"
+              >
+                pretty-modal
+              </a>{" "}
+              creado por{" "}
+              <a
+                href="https://github.com/srdavo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-zinc-900 underline dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white"
+              >
+                srdavo (David)
+              </a>.
+            </p>
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed pt-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60">
+              <strong className="text-zinc-700 dark:text-zinc-300">Aclaración:</strong> Este proyecto utiliza libremente dicho código público bajo los términos de la licencia MIT. No existe acuerdo privado, afiliación institucional ni patrocinio directo con el autor original.
+            </p>
+          </div>
+
+          {/* Column 3: Direct Links */}
+          <div className="space-y-3">
+            <span className="font-mono text-[10px] uppercase font-semibold text-zinc-400 block">
+              Repositorios &amp; Créditos
+            </span>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <a
+                  href="https://github.com/srdavo/pretty-modal"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>pretty-modal en GitHub (por srdavo)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/srdavo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>Perfil de srdavo en GitHub</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://gsap.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>GSAP 3 FLIP &amp; CustomEase</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://motion.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>Motion 12 Spring Physics</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom copyright line */}
+        <div className="border-t border-zinc-200/80 pt-6 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <p>© {new Date().getFullYear()} Sway UI • Licensed under MIT</p>
+          <p className="font-mono text-[11px] text-zinc-400">
+            FLIP dialog code © 2026 srdavo (MIT License)
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 }

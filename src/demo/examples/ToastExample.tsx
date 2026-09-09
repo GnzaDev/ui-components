@@ -11,7 +11,7 @@ import {
   Trash2,
   Layers,
   Compass,
-  AlertOctagon,
+  AlertCircle,
 } from "lucide-react";
 
 export function ToastExample() {
@@ -33,7 +33,7 @@ export function ToastExample() {
 
   const getFormattedTime = () => {
     const d = new Date();
-    return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+    return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
   };
 
   // SCENARIO 1: Live Progress Morphing
@@ -46,8 +46,7 @@ export function ToastExample() {
 
     const initialToast: ToastItem = {
       id: toastId,
-      title: "Deploying Edge Bundle",
-      statusCode: "COMPILING",
+      title: "Uploading build assets...",
       type: "loading",
       progress: 0,
       timestamp: getFormattedTime(),
@@ -66,11 +65,10 @@ export function ToastExample() {
             t.id === toastId
               ? {
                   ...t,
-                  title: "Bundle Deployed to 35 Regions",
-                  statusCode: "200 OK",
+                  title: "Build published successfully",
                   type: "success",
                   progress: undefined,
-                  message: "P99 latency verified < 12ms globally.",
+                  message: "Changes live on global edge CDN.",
                 }
               : t
           )
@@ -84,17 +82,16 @@ export function ToastExample() {
           prev.map((t) => (t.id === toastId ? { ...t, progress: currentProgress } : t))
         );
       }
-    }, 260);
+    }, 250);
   };
 
-  // SCENARIO 2: Destructive Action with Undo & Shortcut
+  // SCENARIO 2: Action with Undo & Shortcut
   const triggerUndoAction = () => {
     const toastId = "delete-" + Date.now();
     const item: ToastItem = {
       id: toastId,
-      title: "Cluster Deleted",
-      statusCode: "ROLLBACK",
-      message: "Worker pool us-east-02 detached.",
+      title: "Project moved to trash",
+      message: "You have 30 days to restore this workspace.",
       type: "warning",
       timestamp: getFormattedTime(),
       action: {
@@ -106,10 +103,9 @@ export function ToastExample() {
             ...prev.filter((t) => t.id !== toastId),
             {
               id: restoredId,
-              title: "Cluster Restored",
-              statusCode: "RESTORED",
+              title: "Project restored",
               type: "success",
-              message: "Quorum recovered with 0 dropped packets.",
+              message: "Workspace and members reinstated.",
               timestamp: getFormattedTime(),
             },
           ]);
@@ -122,48 +118,45 @@ export function ToastExample() {
     setTimeout(() => dismissToast(toastId), 5000);
   };
 
-  // SCENARIO 3: Telemetry Studio Slip Stack Wave
+  // SCENARIO 3: Minimalist 3-Card Stack Wave
   const triggerStackWave = () => {
+    const time = getFormattedTime();
     const wave: ToastItem[] = [
       {
-        id: "slip-1-" + Date.now(),
-        title: "L2 Redis Cache Eviction",
-        statusCode: "CACHE_SYNC",
-        message: "Pruned 14,280 expired session tokens across shards.",
+        id: "card-1-" + Date.now(),
+        title: "Workspace invited",
+        message: "Sarah accepted the design team invitation.",
         type: "info",
-        timestamp: getFormattedTime(),
+        timestamp: time,
       },
       {
-        id: "slip-2-" + Date.now(),
-        title: "Elevated Memory Pressure",
-        statusCode: "HEAP_91%",
-        message: "Node worker #04 memory ceiling reached 1.82 GB.",
+        id: "card-2-" + Date.now(),
+        title: "Storage quota alert",
+        message: "You have reached 85% of your team storage limit.",
         type: "warning",
-        timestamp: getFormattedTime(),
+        timestamp: time,
       },
       {
-        id: "slip-3-" + Date.now(),
-        title: "Session Token Invalidation",
-        statusCode: "AUTH_EXPIRE",
-        message: "Admin security challenge forced global session reset.",
-        type: "error",
-        timestamp: getFormattedTime(),
+        id: "card-3-" + Date.now(),
+        title: "Deployment completed",
+        message: "v2.4.0 deployed without errors in 18s.",
+        type: "success",
+        timestamp: time,
       },
     ];
 
     setToasts((prev) => [...prev, ...wave]);
   };
 
-  // SCENARIO 4: Upstream Timeout Error
+  // SCENARIO 4: Real Application Error
   const triggerErrorAlert = () => {
     const toastId = "err-" + Date.now();
     setToasts((prev) => [
       ...prev,
       {
         id: toastId,
-        title: "Upstream Gateway Timeout",
-        statusCode: "ERR_504",
-        message: "RPC health check failed on edge proxy /billing-sync.",
+        title: "Failed to sync changes",
+        message: "Network request timed out. Retrying in background.",
         type: "error",
         timestamp: getFormattedTime(),
       },
@@ -181,11 +174,11 @@ export function ToastExample() {
               Tactile Toast Architecture
             </h3>
             <span className="rounded-full bg-indigo-500/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-              High Contrast HUD
+              Clean High-Contrast
             </span>
           </div>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-            Beyond generic white boxes: hardware-inspired dynamic pills and engineered telemetry slips.
+            Minimalist notifications built with physical spring physics and restrained typography.
           </p>
         </div>
 
@@ -201,7 +194,7 @@ export function ToastExample() {
             }`}
           >
             <Sparkles size={13} className="text-indigo-400" />
-            <span>1. Dynamic Capsule HUD</span>
+            <span>1. Compact Capsule (HUD Pill)</span>
           </button>
           <button
             type="button"
@@ -213,7 +206,7 @@ export function ToastExample() {
             }`}
           >
             <Layers size={13} className="text-emerald-400" />
-            <span>2. Studio Slip Stack (3D)</span>
+            <span>2. Minimal Stack (Swiss Deck)</span>
           </button>
         </div>
       </div>
@@ -221,23 +214,23 @@ export function ToastExample() {
       {/* Concept Architecture Description */}
       <div className="rounded-2xl border border-zinc-200/80 bg-zinc-50/60 p-4 dark:border-zinc-800/80 dark:bg-zinc-900/40">
         {variant === "capsule" ? (
-          <div className="space-y-1.5 text-xs">
+          <div className="space-y-1 text-xs">
             <div className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-white">
               <Sparkles size={14} className="text-indigo-500" />
-              <span>Dynamic Capsule HUD (Smoked Glass &amp; Optical Rim)</span>
+              <span>Compact Capsule (Floating Island Pill)</span>
             </div>
             <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Lives in high-contrast smoked glass (<code>bg-zinc-950/95</code>) with a perimeter optical ring (<code>ring-1 ring-white/15</code>). Features live status chips (<code>200 OK</code>, <code>ROLLBACK</code>), real-time progress bars, pulsing micro-beacons, and keyboard shortcuts. Discard by dragging vertically with spring recoil.
+              Ultra-tight smoked glass pill (<code>h-9</code>, max 320px) with semantic micro-dot, truncated title, live progress bar, and vertical drag dismiss.
             </p>
           </div>
         ) : (
-          <div className="space-y-1.5 text-xs">
+          <div className="space-y-1 text-xs">
             <div className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-white">
               <Layers size={14} className="text-emerald-500" />
-              <span>Studio Slip Stack (Engineered Telemetry &amp; Inertial Flick)</span>
+              <span>Minimal Stack (Swiss Deck Precision)</span>
             </div>
             <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              No generic white boxes: modeled after developer console slips with real-time timestamps (<code>01:50:12</code>), telemetry status badges, glowing accent rails, and tactile drag grips. Grab and rotate with 3D perspective, or flick to eject. Hover the deck to fan out older items.
+              Restrained dark matte card (<code>w-76</code>) with clean typography and semantic status dots. Older items tuck underneath in physical depth and smoothly fan out on hover. Drag horizontally to flick dismiss.
             </p>
           </div>
         )}
@@ -318,10 +311,10 @@ export function ToastExample() {
             </div>
             <div>
               <div className="text-xs font-semibold text-zinc-900 dark:text-white">
-                Progress Morph
+                Live Progress
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                0% to 100% bar + 200 OK snap
+                0% to 100% progress animation
               </div>
             </div>
           </button>
@@ -337,15 +330,15 @@ export function ToastExample() {
             </div>
             <div>
               <div className="text-xs font-semibold text-zinc-900 dark:text-white">
-                Interactive Undo (⌘Z)
+                Undo Recovery (⌘Z)
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                Action recovery button with timer
+                Temporary action recovery button
               </div>
             </div>
           </button>
 
-          {/* Action 3: Telemetry Slip Stack Wave */}
+          {/* Action 3: Minimalist Card Stack */}
           <button
             type="button"
             onClick={triggerStackWave}
@@ -356,29 +349,29 @@ export function ToastExample() {
             </div>
             <div>
               <div className="text-xs font-semibold text-zinc-900 dark:text-white">
-                Spawn 3-Slip Stack
+                Spawn 3-Card Stack
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                3D deck tilt &amp; velocity swipe
+                Physical depth &amp; hover fan-out
               </div>
             </div>
           </button>
 
-          {/* Action 4: Anomaly Timeout */}
+          {/* Action 4: Sync Error */}
           <button
             type="button"
             onClick={triggerErrorAlert}
             className="flex flex-col items-start gap-1.5 rounded-2xl border border-zinc-200 bg-white p-4 text-left shadow-xs hover:border-zinc-300 hover:bg-zinc-50/60 dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:border-zinc-700 cursor-pointer transition-all"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
-              <AlertOctagon size={16} />
+              <AlertCircle size={16} />
             </div>
             <div>
               <div className="text-xs font-semibold text-zinc-900 dark:text-white">
-                Laser Anomaly (504)
+                Sync Error Alert
               </div>
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                RPC health check timeout
+                Network timeout notification
               </div>
             </div>
           </button>
