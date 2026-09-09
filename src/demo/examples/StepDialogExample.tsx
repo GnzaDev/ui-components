@@ -51,7 +51,7 @@ export function StepDialogExample() {
     {
       id: "plan",
       title: "Paso 2: Elegí tu plan",
-      description: "El contenedor recalcula su altura de forma elástica entre pasos.",
+      description: "Transición horizontal continua sin saltos de layout.",
       content: (
         <div className="space-y-2 pt-2">
           {[

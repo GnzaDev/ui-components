@@ -6,6 +6,7 @@ import { X, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { cn } from "../utils/cn";
 import { prettyModalService } from "../DavoModal/pretty-modal";
 import "../DavoModal/davo-modal.css";
+import { GONZA_SPRINGS } from "../utils/animationTokens";
 
 export interface StepItem {
   id: string;
@@ -39,7 +40,6 @@ export function MorphingStepDialog({
   layoutId,
 }: MorphingStepDialogProps) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -49,7 +49,6 @@ export function MorphingStepDialog({
   useEffect(() => {
     if (open) {
       setCurrentStepIndex(0);
-      setDirection(1);
       setIsSubmitting(false);
     }
   }, [open]);
@@ -124,29 +123,12 @@ export function MorphingStepDialog({
       }, 700);
       return;
     }
-    setDirection(1);
     setCurrentStepIndex((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
   const handlePrev = () => {
     if (isFirstStep) return;
-    setDirection(-1);
     setCurrentStepIndex((prev) => Math.max(prev - 1, 0));
-  };
-
-  const variants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? 40 : -40,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (dir: number) => ({
-      x: dir > 0 ? -40 : 40,
-      opacity: 0,
-    }),
   };
 
   const dialogInner = (
@@ -198,7 +180,7 @@ export function MorphingStepDialog({
       </div>
 
       {/* Step Header */}
-      <div className="mt-4">
+      <div className="mt-4 min-h-[44px]">
         <h3 className="text-base font-bold text-zinc-950 dark:text-white">
           {currentStep.title}
         </h3>
@@ -209,22 +191,24 @@ export function MorphingStepDialog({
         )}
       </div>
 
-      {/* Animated Step Body (Height auto-morphs via parent layout) */}
-      <motion.div layout className="relative mt-5 min-h-[140px] overflow-hidden">
-        <AnimatePresence custom={direction} mode="wait" initial={false}>
-          <motion.div
-            key={currentStep.id}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.22, ease: "easeInOut" }}
-          >
-            {currentStep.content}
-          </motion.div>
-        </AnimatePresence>
-      </motion.div>
+      {/* Step Carousel Track (Continuous sliding, zero layout jumps) */}
+      <div className="relative mt-5 w-full overflow-hidden min-h-[220px]">
+        <motion.div
+          animate={{ x: `-${currentStepIndex * 100}%` }}
+          transition={GONZA_SPRINGS.stepSlide}
+          className="flex w-full items-start"
+        >
+          {steps.map((step, idx) => (
+            <div
+              key={step.id}
+              className="w-full shrink-0 px-0.5"
+              aria-hidden={idx !== currentStepIndex}
+            >
+              {step.content}
+            </div>
+          ))}
+        </motion.div>
+      </div>
 
       {/* Footer Navigation Actions */}
       <div className="mt-6 flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800">

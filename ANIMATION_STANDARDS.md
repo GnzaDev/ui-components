@@ -19,6 +19,7 @@ Este documento establece la especificación técnica, las constantes de física,
 | **Drawer / SideSheet** | `350` | `32` | `1.0` | `SideSheet` |
 | **Popover / Dropdown** | `450` | `28` | `0.8` | `GonzaPopover`, `DavoDatePicker` |
 | **Pills / Tabs** | `500` | `35` | `0.7` | `MorphTabs` |
+| **Step Carousel / Slider** | `350` | `32` | `0.8` | `MorphingStepDialog` (Track) |
 | **Sortable / Drag List** | `450` | `35` | `1.0` | `SortableSpringList` |
 | **Floating Action Bar** | `450` | `30` | `0.8` | `FloatingActionBar` |
 

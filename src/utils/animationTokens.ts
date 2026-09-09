@@ -12,6 +12,13 @@ export const GONZA_SPRINGS = {
     damping: 30,
     mass: 0.8,
   },
+  /** Wizard step transitions / continuous carousel track */
+  stepSlide: {
+    type: "spring" as const,
+    stiffness: 350,
+    damping: 32,
+    mass: 0.8,
+  },
   /** Side drawers and slide-overs */
   drawer: {
     type: "spring" as const,
