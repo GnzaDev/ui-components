@@ -193,7 +193,7 @@ export function ShowcaseDemo() {
             </button>
           </div>
 
-          <div className="sticky top-20 space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="sticky top-20 space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-3">
             {/* Search Input */}
             <div className="relative">
               <Search
