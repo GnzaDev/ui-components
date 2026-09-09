@@ -160,9 +160,9 @@ export function ShowcaseDemo() {
   }, [selectedNav]);
 
   return (
-    <div className="w-full px-6 py-6 lg:px-8">
+    <div className="w-full">
       {/* Mobile Top Bar */}
-      <div className="mb-6 flex items-center justify-between border-b border-zinc-200/80 pb-4 lg:hidden dark:border-zinc-800">
+      <div className="flex items-center justify-between border-b border-zinc-200/80 px-6 py-3 lg:hidden dark:border-zinc-800">
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -185,15 +185,15 @@ export function ShowcaseDemo() {
         />
       )}
 
-      {/* Main Grid: Sidebar + Content */}
-      <div className="flex gap-8 items-start">
+      {/* Main Grid: Fixed Sidebar on Desktop + Content */}
+      <div className="flex min-h-[calc(100vh-3.5rem)]">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-72 bg-white/95 p-6 backdrop-blur-xl transition-transform dark:bg-zinc-950/95 lg:sticky lg:top-14 lg:z-10 lg:block lg:w-64 lg:shrink-0 lg:self-start lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto lg:p-0 lg:py-6 lg:pr-4 lg:bg-transparent lg:backdrop-blur-none lg:dark:bg-transparent ${
+          className={`fixed inset-y-0 left-0 z-40 w-72 bg-white/95 p-6 backdrop-blur-xl transition-transform dark:bg-zinc-950/95 lg:fixed lg:top-14 lg:bottom-0 lg:left-0 lg:z-20 lg:w-64 lg:border-r lg:border-zinc-200/80 lg:bg-zinc-50/40 lg:p-0 lg:shadow-none lg:transition-none lg:backdrop-blur-none lg:dark:border-zinc-800/80 lg:dark:bg-zinc-950/40 ${
             mobileMenuOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"
           }`}
         >
-          <div className="mb-4 flex items-center justify-between lg:hidden">
+          <div className="mb-4 flex items-center justify-between p-6 pb-0 lg:hidden">
             <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">
               Navigation
             </span>
@@ -206,7 +206,7 @@ export function ShowcaseDemo() {
             </button>
           </div>
 
-          <div className="space-y-6">
+          <div className="h-full overflow-y-auto p-6 space-y-6">
             {/* Search Input */}
             <div className="relative">
               <Search
@@ -287,37 +287,39 @@ export function ShowcaseDemo() {
         </aside>
 
         {/* Main Content Viewport */}
-        <main className="flex-1 min-w-0 pb-16">
-          {/* VIEW 1: CATALOG OVERVIEW */}
-          {selectedNav === "all" && (
-            <CatalogOverview
-              onSelectComponent={selectItem}
-              copyInstallCommand={copyInstallCommand}
-              copiedCode={copiedCode}
-            />
-          )}
+        <main className="min-w-0 flex-1 lg:pl-64">
+          <div className="px-6 py-6 lg:px-10 lg:py-8 pb-16">
+            {/* VIEW 1: CATALOG OVERVIEW */}
+            {selectedNav === "all" && (
+              <CatalogOverview
+                onSelectComponent={selectItem}
+                copyInstallCommand={copyInstallCommand}
+                copiedCode={copiedCode}
+              />
+            )}
 
-          {/* VIEW 2: GETTING STARTED */}
-          {selectedNav === "getting-started" && (
-            <GettingStartedView
-              copyInstallCommand={copyInstallCommand}
-              copiedCode={copiedCode}
-              onExplore={() => selectItem("all")}
-            />
-          )}
+            {/* VIEW 2: GETTING STARTED */}
+            {selectedNav === "getting-started" && (
+              <GettingStartedView
+                copyInstallCommand={copyInstallCommand}
+                copiedCode={copiedCode}
+                onExplore={() => selectItem("all")}
+              />
+            )}
 
-          {/* VIEW 3: DEDICATED COMPONENT DOC PAGE */}
-          {selectedNav !== "all" && selectedNav !== "getting-started" && currentDoc && (
-            <ComponentDocPage
-              doc={currentDoc}
-              prevDoc={prevDoc}
-              nextDoc={nextDoc}
-              onNavigate={selectItem}
-              setSwayOpen={setSwayOpen}
-              setDavoOpen={setDavoOpen}
-              davoTriggerRef={davoTriggerRef}
-            />
-          )}
+            {/* VIEW 3: DEDICATED COMPONENT DOC PAGE */}
+            {selectedNav !== "all" && selectedNav !== "getting-started" && currentDoc && (
+              <ComponentDocPage
+                doc={currentDoc}
+                prevDoc={prevDoc}
+                nextDoc={nextDoc}
+                onNavigate={selectItem}
+                setSwayOpen={setSwayOpen}
+                setDavoOpen={setDavoOpen}
+                davoTriggerRef={davoTriggerRef}
+              />
+            )}
+          </div>
         </main>
       </div>
 
