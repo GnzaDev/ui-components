@@ -111,7 +111,7 @@ export function DynamicCapsuleToast({
         {activeToast && (
           <motion.div
             key={activeToast.id}
-            layout="position"
+            layout
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={0.6}
@@ -126,7 +126,13 @@ export function DynamicCapsuleToast({
               scale: 0.94,
               filter: "blur(4px)",
             }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              borderRadius: isExpanded ? 16 : 9999,
+            }}
             exit={{
               opacity: 0,
               y: posConfig.isTop ? -12 : 12,
@@ -134,6 +140,12 @@ export function DynamicCapsuleToast({
               filter: "blur(4px)",
             }}
             transition={{
+              layout: {
+                type: "spring",
+                stiffness: 420,
+                damping: 32,
+                mass: 0.7,
+              },
               type: "spring",
               stiffness: 420,
               damping: 30,
@@ -141,31 +153,34 @@ export function DynamicCapsuleToast({
             }}
             className={cn(
               "pointer-events-auto relative overflow-hidden shadow-2xl backdrop-blur-xl select-none flex flex-col",
-              "bg-zinc-950/92 text-zinc-100 border border-white/15",
-              "shadow-[0_14px_35px_rgba(0,0,0,0.55)] transition-[width,max-width,border-radius,padding] duration-200 ease-out",
+              "bg-zinc-950/95 text-zinc-100 border border-white/15",
+              "shadow-[0_16px_40px_rgba(0,0,0,0.6)]",
               isExpanded
-                ? "w-[360px] rounded-2xl p-3.5 cursor-default"
-                : "w-auto max-w-[320px] rounded-full py-1.5 px-3.5 cursor-pointer"
+                ? "w-[360px] p-3.5 cursor-default"
+                : "w-auto max-w-[320px] py-1.5 px-3.5 cursor-pointer"
             )}
             onClick={() => {
               if (!isExpanded) setExpandedToastId(activeToast.id);
             }}
           >
-            {/* Top Row Header - Permanent & non-distorting */}
-            <div className="flex items-center gap-2 w-full">
+            {/* Top Row Header - Permanent & morph-friendly */}
+            <motion.div layout="position" className="flex items-center gap-2 w-full">
               {/* Semantic Micro-Dot */}
-              <div className="flex items-center justify-center shrink-0">
+              <motion.div layout="position" className="flex items-center justify-center shrink-0">
                 <span className={cn("h-2 w-2 rounded-full", getDotColor(activeToast.type))} />
-              </div>
+              </motion.div>
 
-              {/* Title: exactly identical font styling */}
-              <span className="text-xs font-medium tracking-tight text-white truncate flex-1 select-none">
+              {/* Title: morphs cleanly without distortion */}
+              <motion.span
+                layout="position"
+                className="text-xs font-medium tracking-tight text-white truncate flex-1 select-none"
+              >
                 {activeToast.title}
-              </span>
+              </motion.span>
 
               {/* Compact Mini Progress (only when compact) */}
               {!isExpanded && activeToast.progress !== undefined && (
-                <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
+                <motion.div layout="position" className="flex items-center gap-1.5 shrink-0 pl-0.5">
                   <div className="h-1 w-7 overflow-hidden rounded-full bg-zinc-800">
                     <motion.div
                       className="h-full bg-emerald-400"
@@ -177,12 +192,13 @@ export function DynamicCapsuleToast({
                   <span className="font-mono text-[10px] text-emerald-400 font-semibold">
                     {activeToast.progress}%
                   </span>
-                </div>
+                </motion.div>
               )}
 
               {/* Compact Action Button (only when compact) */}
               {!isExpanded && activeToast.action && (
-                <button
+                <motion.button
+                  layout="position"
                   type="button"
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
@@ -198,12 +214,13 @@ export function DynamicCapsuleToast({
                       {activeToast.action.shortcut}
                     </kbd>
                   )}
-                </button>
+                </motion.button>
               )}
 
               {/* Expand / Collapse Chevron indicator */}
               {(activeToast.message || activeToast.action) && (
-                <button
+                <motion.button
+                  layout="position"
                   type="button"
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
@@ -214,18 +231,22 @@ export function DynamicCapsuleToast({
                   aria-label={isExpanded ? "Collapse" : "Expand"}
                 >
                   {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={12} />}
-                </button>
+                </motion.button>
               )}
 
               {/* Multi-queue Counter */}
               {queueCount > 0 && !isExpanded && (
-                <span className="font-mono text-[9px] font-medium text-zinc-400 bg-zinc-800/90 px-1.5 py-0.5 rounded-full border border-white/5 shrink-0">
+                <motion.span
+                  layout="position"
+                  className="font-mono text-[9px] font-medium text-zinc-400 bg-zinc-800/90 px-1.5 py-0.5 rounded-full border border-white/5 shrink-0"
+                >
                   +{queueCount}
-                </span>
+                </motion.span>
               )}
 
               {/* Dismiss Cross */}
-              <button
+              <motion.button
+                layout="position"
                 type="button"
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={(e) => {
@@ -236,17 +257,18 @@ export function DynamicCapsuleToast({
                 aria-label="Dismiss"
               >
                 <X size={12} />
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
             {/* EXPANDED CONTENT DRAWER */}
-            <AnimatePresence initial={false}>
+            <AnimatePresence>
               {isExpanded && (
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.16, ease: "easeInOut" }}
+                  layout="position"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.12 }}
                   className="overflow-hidden flex flex-col gap-2.5 pt-2.5 border-t border-white/10 mt-2 w-full"
                 >
                   {/* Message */}
