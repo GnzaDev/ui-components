@@ -155,7 +155,7 @@ export function ShowcaseDemo() {
   }, [selectedNav]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="w-full px-6 py-6 lg:px-8">
       {/* Mobile Top Bar */}
       <div className="mb-6 flex items-center justify-between border-b border-zinc-200/80 pb-4 lg:hidden dark:border-zinc-800">
         <button
@@ -479,7 +479,7 @@ function ComponentDocPage({
           </span>
         </div>
 
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-3xl">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
           {doc.description}
         </p>
       </div>
@@ -535,7 +535,7 @@ function ComponentDocPage({
         {/* Canvas Body */}
         {tab === "preview" ? (
           <div className="p-6 sm:p-10 min-h-[440px] flex items-center justify-center bg-zinc-50/30 dark:bg-zinc-950/30">
-            <div className="w-full max-w-2xl">{renderExampleWidget()}</div>
+            <div className="w-full flex items-center justify-center">{renderExampleWidget()}</div>
           </div>
         ) : (
           <div className="bg-zinc-950 p-6 overflow-x-auto">
@@ -676,7 +676,7 @@ function CatalogOverview({
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
               Dual-Engine Component System
             </h1>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-2xl leading-relaxed">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
               Precision UI primitives powered by <span className="text-zinc-900 dark:text-zinc-100 font-medium">Sway (Motion)</span> for spring dynamics and <span className="text-zinc-900 dark:text-zinc-100 font-medium">Davo (GSAP FLIP)</span> for matrix projections.
             </p>
           </div>
@@ -791,7 +791,7 @@ function CatalogOverview({
         </div>
 
         {/* Component Cards Grid */}
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 min-[1900px]:grid-cols-5">
           {filteredComponents.map((item) => (
             <div
               key={item.id}
@@ -813,7 +813,7 @@ function CatalogOverview({
                   <ChevronRight size={14} className="text-zinc-300 group-hover:text-zinc-700 dark:text-zinc-600 dark:group-hover:text-zinc-300 transition-transform group-hover:translate-x-0.5" />
                 </h3>
 
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
                   {item.shortDesc}
                 </p>
               </div>
@@ -845,7 +845,7 @@ function GettingStartedView({
   onExplore: () => void;
 }) {
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6 w-full">
       <div className="space-y-2">
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
           Installation & Architectural Guide

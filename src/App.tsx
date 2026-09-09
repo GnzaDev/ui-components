@@ -45,7 +45,7 @@ export function App() {
       </header>
 
       {/* Main showcase */}
-      <main className="py-8">
+      <main className="w-full">
         <ShowcaseDemo />
       </main>
     </div>
