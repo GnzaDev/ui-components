@@ -1,6 +1,7 @@
-# @gonza/ui-components
+# @gonza/ui-components (Sway UI)
 
-Production-grade, dual-engine animated UI component library for React and Tailwind CSS. Combines **Sway Motion Euler-Newton springs** with **Davo GSAP FLIP theatrical dialogs** (based on [pretty-modal](https://github.com/srdavo/pretty-modal) by [srdavo](https://github.com/srdavo)) in a unified, typed architecture.
+Librería de componentes UI animados para React 19 y Tailwind CSS, creada y desarrollada por **Gonza**.
+Impulsada por el motor propio **Sway (Motion Euler-Newton springs)** para animaciones elásticas y componentes interactivos, con variantes de modales teatrales que toman como inspiración y referencia el estilo FLIP de [pretty-modal](https://github.com/srdavo/pretty-modal) de [srdavo](https://github.com/srdavo).
 
 ---
 
@@ -27,6 +28,14 @@ bun add github:GnzaDev/ui-components motion gsap lucide-react clsx tailwind-merg
 ```
 
 > **¿Cómo funciona por detrás?** El gestor de paquetes clona el repositorio y ejecuta el ciclo `prepare` que compila automáticamente el bundle ESM, CJS y las definiciones de TypeScript (`dist/`) usando Vite en tu entorno local.
+
+> 📦 **¿Querés usar o instalar únicamente el modal original de Davo?**  
+> Si solo te interesa el modal original creado por Davo (pretty-modal) de forma independiente y sin los demás componentes de Sway UI, instalalo o clonalo directamente desde su repositorio oficial:
+> ```bash
+> pnpm add github:srdavo/pretty-modal
+> # o clonar directamente su código fuente:
+> git clone https://github.com/srdavo/pretty-modal.git
+> ```
 
 ---
 
@@ -68,11 +77,14 @@ export default {
 
 ## ⚡ Reglas de los 2 Motores de Animación
 
+> ℹ️ **¿Sway UI usa GSAP? No.** Todos los componentes originales de **Sway UI están construidos al 100% con Motion (`motion/react`)**. **NO usan GSAP**. La dependencia de GSAP (`gsap/Flip`, `gsap/CustomEase`) se utiliza única y exclusivamente dentro del módulo adaptado de Davo (`DavoModal` / `pretty-modal`), incorporado con fines comparativos y de referencia técnica.
+
 | Motor | Física y Primitiva Central | Regla de Oro |
 | :--- | :--- | :--- |
-| **Sway** | `SwayModal`, `SwayCard`, `MorphTabs`<br>Euler-Newton Springs (`stiffness: 400`, `damping: 30`, `mass: 0.8`) | Si usás `layoutId`, el botón disparador (`SwayModalTrigger`) **SIEMPRE debe compartir el mismo `layoutId`** que el modal. Prohibido duplicar `scale` e `y` en el `initial`. |
-| **Davo** | `DavoModal`, `DavoDatePicker`, `DavoActionSheet`<br>Elemento nativo `<dialog>` + GSAP FLIP (`duration: 0.7s`, `PRETTY_EASE`) | El diálogo nativo se ancla al nodo físico del botón mediante `triggerRef`. El cierre se delega al lifecycle del diálogo con backdrop cinemático. |
-| **Dual** | `FamilyDialog`, `FamilyStepperDialog`, `MorphingStepDialog`<br>Soporta ambos motores | Seleccionable mediante la prop `engine="sway" \| "davo"` o `engine="spring" \| "view-transition"`. |
+| **Sway (Gonza)** | `SwayModal`, `SwayCard`, `MorphTabs`, `SideSheet`<br>Euler-Newton Springs con **Motion** (`stiffness: 400`, `damping: 30`, `mass: 0.8`). **Cero GSAP.** | Si usás `layoutId`, el botón disparador (`SwayModalTrigger`) **SIEMPRE debe compartir el mismo `layoutId`** que el modal. Prohibido duplicar `scale` e `y` en el `initial`. |
+| **Davo (Referencia)** | `DavoModal`, `DavoDatePicker`, `DavoActionSheet`<br>Elemento nativo `<dialog>` + GSAP FLIP (`duration: 0.7s`, `PRETTY_EASE`) | El diálogo nativo se ancla al nodo físico del botón mediante `triggerRef`. Inspirado en `srdavo/pretty-modal`. |
+| **Family (Morph)** | `FamilyDialog`, `FamilyStepperDialog`<br>Inspirado en **Family.co** y **Emil Kowalski** | Morphing botón-a-diálogo con **View Transition API** o resortes **Motion**. **No es de Davo ni usa GSAP.** |
+| **Dual / Benchmark** | `MorphingStepDialog`, `ProfileModal`, `ConfirmDialog`<br>Comparativa interactiva | Permite conmutar en vivo entre el motor Sway (Motion) y el motor Davo (GSAP FLIP) para evaluar su comportamiento. |
 
 ---
 
@@ -127,7 +139,7 @@ export function MiVistaSway() {
 ---
 
 ### 2. Modal con Motor Davo (GSAP FLIP + `<dialog>` Nativo)
-> **Crédito de autoría**: El motor FLIP y el servicio de animación provienen del repositorio público [pretty-modal](https://github.com/srdavo/pretty-modal) de [srdavo](https://github.com/srdavo).
+> **Crédito de autoría**: El motor FLIP y el servicio de animación provienen del repositorio público [pretty-modal](https://github.com/srdavo/pretty-modal) de [srdavo](https://github.com/srdavo). Para instalar únicamente su implementación original de forma aislada, utilizá su repositorio: `github:srdavo/pretty-modal`.
 
 Top-layer nativo del navegador con desenfoque de fondo y morphing teatral:
 
@@ -169,6 +181,7 @@ export function MiVistaDavo() {
 ---
 
 ### 3. Diálogo de confirmación Dual-Engine (`FamilyDialog`)
+> **Inspiración de diseño**: Este componente está inspirado en el patrón de interacción de la app **[Family](https://family.co)** y las técnicas de morphing compartidas por **[Emil Kowalski](https://emilkowal.ski)** (*Animations on the Web*). **No es de Davo ni usa GSAP**: funciona con la View Transition API (`document.startViewTransition`) o físicas de resortes con Motion (`layoutId`).
 
 El botón de acción se transforma en el propio diálogo con animación continua:
 

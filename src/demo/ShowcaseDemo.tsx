@@ -121,7 +121,7 @@ export function ShowcaseDemo() {
   const davoTriggerRef = useRef<HTMLButtonElement>(null);
 
   const copyInstallCommand = () => {
-    navigator.clipboard.writeText("pnpm add motion gsap lucide-react clsx tailwind-merge");
+    navigator.clipboard.writeText("pnpm add github:GnzaDev/ui-components motion gsap lucide-react clsx tailwind-merge");
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 1500);
   };
@@ -277,20 +277,20 @@ export function ShowcaseDemo() {
                 <div className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   <span className="font-mono text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
-                    Motion 12 • GSAP 3
+                    Sway UI • by Gonza
                   </span>
                 </div>
                 <p className="mt-1 text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                  React 19 native primitives with strict TypeScript contracts.
+                  Librería y motor Sway creados por Gonza. Primitivas con Motion 12 y GSAP 3.
                 </p>
               </div>
 
               <div className="rounded-xl border border-zinc-200/80 bg-white p-3 text-[11px] dark:border-zinc-800 dark:bg-zinc-900/40">
                 <span className="font-mono text-[10px] uppercase font-semibold text-zinc-500 dark:text-zinc-400 block mb-1">
-                  FLIP Animation Source
+                  Inspiración y Referencia
                 </span>
                 <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                  Modal &amp; FLIP animations based on public code from{" "}
+                  Modales con estilo FLIP inspirados en{" "}
                   <a
                     href="https://github.com/srdavo/pretty-modal"
                     target="_blank"
@@ -299,7 +299,7 @@ export function ShowcaseDemo() {
                   >
                     pretty-modal
                   </a>{" "}
-                  by{" "}
+                  por{" "}
                   <a
                     href="https://github.com/srdavo"
                     target="_blank"
@@ -561,7 +561,35 @@ function ComponentDocPage({
           {doc.description}
         </p>
 
-        {(doc.engine === "davo" || doc.engine === "both") && (
+        {doc.id === "family-dialog" ? (
+          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-indigo-200/70 bg-indigo-50/50 px-3.5 py-2 text-xs text-indigo-950 dark:border-indigo-900/40 dark:bg-indigo-950/20 dark:text-indigo-200">
+            <span className="font-mono text-[10px] uppercase font-semibold text-indigo-600 dark:text-indigo-400">
+              Inspiración de Diseño
+            </span>
+            <span className="text-indigo-300 dark:text-indigo-700">•</span>
+            <span>
+              Patrón interactivo de morphing inspirado en la app{" "}
+              <a
+                href="https://family.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-indigo-900 dark:text-indigo-100 underline hover:text-indigo-950 dark:hover:text-white"
+              >
+                Family (family.co)
+              </a>{" "}
+              y popularizado por{" "}
+              <a
+                href="https://animations.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-indigo-900 dark:text-indigo-100 underline hover:text-indigo-950 dark:hover:text-white"
+              >
+                Emil Kowalski (animations.dev)
+              </a>
+              . Utiliza View Transition API o resortes Motion (no utiliza el motor de Davo).
+            </span>
+          </div>
+        ) : (doc.engine === "davo" || doc.engine === "both") ? (
           <div className="flex flex-wrap items-center gap-2 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-3.5 py-2 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400">
             <span className="font-mono text-[10px] uppercase font-semibold text-zinc-500 dark:text-zinc-400">
               Source Attribution
@@ -588,7 +616,7 @@ function ComponentDocPage({
               </a>
             </span>
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* Interactive Sandbox Card */}
@@ -774,24 +802,26 @@ function CatalogOverview({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-              <span>CATALOG</span>
+              <span>BY GONZA</span>
+              <span>•</span>
+              <span>SWAY ENGINE</span>
               <span>•</span>
               <span>20 PRIMITIVES</span>
               <span>•</span>
               <span>REACT 19</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
-              Dual-Engine Component System
+              Sway UI Component System
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Precision UI primitives powered by <span className="text-zinc-900 dark:text-zinc-100 font-medium">Sway (Motion)</span> for spring dynamics and <span className="text-zinc-900 dark:text-zinc-100 font-medium">Davo (GSAP FLIP)</span> for matrix projections.
+              Creado y desarrollado por <span className="text-zinc-900 dark:text-zinc-100 font-semibold">Gonza</span> con el motor <span className="text-zinc-900 dark:text-zinc-100 font-medium">Sway (Motion)</span> para dinámicas de resortes. Se incluyen también variantes de modales inspiradas en el estilo de <a href="https://github.com/srdavo/pretty-modal" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-900 dark:hover:text-white">srdavo</a> a modo de ejemplos interactivos para comparar y evaluar directamente las diferencias de física y comportamiento entre ambos enfoques.
             </p>
           </div>
 
           {/* Quick Install */}
           <div className="flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-3 py-2 font-mono text-xs text-zinc-700 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
             <Terminal size={13} className="text-zinc-400" />
-            <span>pnpm add motion gsap lucide-react</span>
+            <span className="truncate max-w-[280px] sm:max-w-none">pnpm add github:GnzaDev/ui-components motion gsap</span>
             <button
               type="button"
               onClick={copyInstallCommand}
@@ -809,24 +839,24 @@ function CatalogOverview({
         <div className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-zinc-400">
-              ENGINE 01 // SWAY
+              CORE ENGINE // SWAY (BY GONZA)
             </span>
             <span className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-mono text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
               Motion 12
             </span>
           </div>
           <h3 className="mt-2 text-sm font-semibold text-zinc-900 dark:text-white">
-            Euler-Newton Spring Dynamics
+            Euler-Newton Spring Dynamics (Sway)
           </h3>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-            Continuous momentum physics and declarative <code className="text-zinc-700 dark:text-zinc-300">layoutId</code> projection. Gestures and mid-flight interruptions preserve velocity naturally without timeline snapping.
+            Motor propio desarrollado por Gonza con Motion 12. Momentum continuo y proyección declarativa con <code className="text-zinc-700 dark:text-zinc-300">layoutId</code>. Interrupciones y gestos fluidos sin timeline snapping.
           </p>
         </div>
 
         <div className="rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-zinc-400">
-              ENGINE 02 // DAVO
+              FLIP ENGINE // INSPIRACIÓN Y REFERENCIA
             </span>
             <span className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-mono text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
               GSAP 3 FLIP
@@ -836,11 +866,11 @@ function CatalogOverview({
             FLIP Matrix Projection & Native &lt;dialog&gt;
           </h3>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-            Top-layer isolation with First-Last-Invert-Play coordinate transforms, calibrated with Davo&apos;s signature <code className="text-zinc-700 dark:text-zinc-300">PRETTY_EASE</code> curves and optical bloom.
+            Variante modal adaptada por Gonza con GSAP FLIP y curvas <code className="text-zinc-700 dark:text-zinc-300">PRETTY_EASE</code>, tomando como referencia técnica e inspiración visual el trabajo de srdavo.
           </p>
           <div className="mt-3.5 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
             <span className="text-zinc-500 dark:text-zinc-400">
-              Source code:{" "}
+              Inspiración y referencia:{" "}
               <a
                 href="https://github.com/srdavo/pretty-modal"
                 target="_blank"
@@ -849,7 +879,7 @@ function CatalogOverview({
               >
                 pretty-modal
               </a>{" "}
-              by{" "}
+              por{" "}
               <a
                 href="https://github.com/srdavo"
                 target="_blank"
@@ -973,106 +1003,346 @@ function CatalogOverview({
 // GETTING STARTED VIEW
 // ============================================================================
 function GettingStartedView({
-  copyInstallCommand,
-  copiedCode,
   onExplore,
 }: {
   copyInstallCommand: () => void;
   copiedCode: boolean;
   onExplore: () => void;
 }) {
+  const [packageManager, setPackageManager] = useState<"pnpm" | "npm" | "yarn" | "bun">("pnpm");
+  const [tailwindVersion, setTailwindVersion] = useState<"v4" | "v3">("v4");
+  const [copiedSection, setCopiedSection] = useState<string | null>(null);
+
+  const copyText = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedSection(id);
+    setTimeout(() => setCopiedSection(null), 1500);
+  };
+
+  const installCommands: Record<string, string> = {
+    pnpm: "pnpm add github:GnzaDev/ui-components motion gsap lucide-react clsx tailwind-merge",
+    npm: "npm install github:GnzaDev/ui-components motion gsap lucide-react clsx tailwind-merge",
+    yarn: "yarn add github:GnzaDev/ui-components motion gsap lucide-react clsx tailwind-merge",
+    bun: "bun add github:GnzaDev/ui-components motion gsap lucide-react clsx tailwind-merge",
+  };
+
+  const tailwindConfigs: Record<string, string> = {
+    v4: `@import "tailwindcss";\n@source "../node_modules/@gonza/ui-components";`,
+    v3: `// tailwind.config.js\nmodule.exports = {\n  content: [\n    "./index.html",\n    "./src/**/*.{js,ts,jsx,tsx}",\n    "./node_modules/@gonza/ui-components/**/*.{js,ts,jsx,tsx}",\n  ],\n};`,
+  };
+
+  const quickstartExample = `import { useState, useRef } from "react";
+import { SwayModal, SwayModalTrigger, DavoModal } from "@gonza/ui-components";
+import "@gonza/ui-components/styles.css";
+
+export function ExampleApp() {
+  const [swayOpen, setSwayOpen] = useState(false);
+  const [davoOpen, setDavoOpen] = useState(false);
+  const davoTriggerRef = useRef<HTMLButtonElement>(null);
+
   return (
-    <div className="space-y-6 w-full">
+    <div className="flex gap-4 p-8">
+      {/* 1. Modal con Sway Engine (Motion springs) */}
+      <SwayModalTrigger layoutId="demo-modal" onClick={() => setSwayOpen(true)}>
+        Abrir Sway Modal
+      </SwayModalTrigger>
+      <SwayModal open={swayOpen} onClose={() => setSwayOpen(false)} layoutId="demo-modal" title="Sway Modal">
+        <p>Animado con físicas de resortes continuas (Sway Engine).</p>
+      </SwayModal>
+
+      {/* 2. Modal con Davo Engine (GSAP FLIP) */}
+      <button ref={davoTriggerRef} onClick={() => setDavoOpen(true)}>
+        Abrir Davo Modal
+      </button>
+      <DavoModal open={davoOpen} onClose={() => setDavoOpen(false)} triggerRef={davoTriggerRef} title="Davo Modal">
+        <p>Animado con proyección matricial en top-layer <dialog>.</p>
+      </DavoModal>
+    </div>
+  );
+}`;
+
+  return (
+    <div className="space-y-6 w-full max-w-4xl">
+      {/* Header */}
       <div className="space-y-2">
+        <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+          <span>GUÍA TÉCNICA</span>
+          <span>•</span>
+          <span>REACT 19</span>
+          <span>•</span>
+          <span>TAILWIND CSS</span>
+        </div>
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
-          Installation & Architectural Guide
+          Guía de Instalación e Integración
         </h1>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
-          How to integrate @gonza/ui-components into your React 19 application.
+          Paso a paso para instalar <strong className="text-zinc-900 dark:text-zinc-100">@gonza/ui-components</strong> directamente desde GitHub en cualquier proyecto React.
         </p>
       </div>
 
+      {/* STEP 1: Package installation */}
       <div className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
-        <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-900 text-[11px] font-mono font-medium text-white dark:bg-white dark:text-zinc-950">
-            01
-          </span>
-          <h3 className="text-sm font-semibold text-zinc-950 dark:text-white">
-            Peer Dependencies
-          </h3>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-900 text-[11px] font-mono font-medium text-white dark:bg-white dark:text-zinc-950">
+              01
+            </span>
+            <h3 className="text-sm font-semibold text-zinc-950 dark:text-white">
+              Instalar librería y dependencias peer
+            </h3>
+          </div>
+
+          {/* Package Manager Selector Tabs */}
+          <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100/80 p-0.5 text-xs dark:border-zinc-800 dark:bg-zinc-800">
+            {(["pnpm", "npm", "yarn", "bun"] as const).map((pm) => (
+              <button
+                key={pm}
+                type="button"
+                onClick={() => setPackageManager(pm)}
+                className={`rounded-md px-2.5 py-0.5 font-mono text-[11px] font-medium transition-colors cursor-pointer ${
+                  packageManager === pm
+                    ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-700 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                }`}
+              >
+                {pm}
+              </button>
+            ))}
+          </div>
         </div>
+
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Motion 12 for spring physics, GSAP 3 for FLIP bounding math, and Lucide for iconography.
+          Instala el paquete directamente desde GitHub junto con Motion 12, GSAP 3 y Lucide React:
         </p>
+
         <div className="rounded-xl bg-zinc-950 p-3.5 font-mono text-xs text-zinc-300">
-          <div className="flex items-center justify-between">
-            <code>pnpm add motion gsap lucide-react clsx tailwind-merge</code>
+          <div className="flex items-center justify-between gap-2">
+            <code className="truncate">{installCommands[packageManager]}</code>
             <button
-              onClick={copyInstallCommand}
-              className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 hover:text-white cursor-pointer"
+              onClick={() => copyText(installCommands[packageManager], "pm")}
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 hover:text-white cursor-pointer shrink-0"
+              title="Copiar comando"
             >
-              {copiedCode ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
-              <span>{copiedCode ? "Copied" : "Copy"}</span>
+              {copiedSection === "pm" ? (
+                <Check size={12} className="text-emerald-400" />
+              ) : (
+                <Copy size={12} />
+              )}
+              <span>{copiedSection === "pm" ? "Copiado" : "Copiar"}</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800/40 p-3 rounded-xl border border-zinc-200/60 dark:border-zinc-800/60 leading-relaxed">
+          💡 <strong>¿Cómo funciona?</strong> No requiere que la librería esté publicada en npm. Tu gestor de paquetes clona el repositorio y ejecuta el ciclo <code className="font-mono text-zinc-700 dark:text-zinc-300">prepare</code>, compilando los bundles ESM y definiciones de TypeScript en tu máquina.
+        </div>
+
+        {/* Callout: Para instalar el modal de Davo usar su repo */}
+        <div className="rounded-xl border border-amber-200/70 bg-amber-50/50 p-3.5 text-xs text-amber-950 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
+          <div className="flex items-center justify-between gap-2 mb-1.5">
+            <span className="font-semibold text-xs flex items-center gap-1.5">
+              <span>📦</span>
+              <span>¿Querés usar o instalar únicamente el modal original de Davo?</span>
+            </span>
+            <a
+              href="https://github.com/srdavo/pretty-modal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] font-mono underline hover:text-amber-800 dark:hover:text-amber-100 shrink-0"
+            >
+              srdavo/pretty-modal ↗
+            </a>
+          </div>
+          <p className="text-[11px] text-amber-900/80 dark:text-amber-300/80 leading-relaxed mb-2">
+            Si lo que buscás es usar e instalar el modal original e independiente creado por Davo (sin la suite Sway UI), podés clonar o agregar directamente su repositorio oficial:
+          </p>
+          <div className="flex items-center justify-between rounded-lg bg-zinc-950 p-2.5 font-mono text-[11px] text-zinc-200">
+            <code className="truncate">pnpm add github:srdavo/pretty-modal</code>
+            <button
+              onClick={() => copyText("pnpm add github:srdavo/pretty-modal", "davo-repo")}
+              className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-white cursor-pointer ml-2 shrink-0"
+              title="Copiar comando de Davo"
+            >
+              {copiedSection === "davo-repo" ? (
+                <Check size={11} className="text-emerald-400" />
+              ) : (
+                <Copy size={11} />
+              )}
+              <span>{copiedSection === "davo-repo" ? "Copiado" : "Copiar"}</span>
             </button>
           </div>
         </div>
       </div>
 
+      {/* STEP 2: Stylesheet import */}
       <div className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
         <div className="flex items-center gap-2">
           <span className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-900 text-[11px] font-mono font-medium text-white dark:bg-white dark:text-zinc-950">
             02
           </span>
           <h3 className="text-sm font-semibold text-zinc-950 dark:text-white">
-            Dual-Engine Strategy
+            Importar la hoja de estilos de animación
+          </h3>
+        </div>
+
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          En el punto de entrada de tu aplicación (<code className="font-mono text-zinc-700 dark:text-zinc-300">main.tsx</code>, <code className="font-mono text-zinc-700 dark:text-zinc-300">App.tsx</code> o <code className="font-mono text-zinc-700 dark:text-zinc-300">layout.tsx</code> en Next.js), importa los estilos compilados:
+        </p>
+
+        <div className="rounded-xl bg-zinc-950 p-3.5 font-mono text-xs text-zinc-300">
+          <div className="flex items-center justify-between">
+            <code>import &quot;@gonza/ui-components/styles.css&quot;;</code>
+            <button
+              onClick={() => copyText('import "@gonza/ui-components/styles.css";', "css")}
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 hover:text-white cursor-pointer"
+              title="Copiar importación"
+            >
+              {copiedSection === "css" ? (
+                <Check size={12} className="text-emerald-400" />
+              ) : (
+                <Copy size={12} />
+              )}
+              <span>{copiedSection === "css" ? "Copiado" : "Copiar"}</span>
+            </button>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+          Este archivo incluye los keyframes de desenfoque óptico, estilos del backdrop para <code className="font-mono text-zinc-700 dark:text-zinc-300">&lt;dialog&gt;</code> nativo y las transiciones FLIP.
+        </p>
+      </div>
+
+      {/* STEP 3: Tailwind Setup */}
+      <div className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-900 text-[11px] font-mono font-medium text-white dark:bg-white dark:text-zinc-950">
+              03
+            </span>
+            <h3 className="text-sm font-semibold text-zinc-950 dark:text-white">
+              Configurar Tailwind CSS
+            </h3>
+          </div>
+
+          <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100/80 p-0.5 text-xs dark:border-zinc-800 dark:bg-zinc-800">
+            {(["v4", "v3"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setTailwindVersion(v)}
+                className={`rounded-md px-2.5 py-0.5 font-mono text-[11px] font-medium transition-colors cursor-pointer ${
+                  tailwindVersion === v
+                    ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-700 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                }`}
+              >
+                Tailwind {v}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Para que Tailwind procese las clases utilitarias de la librería en tu proyecto:
+        </p>
+
+        <div className="rounded-xl bg-zinc-950 p-3.5 font-mono text-xs text-zinc-300">
+          <div className="flex items-start justify-between">
+            <pre className="overflow-x-auto leading-relaxed">
+              <code>{tailwindConfigs[tailwindVersion]}</code>
+            </pre>
+            <button
+              onClick={() => copyText(tailwindConfigs[tailwindVersion], "tailwind")}
+              className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 hover:text-white cursor-pointer shrink-0 ml-2"
+              title="Copiar configuración"
+            >
+              {copiedSection === "tailwind" ? (
+                <Check size={12} className="text-emerald-400" />
+              ) : (
+                <Copy size={12} />
+              )}
+              <span>{copiedSection === "tailwind" ? "Copiado" : "Copiar"}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* STEP 4: Dual Engine Architecture */}
+      <div className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex items-center gap-2">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-900 text-[11px] font-mono font-medium text-white dark:bg-white dark:text-zinc-950">
+            04
+          </span>
+          <h3 className="text-sm font-semibold text-zinc-950 dark:text-white">
+            Estrategia de Motores: Sway vs Davo
           </h3>
         </div>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-          Modern web applications require two complementary animation models:
+          La librería ofrece dos motores de animación que podés usar según el tipo de componente:
         </p>
         <div className="grid gap-3 sm:grid-cols-2 mt-2">
           <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
             <h4 className="text-xs font-mono font-semibold text-zinc-900 dark:text-white uppercase">
-              Micro-interactions (Sway)
+              Motor Sway (por Gonza) • 100% Motion
             </h4>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Ideal for tabs, drawers, popovers, and controls where user gestures can interrupt animation mid-flight.
+              Físicas elásticas continuas construidas al 100% con Motion 12 (cero GSAP). Ideal para tabs, drawers, popovers y modales reactivos donde el usuario puede interrumpir la animación en vuelo.
             </p>
           </div>
           <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
             <h4 className="text-xs font-mono font-semibold text-zinc-900 dark:text-white uppercase">
-              Theatrical Dialogs (Davo)
+              Motor Davo (Inspiración FLIP)
             </h4>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Ideal for dialogs, zoom lightboxes, and action sheets where native HTML5 &lt;dialog&gt; top-layer isolation is required. Originates from the public repository{" "}
-              <a
-                href="https://github.com/srdavo/pretty-modal"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
-              >
-                pretty-modal
-              </a>{" "}
-              by{" "}
-              <a
-                href="https://github.com/srdavo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
-              >
-                srdavo
-              </a>.
+              Aislamiento en top-layer con elemento nativo &lt;dialog&gt; y proyección matricial GSAP FLIP. Inspirado en el repositorio público <a href="https://github.com/srdavo/pretty-modal" target="_blank" rel="noopener noreferrer" className="font-mono text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white">pretty-modal</a> de <a href="https://github.com/srdavo" target="_blank" rel="noopener noreferrer" className="font-semibold text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white">srdavo</a>.
+            </p>
+            <p className="mt-2.5 text-[11px] text-zinc-600 dark:text-zinc-400 border-t border-zinc-200/60 dark:border-zinc-700/50 pt-2 leading-relaxed">
+              Para instalar únicamente el modal original de Davo, utilizá su repo oficial: <code className="font-mono text-[10px] bg-zinc-200/70 dark:bg-zinc-900 px-1.5 py-0.5 rounded text-zinc-800 dark:text-zinc-200">github:srdavo/pretty-modal</code>.
             </p>
           </div>
         </div>
       </div>
 
+      {/* STEP 5: Quickstart code snippet */}
+      <div className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-zinc-900 text-[11px] font-mono font-medium text-white dark:bg-white dark:text-zinc-950">
+              05
+            </span>
+            <h3 className="text-sm font-semibold text-zinc-950 dark:text-white">
+              Ejemplo de Inicio Rápido (Quickstart)
+            </h3>
+          </div>
+
+          <button
+            onClick={() => copyText(quickstartExample, "example")}
+            className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white cursor-pointer"
+            title="Copiar código de ejemplo"
+          >
+            {copiedSection === "example" ? (
+              <Check size={12} className="text-emerald-500" />
+            ) : (
+              <Copy size={12} />
+            )}
+            <span>{copiedSection === "example" ? "Copiado" : "Copiar código"}</span>
+          </button>
+        </div>
+
+        <div className="rounded-xl bg-zinc-950 p-4 font-mono text-xs text-zinc-200 overflow-x-auto">
+          <pre className="leading-relaxed">
+            <code>{quickstartExample}</code>
+          </pre>
+        </div>
+      </div>
+
+      {/* Explore catalog button */}
       <div className="pt-2">
         <button
           onClick={onExplore}
           className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 cursor-pointer shadow-xs transition-colors"
         >
-          <span>Browse All 20 Primitives</span>
+          <span>Explorar los 20 componentes en el catálogo</span>
           <ArrowRight size={13} />
         </button>
       </div>
@@ -1088,7 +1358,7 @@ function ShowcaseFooter() {
     <footer className="mt-12 border-t border-zinc-200/80 bg-white/70 px-6 py-10 dark:border-zinc-800/80 dark:bg-zinc-950/60 lg:px-10">
       <div className="mx-auto max-w-6xl space-y-8">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Column 1: Library Info */}
+          {/* Column 1: Library Info & Author */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-white" />
@@ -1096,24 +1366,33 @@ function ShowcaseFooter() {
                 Sway UI
               </span>
               <span className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
-                MIT License
+                Creado por Gonza
               </span>
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Dual-engine animated UI component library for React 19 and Tailwind CSS. Combines Motion spring dynamics with GSAP FLIP matrix projections.
+              Librería de componentes y animaciones creada y desarrollada por <strong>Gonza</strong>. Impulsada por el motor propio <strong>Sway (Motion)</strong> para dinámicas elásticas y físicas de resortes continuas.
             </p>
             <p className="font-mono text-[11px] text-zinc-400">
-              React 19 • Tailwind CSS • TypeScript
+              React 19 • Tailwind CSS • Motion 12
             </p>
           </div>
 
-          {/* Column 2: Open Source Attribution & Disclaimer */}
+          {/* Column 2: Inspiration & Reference */}
           <div className="space-y-2 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-900/40">
             <span className="font-mono text-[10px] uppercase font-semibold text-zinc-600 dark:text-zinc-300 block">
-              Atribución de Motor &amp; Disclaimer
+              Inspiración y Referencia // Davo
             </span>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              El motor FLIP y el servicio de cálculo matricial para los modales teatrales provienen del proyecto open source{" "}
+              Gonza implementó y modificó los modales con resortes y componentes de Motion. Se da crédito especial a{" "}
+              <a
+                href="https://github.com/srdavo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-zinc-900 underline dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white"
+              >
+                srdavo (David)
+              </a>{" "}
+              por la inspiración en su estilo visual y por usar su repositorio público{" "}
               <a
                 href="https://github.com/srdavo/pretty-modal"
                 target="_blank"
@@ -1122,25 +1401,17 @@ function ShowcaseFooter() {
               >
                 pretty-modal
               </a>{" "}
-              creado por{" "}
-              <a
-                href="https://github.com/srdavo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-zinc-900 underline dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white"
-              >
-                srdavo (David)
-              </a>.
+              como referencia técnica para los diálogos con matriz FLIP. Dichos componentes se presentan aquí como ejemplos interactivos para contrastar y apreciar en vivo las diferencias con el motor Sway.
             </p>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed pt-1.5 border-t border-zinc-200/60 dark:border-zinc-800/60">
-              <strong className="text-zinc-700 dark:text-zinc-300">Aclaración:</strong> Este proyecto utiliza libremente dicho código público bajo los términos de la licencia MIT. No existe acuerdo privado, afiliación institucional ni patrocinio directo con el autor original.
+              Sway es de autoría de Gonza. Este proyecto utiliza la referencia pública bajo licencia MIT con fines comparativos y educativos, sin relación institucional ni patrocinio privado.
             </p>
           </div>
 
           {/* Column 3: Direct Links */}
           <div className="space-y-3">
             <span className="font-mono text-[10px] uppercase font-semibold text-zinc-400 block">
-              Repositorios &amp; Créditos
+              Enlaces &amp; Referencias
             </span>
             <ul className="space-y-2 text-xs">
               <li>
@@ -1151,7 +1422,7 @@ function ShowcaseFooter() {
                   className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
                 >
                   <span className="font-mono text-[11px] text-zinc-400">↗</span>
-                  <span>pretty-modal en GitHub (por srdavo)</span>
+                  <span>pretty-modal en GitHub (Referencia e Inspiración)</span>
                 </a>
               </li>
               <li>
@@ -1167,6 +1438,17 @@ function ShowcaseFooter() {
               </li>
               <li>
                 <a
+                  href="https://motion.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>Motion 12 (Sway Spring Engine)</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://gsap.com"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1176,26 +1458,15 @@ function ShowcaseFooter() {
                   <span>GSAP 3 FLIP &amp; CustomEase</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://motion.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                >
-                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
-                  <span>Motion 12 Spring Physics</span>
-                </a>
-              </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom copyright line */}
         <div className="border-t border-zinc-200/80 pt-6 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
-          <p>© {new Date().getFullYear()} Sway UI • Licensed under MIT</p>
+          <p>© {new Date().getFullYear()} Sway UI • Creado y desarrollado por Gonza</p>
           <p className="font-mono text-[11px] text-zinc-400">
-            FLIP dialog code © 2026 srdavo (MIT License)
+            Referencia e inspiración modal: pretty-modal © 2026 srdavo (MIT)
           </p>
         </div>
       </div>

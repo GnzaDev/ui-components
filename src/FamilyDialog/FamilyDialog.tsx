@@ -1,3 +1,12 @@
+/**
+ * FamilyDialog & FamilyStepperDialog
+ *
+ * Interaction design inspired by Family App (https://family.co)
+ * and morphing dialog techniques popularized by Emil Kowalski (https://animations.dev).
+ * Developed for Sway UI (@gonza/ui-components) by Gonza.
+ * Uses the View Transition API or Motion springs. Does NOT belong to Davo's FLIP engine.
+ */
+
 import React, { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";

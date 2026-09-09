@@ -25,7 +25,7 @@ export function App() {
             </span>
           </div>
           <span className="hidden sm:inline-block text-xs font-mono text-zinc-400">
-            / UI Components
+            / by Gonza
           </span>
         </div>
 
