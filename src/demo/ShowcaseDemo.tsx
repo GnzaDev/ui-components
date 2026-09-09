@@ -1362,12 +1362,22 @@ function ShowcaseFooter() {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-white" />
-              <span className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+              <a
+                href="https://github.com/GnzaDev/ui-components"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold tracking-tight text-zinc-900 hover:text-black dark:text-zinc-100 dark:hover:text-white transition-colors"
+              >
                 Sway UI
-              </span>
-              <span className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
-                Creado por Gonza
-              </span>
+              </a>
+              <a
+                href="https://github.com/GnzaDev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
+              >
+                Creado por Gonza ↗
+              </a>
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
               Librería de componentes y animaciones creada y desarrollada por <strong>Gonza</strong>. Impulsada por el motor propio <strong>Sway (Motion)</strong> para dinámicas elásticas y físicas de resortes continuas.
@@ -1383,16 +1393,7 @@ function ShowcaseFooter() {
               Inspiración y Referencia // Davo
             </span>
             <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Gonza implementó y modificó los modales con resortes y componentes de Motion. Se da crédito especial a{" "}
-              <a
-                href="https://github.com/srdavo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-zinc-900 underline dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white"
-              >
-                srdavo (David)
-              </a>{" "}
-              por la inspiración en su estilo visual y por usar su repositorio público{" "}
+              Gonza implementó y modificó los modales con resortes y componentes de Motion. Se da crédito especial a srdavo por la inspiración en su estilo visual y por usar su repositorio público{" "}
               <a
                 href="https://github.com/srdavo/pretty-modal"
                 target="_blank"
@@ -1416,6 +1417,28 @@ function ShowcaseFooter() {
             <ul className="space-y-2 text-xs">
               <li>
                 <a
+                  href="https://github.com/GnzaDev/ui-components"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-medium text-zinc-900 hover:text-zinc-950 dark:text-zinc-100 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>Sway UI en GitHub (Repositorio de Gonza)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/GnzaDev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
+                  <span>Perfil de Gonza en GitHub</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://github.com/srdavo/pretty-modal"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1423,17 +1446,6 @@ function ShowcaseFooter() {
                 >
                   <span className="font-mono text-[11px] text-zinc-400">↗</span>
                   <span>pretty-modal en GitHub (Referencia e Inspiración)</span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/srdavo"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors"
-                >
-                  <span className="font-mono text-[11px] text-zinc-400">↗</span>
-                  <span>Perfil de srdavo en GitHub</span>
                 </a>
               </li>
               <li>
