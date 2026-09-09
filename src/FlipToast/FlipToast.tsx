@@ -437,17 +437,12 @@ function MinimalCard({
         posConfig.isLeft ? "left-0" : posConfig.isRight ? "right-0" : "left-1/2 -translate-x-1/2"
       )}
     >
-      {/* Header: Semantic Dot + Title + Time + Close */}
+      {/* Header: Semantic Dot + Title + Close */}
       <div className="flex items-center gap-2">
         <span className={cn("h-2 w-2 rounded-full shrink-0", getDotColor(toast.type))} />
         <h5 className="text-xs font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 truncate flex-1">
           {toast.title}
         </h5>
-        {toast.timestamp && (
-          <span className="text-[10px] text-zinc-400 dark:text-zinc-500 font-normal shrink-0">
-            {toast.timestamp}
-          </span>
-        )}
         <button
           type="button"
           onPointerDown={(e) => e.stopPropagation()}
