@@ -1,64 +1,19 @@
-import { useState } from "react";
-import { FlipToast, type ToastItem, type ToastType } from "../../FlipToast";
+import { useState, useRef } from "react";
+import { FlipToast, type ToastItem } from "../../FlipToast";
 import {
-  CheckCircle2,
-  AlertTriangle,
-  XCircle,
-  Info,
   Sparkles,
+  RotateCcw,
+  UploadCloud,
   Trash2,
+  Layers,
+  Hand,
 } from "lucide-react";
-
-type ToastPosition =
-  | "bottom-right"
-  | "bottom-left"
-  | "top-right"
-  | "top-left"
-  | "top-center"
-  | "bottom-center";
 
 export function ToastExample() {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
-  const [position, setPosition] = useState<ToastPosition>("bottom-right");
-
-  const addToast = (type: ToastType, title: string, message: string) => {
-    const newToast: ToastItem = {
-      id: Math.random().toString(36).substring(2, 9),
-      title,
-      message,
-      type,
-    };
-    setToasts((prev) => [...prev, newToast]);
-
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== newToast.id));
-    }, 4500);
-  };
-
-  const spawnWave = () => {
-    const batch: ToastItem[] = [
-      {
-        id: Math.random().toString(36).substring(2, 9),
-        title: "Cluster Connected",
-        message: "Worker pool us-east-1 re-established quorum.",
-        type: "success",
-      },
-      {
-        id: Math.random().toString(36).substring(2, 9),
-        title: "Latency Spike Detected",
-        message: "P99 latency elevated to 142ms on /api/v1/checkout.",
-        type: "warning",
-      },
-      {
-        id: Math.random().toString(36).substring(2, 9),
-        title: "Cache Eviction",
-        message: "L2 redis cache pruned 14,200 stale tokens.",
-        type: "info",
-      },
-    ];
-
-    setToasts((prev) => [...prev, ...batch]);
-  };
+  const [variant, setVariant] = useState<"capsule" | "stack">("capsule");
+  const [isUploading, setIsUploading] = useState(false);
+  const uploadIntervalRef = useRef<number | null>(null);
 
   const dismissToast = (id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -66,21 +21,193 @@ export function ToastExample() {
 
   const clearAll = () => {
     setToasts([]);
+    if (uploadIntervalRef.current) clearInterval(uploadIntervalRef.current);
+    setIsUploading(false);
+  };
+
+  // SCENARIO 1: Dynamic Progress Morphing
+  const triggerUploadSimulation = () => {
+    if (isUploading) return;
+    setIsUploading(true);
+
+    const toastId = "upload-" + Date.now();
+    let currentProgress = 0;
+
+    const initialToast: ToastItem = {
+      id: toastId,
+      title: "Deploying Edge Bundle",
+      type: "loading",
+      progress: 0,
+      duration: 10000,
+    };
+
+    setToasts((prev) => [...prev.filter((t) => !t.id.startsWith("upload-")), initialToast]);
+
+    uploadIntervalRef.current = window.setInterval(() => {
+      currentProgress += 15;
+      if (currentProgress >= 100) {
+        if (uploadIntervalRef.current) clearInterval(uploadIntervalRef.current);
+        setIsUploading(false);
+        setToasts((prev) =>
+          prev.map((t) =>
+            t.id === toastId
+              ? {
+                  ...t,
+                  title: "Bundle Deployed to 35 Regions",
+                  type: "success",
+                  progress: undefined,
+                  message: "Latency verified < 15ms globally.",
+                }
+              : t
+          )
+        );
+
+        setTimeout(() => {
+          dismissToast(toastId);
+        }, 3500);
+      } else {
+        setToasts((prev) =>
+          prev.map((t) => (t.id === toastId ? { ...t, progress: currentProgress } : t))
+        );
+      }
+    }, 280);
+  };
+
+  // SCENARIO 2: Destructive Action with Undo
+  const triggerUndoAction = () => {
+    const toastId = "undo-" + Date.now();
+    const item: ToastItem = {
+      id: toastId,
+      title: "Cluster Deleted",
+      message: "Worker node us-east-2 removed.",
+      type: "warning",
+      action: {
+        label: "Undo",
+        onClick: () => {
+          // Trigger restored confirmation
+          const restoredId = "restored-" + Date.now();
+          setToasts((prev) => [
+            ...prev.filter((t) => t.id !== toastId),
+            {
+              id: restoredId,
+              title: "Cluster Restored",
+              type: "success",
+              message: "Quorum recovered successfully.",
+            },
+          ]);
+          setTimeout(() => dismissToast(restoredId), 3000);
+        },
+      },
+    };
+
+    setToasts((prev) => [...prev, item]);
+    setTimeout(() => dismissToast(toastId), 4500);
+  };
+
+  // SCENARIO 3: Multi-Item Wave for 3D Stacking
+  const triggerStackWave = () => {
+    const wave: ToastItem[] = [
+      {
+        id: "wave-1-" + Date.now(),
+        title: "Database Backup Completed",
+        message: "Encrypted snapshot stored in us-west-1.",
+        type: "success",
+      },
+      {
+        id: "wave-2-" + Date.now(),
+        title: "High Memory Warning",
+        message: "Worker pool exceeded 85% allocated RAM.",
+        type: "warning",
+      },
+      {
+        id: "wave-3-" + Date.now(),
+        title: "API Token Revoked",
+        message: "Session token invalidated by admin.",
+        type: "error",
+      },
+    ];
+
+    setToasts((prev) => [...prev, ...wave]);
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-6 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 w-full space-y-6">
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-100 pb-4 dark:border-zinc-800">
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-              FlipToast (Physics Stacking)
+    <div className="w-full space-y-6 rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      {/* Header & Concept Switcher */}
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-100 pb-4 dark:border-zinc-800">
+        <div>
+          <div className="flex items-center gap-2">
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-white">
+              Dual-Engine Toast Architecture
             </h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Spring-powered toast queue with layout projection and physical dismissal.
+            <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+              Zero Slop
+            </span>
+          </div>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            Two distinct architectural paradigms replacing generic floating corner clones.
+          </p>
+        </div>
+
+        {/* Concept Switcher */}
+        <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-0.5 text-xs font-semibold dark:border-zinc-800 dark:bg-zinc-800/80">
+          <button
+            type="button"
+            onClick={() => setVariant("capsule")}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
+              variant === "capsule"
+                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white font-semibold"
+                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            }`}
+          >
+            <Sparkles size={13} className="text-indigo-500" />
+            <span>1. Dynamic Capsule (Pill)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setVariant("stack")}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all cursor-pointer ${
+              variant === "stack"
+                ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white font-semibold"
+                : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            }`}
+          >
+            <Layers size={13} className="text-teal-500" />
+            <span>2. Physical 3D Stack (Flick)</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Concept Architecture Breakdown */}
+      <div className="rounded-2xl border border-zinc-200/70 bg-zinc-50/50 p-4 dark:border-zinc-800/70 dark:bg-zinc-800/30">
+        {variant === "capsule" ? (
+          <div className="space-y-1.5 text-xs">
+            <div className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-white">
+              <Sparkles size={14} className="text-indigo-500" />
+              <span>Concept 1: Dynamic Island Capsule (Top-Center Dock)</span>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              Lives at the top-center directly in the user’s primary line of sight. Uses <strong>Euler-Newton spring morphing</strong> to transition continuously between loading progress, interactive undo buttons, and success state snaps. Swipe up to dismiss with elastic resistance.
             </p>
           </div>
+        ) : (
+          <div className="space-y-1.5 text-xs">
+            <div className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-white">
+              <Hand size={14} className="text-teal-500" />
+              <span>Concept 2: Physical Tangible Stack (3D Perspective & Velocity Ejection)</span>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              Stacked cards with genuine 3D depth and rotation. Grab and drag cards horizontally: they tilt dynamically with the cursor. <strong>Flick to dismiss</strong> with inertia, or hover the deck to spread the cards into an interactive inspection list.
+            </p>
+          </div>
+        )}
+      </div>
 
+      {/* Interactive Trigger Triggers */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+            Interactive Test Scenarios
+          </label>
           <div className="flex items-center gap-2">
             <span className="font-mono text-xs text-zinc-400">
               Active: {toasts.length}
@@ -89,132 +216,82 @@ export function ToastExample() {
               <button
                 type="button"
                 onClick={clearAll}
-                className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-1 text-[11px] font-mono text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400 cursor-pointer"
+                className="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[11px] font-mono text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400 cursor-pointer"
               >
                 <Trash2 size={11} />
-                <span>Clear</span>
+                <span>Dismiss All</span>
               </button>
             )}
           </div>
         </div>
 
-        {/* Position Matrix (6 positions) */}
-        <div className="space-y-2">
-          <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider block">
-            Viewport Placement ({position})
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-            {(
-              [
-                "bottom-right",
-                "bottom-center",
-                "bottom-left",
-                "top-right",
-                "top-center",
-                "top-left",
-              ] as ToastPosition[]
-            ).map((pos) => (
-              <button
-                key={pos}
-                type="button"
-                onClick={() => setPosition(pos)}
-                className={`rounded-lg border px-2.5 py-1.5 text-xs font-mono transition-colors cursor-pointer text-left ${
-                  position === pos
-                    ? "border-zinc-900 bg-zinc-900 text-white dark:border-white dark:bg-white dark:text-zinc-950 font-medium"
-                    : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                }`}
-              >
-                {pos}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Action Triggers */}
-        <div className="space-y-2">
-          <label className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider block">
-            Toast Triggers
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button
-              type="button"
-              onClick={() =>
-                addToast(
-                  "success",
-                  "Changes Published",
-                  "Deployment v2.4 successfully promoted to edge."
-                )
-              }
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 text-xs font-medium text-zinc-900 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
-            >
-              <CheckCircle2 size={13} className="text-emerald-500" />
-              <span>Success</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                addToast(
-                  "error",
-                  "Request Timeout",
-                  "Upstream gateway 504 on RPC handler."
-                )
-              }
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 text-xs font-medium text-zinc-900 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
-            >
-              <XCircle size={13} className="text-red-500" />
-              <span>Error</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                addToast(
-                  "warning",
-                  "Quota at 92%",
-                  "Monthly egress limit approaching capacity."
-                )
-              }
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 text-xs font-medium text-zinc-900 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
-            >
-              <AlertTriangle size={13} className="text-amber-500" />
-              <span>Warning</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                addToast(
-                  "info",
-                  "Syncing Cache",
-                  "Distributed nodes reindexing active collections."
-                )
-              }
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50/50 py-2 text-xs font-medium text-zinc-900 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
-            >
-              <Info size={13} className="text-blue-500" />
-              <span>Info</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Multi-item test */}
-        <div className="pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Action 1: Morphing Progress */}
           <button
             type="button"
-            onClick={spawnWave}
-            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 cursor-pointer transition-colors"
+            onClick={triggerUploadSimulation}
+            disabled={isUploading}
+            className="flex flex-col items-start gap-1.5 rounded-2xl border border-zinc-200 bg-white p-4 text-left shadow-xs hover:border-zinc-300 hover:bg-zinc-50/50 disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:border-zinc-700 cursor-pointer transition-all"
           >
-            <Sparkles size={13} />
-            <span>Spawn Stacking Wave (Test 3 Simultaneous Toasts)</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+              <UploadCloud size={16} />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-zinc-900 dark:text-white">
+                Progress Morph
+              </div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                0% to 100% live bar &amp; success snap
+              </div>
+            </div>
+          </button>
+
+          {/* Action 2: Undo Timer Action */}
+          <button
+            type="button"
+            onClick={triggerUndoAction}
+            className="flex flex-col items-start gap-1.5 rounded-2xl border border-zinc-200 bg-white p-4 text-left shadow-xs hover:border-zinc-300 hover:bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:border-zinc-700 cursor-pointer transition-all"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+              <RotateCcw size={16} />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-zinc-900 dark:text-white">
+                Interactive Undo Action
+              </div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                Inline action button with recovery
+              </div>
+            </div>
+          </button>
+
+          {/* Action 3: Multi-card Stack */}
+          <button
+            type="button"
+            onClick={triggerStackWave}
+            className="flex flex-col items-start gap-1.5 rounded-2xl border border-zinc-200 bg-white p-4 text-left shadow-xs hover:border-zinc-300 hover:bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/60 dark:hover:border-zinc-700 cursor-pointer transition-all"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+              <Layers size={16} />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-zinc-900 dark:text-white">
+                Spawn 3-Card Stack
+              </div>
+              <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                Test 3D deck and swipe ejection
+              </div>
+            </div>
           </button>
         </div>
       </div>
 
+      {/* Render the selected concept */}
       <FlipToast
         toasts={toasts}
         onDismiss={dismissToast}
-        position={position}
+        variant={variant}
+        position={variant === "capsule" ? "top-center" : "bottom-right"}
       />
     </div>
   );
