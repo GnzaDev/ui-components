@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowRight, ArrowLeft, Check, Coins, ShieldCheck, Zap, Wallet } from "lucide-react";
 import { cn } from "../utils/cn";
 import { SWAY_SPRINGS } from "../utils/animationTokens";
+import { useScrollLock } from "../utils/useScrollLock";
 
 export interface FamilyStepperDialogProps {
   open?: boolean;
@@ -38,7 +39,10 @@ export function FamilyStepperDialog({
   const [internalOpen, setInternalOpen] = useState(false);
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
 
+  useScrollLock(isOpen && !inline);
+
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [direction, setDirection] = useState<1 | -1>(1);
   const [selectedToken, setSelectedToken] = useState<TokenOption>(TOKENS[0]);
   const [amount, setAmount] = useState("2500");
   const [speed, setSpeed] = useState<"instant" | "standard">("instant");
@@ -57,8 +61,14 @@ export function FamilyStepperDialog({
     }
   };
 
+  const goToStep = (newStep: 1 | 2 | 3) => {
+    setDirection(newStep > step ? 1 : -1);
+    setStep(newStep);
+  };
+
   const handleNext = () => {
     if (step < 3) {
+      setDirection(1);
       setStep((s) => (s + 1) as 1 | 2 | 3);
     } else {
       setIsSuccess(true);
@@ -71,8 +81,24 @@ export function FamilyStepperDialog({
 
   const handleBack = () => {
     if (step > 1) {
+      setDirection(-1);
       setStep((s) => (s - 1) as 1 | 2 | 3);
     }
+  };
+
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 28 : -28,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -28 : 28,
+      opacity: 0,
+    }),
   };
 
   return (
@@ -111,7 +137,7 @@ export function FamilyStepperDialog({
         </div>
       )}
 
-      {/* MODAL WITH SHARED ELEMENTS & MULTI-STEP WIZARD */}
+      {/* MODAL WITH SHARED ELEMENTS & LOCKED-HEIGHT STEPS */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -130,7 +156,6 @@ export function FamilyStepperDialog({
             }}
           >
             <motion.div
-              layout
               initial={{ opacity: 0, y: 32, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.96 }}
@@ -140,7 +165,7 @@ export function FamilyStepperDialog({
                 damping: SWAY_SPRINGS.modal.damping,
                 mass: SWAY_SPRINGS.modal.mass,
               }}
-              className="w-full max-w-[420px] rounded-3xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 dark:text-white"
+              className="w-full max-w-[420px] rounded-3xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 dark:text-white select-none"
               role="dialog"
               aria-modal="true"
             >
@@ -178,7 +203,7 @@ export function FamilyStepperDialog({
                     <button
                       key={s.num}
                       type="button"
-                      onClick={() => setStep(s.num as 1 | 2 | 3)}
+                      onClick={() => goToStep(s.num as 1 | 2 | 3)}
                       className={cn(
                         "relative flex-1 py-1.5 text-center text-xs font-medium transition-colors cursor-pointer z-10",
                         isActive
@@ -206,20 +231,22 @@ export function FamilyStepperDialog({
                 })}
               </div>
 
-              {/* DYNAMIC STEP CONTENT WITH DIRECTIONAL ANIMATION */}
-              <div className="mt-5 min-h-[170px] overflow-hidden">
-                <AnimatePresence mode="wait">
+              {/* FIXED CALIBRATED STEP VIEWPORT (215px exact height across all steps - NO JUMPS) */}
+              <div className="mt-5 h-[215px] relative overflow-hidden">
+                <AnimatePresence custom={direction} mode="wait">
                   {/* STEP 1: ASSET SELECTION */}
                   {step === 1 && (
                     <motion.div
                       key="step-1"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.18 }}
-                      className="space-y-2"
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute inset-0 flex flex-col justify-between"
                     >
-                      <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                      <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block">
                         Choose asset to transfer:
                       </span>
                       <div className="space-y-2">
@@ -230,17 +257,17 @@ export function FamilyStepperDialog({
                               key={token.id}
                               onClick={() => setSelectedToken(token)}
                               className={cn(
-                                "flex items-center justify-between p-3 rounded-2xl border transition-all cursor-pointer",
+                                "flex items-center justify-between p-2.5 rounded-2xl border transition-all cursor-pointer",
                                 isSelected
                                   ? "border-emerald-500 bg-emerald-50/40 dark:border-emerald-500/80 dark:bg-emerald-950/20"
                                   : "border-zinc-200 bg-zinc-50/50 hover:bg-zinc-100/50 dark:border-zinc-800 dark:bg-zinc-800/30 dark:hover:bg-zinc-800/60"
                               )}
                             >
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2.5">
                                 {/* Shared Token Badge */}
                                 <motion.div
                                   layoutId={isSelected ? "selected-token-icon" : undefined}
-                                  className={cn("h-8 w-8 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-xs", token.iconBg)}
+                                  className={cn("h-7 w-7 rounded-full flex items-center justify-center text-white text-[11px] font-bold shadow-xs", token.iconBg)}
                                 >
                                   {token.symbol.slice(0, 2)}
                                 </motion.div>
@@ -248,7 +275,7 @@ export function FamilyStepperDialog({
                                   <div className="text-xs font-semibold text-zinc-900 dark:text-white">
                                     {token.name}
                                   </div>
-                                  <div className="text-[11px] text-zinc-400">
+                                  <div className="text-[10px] text-zinc-400">
                                     {token.network}
                                   </div>
                                 </div>
@@ -272,23 +299,25 @@ export function FamilyStepperDialog({
                   {step === 2 && (
                     <motion.div
                       key="step-2"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.18 }}
-                      className="space-y-4"
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute inset-0 flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center justify-between text-xs mb-1.5">
                           <span className="font-medium text-zinc-500 dark:text-zinc-400">Transfer Amount</span>
-                          <span className="text-zinc-400 font-mono">Max: {selectedToken.balance} {selectedToken.symbol}</span>
+                          <span className="text-zinc-400 font-mono text-[11px]">Balance: {selectedToken.balance}</span>
                         </div>
                         <div className="relative">
                           <input
                             type="number"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            className="w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-lg font-mono font-semibold text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-white dark:focus:border-white"
+                            className="w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-base font-mono font-semibold text-zinc-900 focus:border-zinc-900 focus:bg-white focus:outline-none dark:border-zinc-700 dark:bg-zinc-800/60 dark:text-white dark:focus:border-white"
                           />
                           <span className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-xs font-bold text-zinc-500">
                             {selectedToken.symbol}
@@ -337,11 +366,13 @@ export function FamilyStepperDialog({
                   {step === 3 && (
                     <motion.div
                       key="step-3"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.18 }}
-                      className="space-y-3"
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute inset-0 flex flex-col justify-between"
                     >
                       <div className="rounded-2xl border border-zinc-200 bg-zinc-50/80 p-4 dark:border-zinc-800 dark:bg-zinc-800/40 space-y-3">
                         <div className="flex items-center justify-between pb-3 border-b border-zinc-200/80 dark:border-zinc-800">
@@ -349,7 +380,7 @@ export function FamilyStepperDialog({
                             {/* Shared token icon flown from step 1 */}
                             <motion.div
                               layoutId="selected-token-icon"
-                              className={cn("h-7 w-7 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-xs", selectedToken.iconBg)}
+                              className={cn("h-7 w-7 rounded-full flex items-center justify-center text-white text-[11px] font-bold shadow-xs", selectedToken.iconBg)}
                             >
                               {selectedToken.symbol.slice(0, 2)}
                             </motion.div>
@@ -367,11 +398,11 @@ export function FamilyStepperDialog({
 
                         <div className="space-y-1.5 text-xs">
                           <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
-                            <span>Network Fee</span>
+                            <span>Estimated Fee</span>
                             <span className="font-mono text-zinc-800 dark:text-zinc-200">~$0.42</span>
                           </div>
                           <div className="flex justify-between text-zinc-500 dark:text-zinc-400">
-                            <span>Speed</span>
+                            <span>Processing Time</span>
                             <span className="font-medium capitalize text-zinc-800 dark:text-zinc-200">{speed}</span>
                           </div>
                         </div>
@@ -385,8 +416,8 @@ export function FamilyStepperDialog({
                 </AnimatePresence>
               </div>
 
-              {/* CONTROLS FOOTER WITH MORPHING PRIMARY BUTTON */}
-              <div className="mt-6 flex items-center gap-3">
+              {/* CONTROLS FOOTER: Pinned completely rock-solid */}
+              <div className="mt-6 flex items-center gap-3 pt-2">
                 {step > 1 ? (
                   <button
                     type="button"
