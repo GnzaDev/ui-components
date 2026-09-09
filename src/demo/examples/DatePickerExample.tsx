@@ -28,7 +28,7 @@ export function DatePickerExample() {
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[460px]">
       <div>
         <div className="flex items-center justify-between">
           <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
@@ -105,7 +105,7 @@ export function DatePickerExample() {
         </div>
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-3 relative">
         <div className="flex items-center justify-between">
           <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
             Pick Date & Time:
@@ -116,7 +116,7 @@ export function DatePickerExample() {
             className="inline-flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-900 dark:hover:text-white cursor-pointer"
           >
             <Clock size={12} />
-            <span>{showTime ? "Ocultar hora" : "Incluir hora"}</span>
+            <span>{showTime ? "Hide Time" : "Include Time"}</span>
           </button>
         </div>
 
@@ -125,12 +125,11 @@ export function DatePickerExample() {
           onChange={setSelectedDate}
           showTime={showTime}
           engine={engine}
-          className="w-full"
         />
 
         {selectedDate && (
-          <div className="rounded-2xl border border-zinc-100 bg-zinc-50 p-2.5 text-center text-[11px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/40 dark:text-zinc-400">
-            Seleccionado: <strong className="text-zinc-900 dark:text-white">{selectedDate.toLocaleString("es-AR")}</strong>
+          <div className="pt-2 text-xs text-zinc-500 dark:text-zinc-400">
+            Selected timestamp: <strong className="font-mono text-zinc-900 dark:text-white">{selectedDate.toLocaleString("es-AR")}</strong>
           </div>
         )}
       </div>

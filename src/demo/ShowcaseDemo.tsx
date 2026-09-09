@@ -83,7 +83,7 @@ const CATEGORIES: SidebarCategory[] = [
       { id: "side-sheet", label: "SideSheet (Cart)", engine: "sway" },
       { id: "action-sheet", label: "DavoActionSheet", badge: "GSAP", engine: "davo" },
       { id: "nested-modal", label: "NestedModal", engine: "sway" },
-      { id: "confirm-dialog", label: "ConfirmDialog", engine: "sway" },
+      { id: "confirm-dialog", label: "ConfirmDialog", engine: "both" },
     ],
   },
   {
