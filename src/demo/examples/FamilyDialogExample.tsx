@@ -117,21 +117,15 @@ const SCENARIOS: ScenarioConfig[] = [
 export function FamilyDialogExample() {
   const [mode, setMode] = useState<Mode>("stepper");
   const [engine, setEngine] = useState<"view-transition" | "spring">("view-transition");
-  const [toast, setToast] = useState<{ message: string; onUndo?: () => void } | null>(null);
-  const [stepperOpen, setStepperOpen] = useState<boolean | undefined>(undefined);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [activeScenarioKey, setActiveScenarioKey] = useState<ScenarioKey>("receive");
 
   const activeScenario = SCENARIOS.find((s) => s.key === activeScenarioKey) || SCENARIOS[0];
   const IconComponent = activeScenario.icon;
 
   const handleActionConfirm = () => {
-    setToast({
-      message: `✓ "${activeScenario.actionLabel}" executed!`,
-      onUndo: () => {
-        setToast(null);
-      },
-    });
-    setTimeout(() => setToast(null), 4000);
+    setToastMessage(`✓ "${activeScenario.actionLabel}" executed!`);
+    setTimeout(() => setToastMessage(null), 3000);
   };
 
   return (
@@ -267,19 +261,11 @@ export function FamilyDialogExample() {
         <div className="relative flex-1 flex flex-col items-center justify-end pb-4 w-full z-10">
           {mode === "stepper" ? (
             <FamilyStepperDialog
-              open={stepperOpen}
-              onOpenChange={setStepperOpen}
               inline={true}
               triggerLabel="Start 3-Step Transfer"
               onComplete={() => {
-                setToast({
-                  message: "Transfer of 2,500 USDC sent successfully!",
-                  onUndo: () => {
-                    setToast(null);
-                    setStepperOpen(true);
-                  },
-                });
-                setTimeout(() => setToast(null), 5000);
+                setToastMessage("✓ Multi-step transfer completed with full shared-element flow!");
+                setTimeout(() => setToastMessage(null), 3500);
               }}
             />
           ) : (
@@ -303,28 +289,17 @@ export function FamilyDialogExample() {
         <div className="flex items-center justify-between border-t border-zinc-200/60 dark:border-zinc-800/60 pt-3 z-10 text-[11px] font-mono text-zinc-400">
           <span>
             {mode === "stepper"
-              ? "Observe the full card blooming from trigger, and smoothly reverse-morphing on close/undo."
+              ? "Look at the Apple-style progress track, the token badge flying to Step 3, and the morphing CTA button."
               : "Click the button at the bottom to watch it morph into the dialog's action button."}
           </span>
           <span className="hidden sm:inline">60 FPS GPU Projection</span>
         </div>
 
-        {/* Action Toast with Undo button */}
-        {toast && (
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-2 text-xs font-medium text-emerald-900 shadow-lg dark:bg-emerald-950/90 dark:text-emerald-200 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-emerald-500 dark:text-emerald-400" />
-              <span>{toast.message}</span>
-            </div>
-            {toast.onUndo && (
-              <button
-                type="button"
-                onClick={toast.onUndo}
-                className="rounded-full bg-emerald-200/80 px-2.5 py-0.5 font-semibold text-emerald-900 hover:bg-emerald-300 dark:bg-emerald-800 dark:text-emerald-100 dark:hover:bg-emerald-700 transition-colors cursor-pointer"
-              >
-                Undo
-              </button>
-            )}
+        {/* Action Toast */}
+        {toastMessage && (
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-50 px-4 py-2 text-xs font-medium text-emerald-800 shadow-lg dark:bg-emerald-950/90 dark:text-emerald-200 backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
+            <CheckCircle2 size={14} className="text-emerald-500 dark:text-emerald-400" />
+            <span>{toastMessage}</span>
           </div>
         )}
       </div>
