@@ -21,7 +21,7 @@ export function App() {
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-white" />
             <span className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-              Sway & Davo
+              Sway UI
             </span>
           </div>
           <span className="hidden sm:inline-block text-xs font-mono text-zinc-400">

@@ -272,16 +272,44 @@ export function ShowcaseDemo() {
             </div>
 
             {/* Sidebar Meta */}
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-900/40">
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span className="font-mono text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
-                  Motion 12 • GSAP 3
-                </span>
+            <div className="space-y-2">
+              <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3 dark:border-zinc-800 dark:bg-zinc-900/40">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span className="font-mono text-[11px] font-medium text-zinc-700 dark:text-zinc-300">
+                    Motion 12 • GSAP 3
+                  </span>
+                </div>
+                <p className="mt-1 text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  React 19 native primitives with strict TypeScript contracts.
+                </p>
               </div>
-              <p className="mt-1 text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                React 19 native primitives with strict TypeScript contracts.
-              </p>
+
+              <div className="rounded-xl border border-zinc-200/80 bg-white p-3 text-[11px] dark:border-zinc-800 dark:bg-zinc-900/40">
+                <span className="font-mono text-[10px] uppercase font-semibold text-zinc-500 dark:text-zinc-400 block mb-1">
+                  FLIP Animation Source
+                </span>
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                  Modal &amp; FLIP animations based on public code from{" "}
+                  <a
+                    href="https://github.com/srdavo/pretty-modal"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-zinc-900 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+                  >
+                    pretty-modal
+                  </a>{" "}
+                  by{" "}
+                  <a
+                    href="https://github.com/srdavo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-zinc-900 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+                  >
+                    srdavo
+                  </a>.
+                </p>
+              </div>
             </div>
           </div>
         </aside>
@@ -351,7 +379,15 @@ export function ShowcaseDemo() {
         triggerRef={davoTriggerRef}
         title="DavoModal (GSAP Flip)"
         footer={
-          <div className="flex justify-end">
+          <div className="flex items-center justify-between w-full">
+            <a
+              href="https://github.com/srdavo/pretty-modal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] font-mono text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white underline"
+            >
+              Source: srdavo/pretty-modal ↗
+            </a>
             <button
               onClick={() => setDavoOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
@@ -361,9 +397,31 @@ export function ShowcaseDemo() {
           </div>
         }
       >
-        <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          This modal uses the native HTML5 &lt;dialog&gt; top-layer element combined with GSAP Flip matrix math and theatrical PRETTY_EASE curves.
-        </p>
+        <div className="space-y-3">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+            This modal uses the native HTML5 &lt;dialog&gt; top-layer element combined with GSAP Flip matrix math and theatrical PRETTY_EASE curves.
+          </p>
+          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400">
+            Source code and modal animation from{" "}
+            <a
+              href="https://github.com/srdavo/pretty-modal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono font-medium text-zinc-900 dark:text-zinc-100 underline"
+            >
+              srdavo/pretty-modal
+            </a>{" "}
+            by{" "}
+            <a
+              href="https://github.com/srdavo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-zinc-900 dark:text-zinc-100 underline"
+            >
+              srdavo
+            </a>.
+          </div>
+        </div>
       </DavoModal>
     </div>
   );
@@ -499,6 +557,35 @@ function ComponentDocPage({
         <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
           {doc.description}
         </p>
+
+        {(doc.engine === "davo" || doc.engine === "both") && (
+          <div className="flex flex-wrap items-center gap-2 rounded-xl border border-zinc-200/80 bg-zinc-50/80 px-3.5 py-2 text-xs text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-400">
+            <span className="font-mono text-[10px] uppercase font-semibold text-zinc-500 dark:text-zinc-400">
+              Source Attribution
+            </span>
+            <span className="text-zinc-300 dark:text-zinc-700">•</span>
+            <span>
+              Modal architecture &amp; FLIP animation based on{" "}
+              <a
+                href="https://github.com/srdavo/pretty-modal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-zinc-900 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+              >
+                pretty-modal
+              </a>{" "}
+              by{" "}
+              <a
+                href="https://github.com/srdavo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-zinc-900 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+              >
+                srdavo
+              </a>
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Interactive Sandbox Card */}
@@ -748,6 +835,36 @@ function CatalogOverview({
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
             Top-layer isolation with First-Last-Invert-Play coordinate transforms, calibrated with Davo&apos;s signature <code className="text-zinc-700 dark:text-zinc-300">PRETTY_EASE</code> curves and optical bloom.
           </p>
+          <div className="mt-3.5 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
+            <span className="text-zinc-500 dark:text-zinc-400">
+              Source code:{" "}
+              <a
+                href="https://github.com/srdavo/pretty-modal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-zinc-800 dark:text-zinc-200 underline decoration-zinc-300 dark:decoration-zinc-700 hover:text-zinc-950 dark:hover:text-white"
+              >
+                pretty-modal
+              </a>{" "}
+              by{" "}
+              <a
+                href="https://github.com/srdavo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+              >
+                srdavo
+              </a>
+            </span>
+            <a
+              href="https://github.com/srdavo/pretty-modal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-mono text-[11px] text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+            >
+              GitHub ↗
+            </a>
+          </div>
         </div>
       </div>
 
@@ -838,7 +955,7 @@ function CatalogOverview({
               <div className="mt-5 pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-[11px] font-mono text-zinc-400">
                 <span>{item.props.length} props</span>
                 <span className="uppercase text-[10px]">
-                  {item.engine === "both" ? "Dual" : item.engine === "davo" ? "GSAP" : "Motion"}
+                  {item.engine === "both" ? "Dual" : item.engine === "davo" ? "Davo (GSAP)" : "Sway (Motion)"}
                 </span>
               </div>
             </div>
@@ -924,7 +1041,24 @@ function GettingStartedView({
               Theatrical Dialogs (Davo)
             </h4>
             <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Ideal for dialogs, zoom lightboxes, and action sheets where native HTML5 &lt;dialog&gt; top-layer isolation is required.
+              Ideal for dialogs, zoom lightboxes, and action sheets where native HTML5 &lt;dialog&gt; top-layer isolation is required. Originates from the public repository{" "}
+              <a
+                href="https://github.com/srdavo/pretty-modal"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+              >
+                pretty-modal
+              </a>{" "}
+              by{" "}
+              <a
+                href="https://github.com/srdavo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-zinc-800 dark:text-zinc-200 underline hover:text-zinc-950 dark:hover:text-white"
+              >
+                srdavo
+              </a>.
             </p>
           </div>
         </div>

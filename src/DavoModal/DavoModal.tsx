@@ -1,3 +1,10 @@
+/**
+ * DavoModal - Native <dialog> modal with GSAP FLIP matrix animation
+ *
+ * Source code & concept: https://github.com/srdavo/pretty-modal
+ * Original author: srdavo (David) - MIT License Copyright (c) 2026 srdavo
+ */
+
 import { useEffect, useRef } from "react";
 import type { ReactNode, RefObject } from "react";
 import { createPortal } from "react-dom";

@@ -1,6 +1,6 @@
-﻿# @gonza/ui-components
+# @gonza/ui-components
 
-Production-grade, dual-engine animated UI component library for React and Tailwind CSS. Combines **Sway Motion Euler-Newton springs** with **Davo GSAP FLIP theatrical dialogs** in a unified, typed architecture.
+Production-grade, dual-engine animated UI component library for React and Tailwind CSS. Combines **Sway Motion Euler-Newton springs** with **Davo GSAP FLIP theatrical dialogs** (based on [pretty-modal](https://github.com/srdavo/pretty-modal) by [srdavo](https://github.com/srdavo)) in a unified, typed architecture.
 
 ---
 
@@ -127,6 +127,7 @@ export function MiVistaSway() {
 ---
 
 ### 2. Modal con Motor Davo (GSAP FLIP + `<dialog>` Nativo)
+> **Crédito de autoría**: El motor FLIP y el servicio de animación provienen del repositorio público [pretty-modal](https://github.com/srdavo/pretty-modal) de [srdavo](https://github.com/srdavo).
 
 Top-layer nativo del navegador con desenfoque de fondo y morphing teatral:
 

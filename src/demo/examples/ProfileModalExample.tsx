@@ -44,7 +44,7 @@ export function ProfileModalExample() {
           </p>
           <div className="mt-1 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
             <Sparkles size={12} />
-            <span>Verified Pro Member • Active Engine: {engine === "sway" ? "Motion (Sway)" : "GSAP Flip"}</span>
+            <span>Verified Pro Member • Active Engine: {engine === "sway" ? "Motion (Sway)" : "GSAP Flip (Davo)"}</span>
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ export function ProfileModalExample() {
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              GSAP Flip
+              GSAP Flip (Davo)
             </button>
           </div>
         </div>

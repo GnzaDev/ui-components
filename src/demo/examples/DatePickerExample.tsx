@@ -85,7 +85,7 @@ export function DatePickerExample() {
                     : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 }`}
               >
-                GSAP Flip
+                GSAP Flip (Davo)
               </button>
             </div>
           </div>

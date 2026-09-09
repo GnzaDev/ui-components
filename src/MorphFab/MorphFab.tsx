@@ -221,7 +221,7 @@ export function MorphFab({
             {title}
           </span>
           <span className="ml-2 rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-            {engine === "gonza" ? "Motion" : "GSAP Flip"}
+            {engine === "davo" ? "GSAP Flip (Davo)" : "Motion (Sway)"}
           </span>
         </div>
         <button

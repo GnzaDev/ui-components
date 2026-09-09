@@ -52,7 +52,7 @@ export function PopoverExample() {
             }`}
           >
             <Layers size={12} className="text-indigo-500" />
-            <span>GSAP Bloom</span>
+            <span>GSAP Bloom (Davo)</span>
           </button>
         </div>
 
@@ -140,7 +140,7 @@ export function PopoverExample() {
                     Dimensions
                   </h4>
                   <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                    {engine === "sway" ? "Motion" : "GSAP"}
+                    {engine === "sway" ? "Motion" : "GSAP (Davo)"}
                   </span>
                 </div>
                 <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -194,7 +194,7 @@ export function PopoverExample() {
                   <p className="text-[11px] text-zinc-400">alex@example.com</p>
                 </div>
                 <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                  {engine === "sway" ? "Motion" : "GSAP"}
+                  {engine === "sway" ? "Motion" : "GSAP (Davo)"}
                 </span>
               </div>
 
