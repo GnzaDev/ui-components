@@ -28,7 +28,9 @@
     "build:lib": "tsc --noEmit && vite build --config vite.config.lib.ts",
     "build:app": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build:lib",
+    "prepare": "pnpm build:lib"
   },
   "peerDependencies": {
     "clsx": "^2.1.1",
