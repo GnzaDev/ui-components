@@ -111,7 +111,7 @@ export function DynamicCapsuleToast({
         {activeToast && (
           <motion.div
             key={activeToast.id}
-            layout
+            layout="position"
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={0.6}
@@ -119,9 +119,6 @@ export function DynamicCapsuleToast({
               if (Math.abs(info.offset.y) > 25 || Math.abs(info.velocity.y) > 150) {
                 onDismiss(activeToast.id);
               }
-            }}
-            onClick={() => {
-              setExpandedToastId(isExpanded ? null : activeToast.id);
             }}
             initial={{
               opacity: 0,
@@ -137,202 +134,185 @@ export function DynamicCapsuleToast({
               filter: "blur(4px)",
             }}
             transition={{
-              layout: { duration: 0.22, ease: "easeOut" },
               type: "spring",
               stiffness: 420,
               damping: 30,
               mass: 0.8,
             }}
             className={cn(
-              "pointer-events-auto relative overflow-hidden shadow-2xl backdrop-blur-xl select-none",
+              "pointer-events-auto relative overflow-hidden shadow-2xl backdrop-blur-xl select-none flex flex-col",
               "bg-zinc-950/92 text-zinc-100 border border-white/15",
-              "shadow-[0_14px_35px_rgba(0,0,0,0.55)] transition-shadow",
+              "shadow-[0_14px_35px_rgba(0,0,0,0.55)] transition-[width,max-width,border-radius,padding] duration-200 ease-out",
               isExpanded
                 ? "w-[360px] rounded-2xl p-3.5 cursor-default"
-                : "flex items-center gap-2.5 rounded-full py-1.5 px-3.5 cursor-pointer max-w-[320px]"
+                : "w-auto max-w-[320px] rounded-full py-1.5 px-3.5 cursor-pointer"
             )}
+            onClick={() => {
+              if (!isExpanded) setExpandedToastId(activeToast.id);
+            }}
           >
-            {!isExpanded ? (
-              /* COMPACT PILL MODE */
-              <div className="flex items-center gap-2 w-full">
-                {/* Semantic Micro-Dot */}
-                <div className="flex items-center justify-center shrink-0">
-                  <span className={cn("h-2 w-2 rounded-full", getDotColor(activeToast.type))} />
-                </div>
+            {/* Top Row Header - Permanent & non-distorting */}
+            <div className="flex items-center gap-2 w-full">
+              {/* Semantic Micro-Dot */}
+              <div className="flex items-center justify-center shrink-0">
+                <span className={cn("h-2 w-2 rounded-full", getDotColor(activeToast.type))} />
+              </div>
 
-                {/* Title */}
-                <span className="text-[12px] font-medium tracking-tight text-white truncate flex-1">
-                  {activeToast.title}
-                </span>
+              {/* Title: exactly identical font styling */}
+              <span className="text-xs font-medium tracking-tight text-white truncate flex-1 select-none">
+                {activeToast.title}
+              </span>
 
-                {/* Live Progress Mini-Bar */}
-                {activeToast.progress !== undefined && (
-                  <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
-                    <div className="h-1 w-7 overflow-hidden rounded-full bg-zinc-800">
-                      <motion.div
-                        className="h-full bg-emerald-400"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${activeToast.progress}%` }}
-                        transition={{ ease: "easeOut", duration: 0.2 }}
-                      />
-                    </div>
-                    <span className="font-mono text-[10px] text-emerald-400 font-semibold">
-                      {activeToast.progress}%
-                    </span>
+              {/* Compact Mini Progress (only when compact) */}
+              {!isExpanded && activeToast.progress !== undefined && (
+                <div className="flex items-center gap-1.5 shrink-0 pl-0.5">
+                  <div className="h-1 w-7 overflow-hidden rounded-full bg-zinc-800">
+                    <motion.div
+                      className="h-full bg-emerald-400"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${activeToast.progress}%` }}
+                      transition={{ ease: "easeOut", duration: 0.2 }}
+                    />
                   </div>
-                )}
-
-                {/* Compact Action Button */}
-                {activeToast.action && (
-                  <button
-                    type="button"
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      activeToast.action?.onClick();
-                      onDismiss(activeToast.id);
-                    }}
-                    className="inline-flex items-center gap-1 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 px-2 py-0.5 text-[10px] font-medium text-white transition-all cursor-pointer border border-white/10 shrink-0"
-                  >
-                    <span>{activeToast.action.label}</span>
-                    {activeToast.action.shortcut && (
-                      <kbd className="font-mono text-[8px] bg-black/40 px-1 rounded text-zinc-300">
-                        {activeToast.action.shortcut}
-                      </kbd>
-                    )}
-                  </button>
-                )}
-
-                {/* Expand Hint Icon */}
-                {(activeToast.message || activeToast.action) && (
-                  <div className="text-zinc-400 hover:text-white transition-colors shrink-0">
-                    <ChevronDown size={12} />
-                  </div>
-                )}
-
-                {/* Multi-queue Counter */}
-                {queueCount > 0 && (
-                  <span className="font-mono text-[9px] font-medium text-zinc-400 bg-zinc-800/90 px-1.5 py-0.5 rounded-full border border-white/5 shrink-0">
-                    +{queueCount}
+                  <span className="font-mono text-[10px] text-emerald-400 font-semibold">
+                    {activeToast.progress}%
                   </span>
-                )}
+                </div>
+              )}
 
-                {/* Dismiss Cross */}
+              {/* Compact Action Button (only when compact) */}
+              {!isExpanded && activeToast.action && (
                 <button
                   type="button"
                   onPointerDown={(e) => e.stopPropagation()}
                   onClick={(e) => {
                     e.stopPropagation();
+                    activeToast.action?.onClick();
                     onDismiss(activeToast.id);
                   }}
-                  className="rounded-full p-0.5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0 ml-0.5"
-                  aria-label="Dismiss"
+                  className="inline-flex items-center gap-1 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 px-2 py-0.5 text-[10px] font-medium text-white transition-all cursor-pointer border border-white/10 shrink-0"
                 >
-                  <X size={12} />
-                </button>
-              </div>
-            ) : (
-              /* EXPANDED ISLAND HUD MODE */
-              <div className="flex flex-col gap-2.5 w-full">
-                {/* Header */}
-                <div className="flex items-center gap-2">
-                  <span className={cn("h-2 w-2 rounded-full shrink-0", getDotColor(activeToast.type))} />
-                  <h4 className="text-xs font-semibold text-white tracking-tight flex-1 truncate">
-                    {activeToast.title}
-                  </h4>
-
-                  {/* Collapse Button */}
-                  <button
-                    type="button"
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setExpandedToastId(null);
-                    }}
-                    className="rounded-full p-1 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                    title="Collapse"
-                  >
-                    <ChevronUp size={13} />
-                  </button>
-
-                  {/* Dismiss Button */}
-                  <button
-                    type="button"
-                    onPointerDown={(e) => e.stopPropagation()}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDismiss(activeToast.id);
-                    }}
-                    className="rounded-full p-1 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                    title="Dismiss"
-                  >
-                    <X size={13} />
-                  </button>
-                </div>
-
-                {/* Message Body */}
-                {activeToast.message && (
-                  <p className="text-xs text-zinc-300 leading-relaxed pl-4">
-                    {activeToast.message}
-                  </p>
-                )}
-
-                {/* Detailed Progress Bar */}
-                {activeToast.progress !== undefined && (
-                  <div className="space-y-1.5 pt-1 pl-4">
-                    <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
-                      <span>Status: Processing</span>
-                      <span className="text-emerald-400 font-semibold">{activeToast.progress}%</span>
-                    </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
-                      <motion.div
-                        className="h-full bg-emerald-400"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${activeToast.progress}%` }}
-                        transition={{ ease: "easeOut", duration: 0.2 }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Footer: Time + Action */}
-                <div className="flex items-center justify-between pt-2 border-t border-white/10 mt-1 pl-4">
-                  <div className="flex items-center gap-2">
-                    {activeToast.timestamp && (
-                      <span className="font-mono text-[10px] text-zinc-500">
-                        {activeToast.timestamp}
-                      </span>
-                    )}
-                    {queueCount > 0 && (
-                      <span className="font-mono text-[10px] text-zinc-400">
-                        +{queueCount} in queue
-                      </span>
-                    )}
-                  </div>
-
-                  {activeToast.action && (
-                    <button
-                      type="button"
-                      onPointerDown={(e) => e.stopPropagation()}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        activeToast.action?.onClick();
-                        onDismiss(activeToast.id);
-                      }}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-white/15 hover:bg-white/25 active:scale-95 px-2.5 py-1 text-xs font-semibold text-white transition-all cursor-pointer border border-white/10"
-                    >
-                      <RotateCcw size={11} />
-                      <span>{activeToast.action.label}</span>
-                      {activeToast.action.shortcut && (
-                        <kbd className="font-mono text-[8px] bg-black/40 px-1 py-0.5 rounded text-zinc-300 ml-0.5">
-                          {activeToast.action.shortcut}
-                        </kbd>
-                      )}
-                    </button>
+                  <span>{activeToast.action.label}</span>
+                  {activeToast.action.shortcut && (
+                    <kbd className="font-mono text-[8px] bg-black/40 px-1 rounded text-zinc-300">
+                      {activeToast.action.shortcut}
+                    </kbd>
                   )}
-                </div>
-              </div>
-            )}
+                </button>
+              )}
+
+              {/* Expand / Collapse Chevron indicator */}
+              {(activeToast.message || activeToast.action) && (
+                <button
+                  type="button"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedToastId(isExpanded ? null : activeToast.id);
+                  }}
+                  className="text-zinc-400 hover:text-white transition-colors p-0.5 rounded-full cursor-pointer shrink-0"
+                  aria-label={isExpanded ? "Collapse" : "Expand"}
+                >
+                  {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={12} />}
+                </button>
+              )}
+
+              {/* Multi-queue Counter */}
+              {queueCount > 0 && !isExpanded && (
+                <span className="font-mono text-[9px] font-medium text-zinc-400 bg-zinc-800/90 px-1.5 py-0.5 rounded-full border border-white/5 shrink-0">
+                  +{queueCount}
+                </span>
+              )}
+
+              {/* Dismiss Cross */}
+              <button
+                type="button"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDismiss(activeToast.id);
+                }}
+                className="rounded-full p-0.5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0 ml-0.5"
+                aria-label="Dismiss"
+              >
+                <X size={12} />
+              </button>
+            </div>
+
+            {/* EXPANDED CONTENT DRAWER */}
+            <AnimatePresence initial={false}>
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.16, ease: "easeInOut" }}
+                  className="overflow-hidden flex flex-col gap-2.5 pt-2.5 border-t border-white/10 mt-2 w-full"
+                >
+                  {/* Message */}
+                  {activeToast.message && (
+                    <p className="text-xs text-zinc-300 leading-relaxed pl-3.5">
+                      {activeToast.message}
+                    </p>
+                  )}
+
+                  {/* Detailed Progress Bar */}
+                  {activeToast.progress !== undefined && (
+                    <div className="space-y-1.5 pt-1 pl-3.5">
+                      <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                        <span>Status: Processing</span>
+                        <span className="text-emerald-400 font-semibold">{activeToast.progress}%</span>
+                      </div>
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+                        <motion.div
+                          className="h-full bg-emerald-400"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${activeToast.progress}%` }}
+                          transition={{ ease: "easeOut", duration: 0.2 }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Footer: Time + Action */}
+                  <div className="flex items-center justify-between pt-1 pl-3.5">
+                    <div className="flex items-center gap-2">
+                      {activeToast.timestamp && (
+                        <span className="font-mono text-[10px] text-zinc-500">
+                          {activeToast.timestamp}
+                        </span>
+                      )}
+                      {queueCount > 0 && (
+                        <span className="font-mono text-[10px] text-zinc-400">
+                          +{queueCount} in queue
+                        </span>
+                      )}
+                    </div>
+
+                    {activeToast.action && (
+                      <button
+                        type="button"
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          activeToast.action?.onClick();
+                          onDismiss(activeToast.id);
+                        }}
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-white/15 hover:bg-white/25 active:scale-95 px-2.5 py-1 text-xs font-medium text-white transition-all cursor-pointer border border-white/10"
+                      >
+                        <RotateCcw size={11} />
+                        <span>{activeToast.action.label}</span>
+                        {activeToast.action.shortcut && (
+                          <kbd className="font-mono text-[8px] bg-black/40 px-1 py-0.5 rounded text-zinc-300 ml-0.5">
+                            {activeToast.action.shortcut}
+                          </kbd>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
