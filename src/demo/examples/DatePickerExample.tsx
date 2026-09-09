@@ -5,6 +5,7 @@ import { Calendar, Clock, Zap } from "lucide-react";
 export function DatePickerExample() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [showTime, setShowTime] = useState(true);
+  const [isInline, setIsInline] = useState(false);
   const [engine, setEngine] = useState<"sway" | "davo">("sway");
 
   const setPreset = (type: "now" | "tomorrow" | "week" | "month") => {
@@ -28,37 +29,69 @@ export function DatePickerExample() {
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 min-h-[460px]">
+    <div
+      className={`w-full flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 transition-all ${
+        isInline ? "min-h-[500px]" : "min-h-[640px]"
+      }`}
+    >
       <div>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
             <Calendar size={20} />
           </div>
 
-          {/* Engine Selector Pills */}
-          <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-1 text-[11px] font-semibold dark:border-zinc-800 dark:bg-zinc-800">
-            <button
-              type="button"
-              onClick={() => setEngine("sway")}
-              className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                engine === "sway"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
-                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-              }`}
-            >
-              Motion (Sway)
-            </button>
-            <button
-              type="button"
-              onClick={() => setEngine("davo")}
-              className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                engine === "davo"
-                  ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
-                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-              }`}
-            >
-              GSAP Flip
-            </button>
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Display Mode Toggle (Popover vs Inline) */}
+            <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-0.5 text-xs font-semibold dark:border-zinc-800 dark:bg-zinc-800">
+              <button
+                type="button"
+                onClick={() => setIsInline(false)}
+                className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
+                  !isInline
+                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                }`}
+              >
+                Popover
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsInline(true)}
+                className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
+                  isInline
+                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                }`}
+              >
+                Inline
+              </button>
+            </div>
+
+            {/* Engine Selector Pills */}
+            <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-1 text-[11px] font-semibold dark:border-zinc-800 dark:bg-zinc-800">
+              <button
+                type="button"
+                onClick={() => setEngine("sway")}
+                className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
+                  engine === "sway"
+                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                }`}
+              >
+                Motion (Sway)
+              </button>
+              <button
+                type="button"
+                onClick={() => setEngine("davo")}
+                className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
+                  engine === "davo"
+                    ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
+                    : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                }`}
+              >
+                GSAP Flip
+              </button>
+            </div>
           </div>
         </div>
 
@@ -108,7 +141,7 @@ export function DatePickerExample() {
       <div className="mt-6 space-y-3 relative">
         <div className="flex items-center justify-between">
           <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-            Pick Date & Time:
+            {isInline ? "Interactive Calendar View:" : "Pick Date & Time:"}
           </label>
           <button
             type="button"
@@ -120,16 +153,22 @@ export function DatePickerExample() {
           </button>
         </div>
 
-        <DavoDatePicker
-          value={selectedDate}
-          onChange={setSelectedDate}
-          showTime={showTime}
-          engine={engine}
-        />
+        <div className="relative">
+          <DavoDatePicker
+            value={selectedDate}
+            onChange={setSelectedDate}
+            showTime={showTime}
+            inline={isInline}
+            engine={engine}
+          />
+        </div>
 
         {selectedDate && (
-          <div className="pt-2 text-xs text-zinc-500 dark:text-zinc-400">
-            Selected timestamp: <strong className="font-mono text-zinc-900 dark:text-white">{selectedDate.toLocaleString("es-AR")}</strong>
+          <div className="pt-3 text-xs text-zinc-500 dark:text-zinc-400">
+            Selected timestamp:{" "}
+            <strong className="font-mono text-zinc-900 dark:text-white">
+              {selectedDate.toLocaleString("es-AR")}
+            </strong>
           </div>
         )}
       </div>
