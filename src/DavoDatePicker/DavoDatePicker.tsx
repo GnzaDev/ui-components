@@ -21,7 +21,7 @@ export interface DavoDatePickerProps {
   maxDate?: Date;
   placeholder?: string;
   className?: string;
-  engine?: "gonza" | "davo";
+  engine?: "sway" | "davo" | "gonza";
 }
 
 const MONTH_NAMES = [
@@ -50,7 +50,7 @@ export function DavoDatePicker({
   maxDate,
   placeholder = "Seleccionar fecha...",
   className,
-  engine = "gonza",
+  engine = "sway",
 }: DavoDatePickerProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(value ?? null);
   const [viewDate, setViewDate] = useState<Date>(value ?? new Date());
@@ -459,8 +459,8 @@ export function DavoDatePicker({
         </div>
       )}
 
-      {/* Engine 2: Gonza (Motion Spring Physics) */}
-      {engine === "gonza" && (
+      {/* Engine 2: Sway (Motion Spring Physics) */}
+      {(engine === "sway" || engine === "gonza") && (
         <AnimatePresence>
           {isOpen && (
             <motion.div

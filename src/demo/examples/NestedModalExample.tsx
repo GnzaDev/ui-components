@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SideSheet } from "../../SideSheet";
-import { GonzaModal, GonzaModalTrigger } from "../../GonzaModal";
+import { SwayModal, SwayModalTrigger } from "../../SwayModal";
 import { Layers, UserX, AlertTriangle, ArrowRight, ShieldAlert, CheckCircle2 } from "lucide-react";
 
 export function NestedModalExample() {
@@ -32,7 +32,7 @@ export function NestedModalExample() {
 
         <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
           <span className="rounded-md bg-rose-50 px-2 py-0.5 font-medium text-rose-700 dark:bg-rose-950/50 dark:text-rose-300">
-            SideSheet + GonzaModal
+            SideSheet + SwayModal
           </span>
         </div>
       </div>
@@ -55,8 +55,8 @@ export function NestedModalExample() {
         title="Workspace Member Details"
         maxWidth="max-w-xl"
         overlay={
-          /* Nested GonzaModal rendered directly into the SideSheet overlay prop with inline={true} */
-          <GonzaModal
+          /* Nested SwayModal rendered directly into the SideSheet overlay prop with inline={true} */
+          <SwayModal
             open={nestedModalOpen}
             onClose={() => setNestedModalOpen(false)}
             layoutId="nested-revoke-modal"
@@ -103,7 +103,7 @@ export function NestedModalExample() {
                 Any automated jobs or webhook secrets created under this user will be placed on hold until reassigned.
               </p>
             </div>
-          </GonzaModal>
+          </SwayModal>
         }
       >
         <div className="space-y-6">
@@ -156,14 +156,14 @@ export function NestedModalExample() {
               Revoking access will disconnect this member from all enterprise clusters immediately.
             </p>
             <div className="mt-4">
-              <GonzaModalTrigger
+              <SwayModalTrigger
                 layoutId="nested-revoke-modal"
                 onClick={() => setNestedModalOpen(true)}
                 className="bg-red-600 text-white border-transparent hover:bg-red-700 dark:bg-red-600 dark:text-white dark:hover:bg-red-700 text-xs shadow-xs"
               >
                 <UserX size={14} />
                 <span>Revoke Access...</span>
-              </GonzaModalTrigger>
+              </SwayModalTrigger>
             </div>
           </div>
         </div>

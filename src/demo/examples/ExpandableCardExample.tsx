@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GonzaCard } from "../../GonzaCard";
+import { SwayCard } from "../../SwayCard";
 import { Sparkles, Code2, Heart, Share2, Eye } from "lucide-react";
 
 export function ExpandableCardExample() {
@@ -12,7 +12,7 @@ export function ExpandableCardExample() {
           <Sparkles size={20} />
         </div>
         <h3 className="text-base font-semibold text-zinc-900 dark:text-white">
-          GonzaCard Expandable
+          SwayCard Expandable
         </h3>
         <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
           Feed item morphing from a compact preview card into a full modal reading experience with Motion.
@@ -20,7 +20,7 @@ export function ExpandableCardExample() {
       </div>
 
       <div className="mt-6">
-        <GonzaCard
+        <SwayCard
           id="showcase-article-card"
           isOpen={openCardId === "showcase-article-card"}
           onOpen={() => setOpenCardId("showcase-article-card")}
@@ -73,7 +73,7 @@ export function ExpandableCardExample() {
               </button>
             </div>
           </div>
-        </GonzaCard>
+        </SwayCard>
       </div>
     </div>
   );

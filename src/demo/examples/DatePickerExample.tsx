@@ -6,7 +6,7 @@ import { Calendar, Clock } from "lucide-react";
 export function DatePickerExample() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [showTime, setShowTime] = useState(true);
-  const [engine, setEngine] = useState<"gonza" | "davo">("gonza");
+  const [engine, setEngine] = useState<"sway" | "davo">("sway");
 
   return (
     <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -20,14 +20,14 @@ export function DatePickerExample() {
           <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-1 text-[11px] font-semibold dark:border-zinc-800 dark:bg-zinc-800">
             <button
               type="button"
-              onClick={() => setEngine("gonza")}
+              onClick={() => setEngine("sway")}
               className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                engine === "gonza"
+                engine === "sway"
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              Motion Spring
+              Motion (Sway)
             </button>
             <button
               type="button"
@@ -52,7 +52,7 @@ export function DatePickerExample() {
 
         <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
           <span className="rounded-md bg-amber-50 px-2 py-0.5 font-medium text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
-            Dual Engine: {engine === "gonza" ? "Motion Springs" : "GSAP FLIP"}
+            Dual Engine: {engine === "sway" ? "Sway Springs" : "GSAP FLIP"}
           </span>
           <span>•</span>
           <span>Time Picker</span>

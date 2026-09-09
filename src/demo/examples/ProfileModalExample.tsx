@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { GonzaModal, GonzaModalTrigger } from "../../GonzaModal";
+import { SwayModal, SwayModalTrigger } from "../../SwayModal";
 import { DavoModal } from "../../DavoModal";
 import { User, Mail, Bell, Shield, Check, Settings, Sparkles, ArrowRight, Layers } from "lucide-react";
 
 export function ProfileModalExample() {
-  const [engine, setEngine] = useState<"gonza" | "davo">("gonza");
-  const [gonzaOpen, setGonzaOpen] = useState(false);
+  const [engine, setEngine] = useState<"sway" | "davo">("sway");
+  const [swayOpen, setSwayOpen] = useState(false);
   const [davoOpen, setDavoOpen] = useState(false);
   const [saved, setSaved] = useState(false);
   const davoTriggerRef = useRef<HTMLButtonElement>(null);
@@ -23,7 +23,7 @@ export function ProfileModalExample() {
     setSaved(true);
     setTimeout(() => {
       setSaved(false);
-      setGonzaOpen(false);
+      setSwayOpen(false);
       setDavoOpen(false);
     }, 800);
   };
@@ -44,7 +44,7 @@ export function ProfileModalExample() {
           </p>
           <div className="mt-1 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
             <Sparkles size={12} />
-            <span>Verified Pro Member • Active Engine: {engine === "gonza" ? "Motion" : "GSAP Flip"}</span>
+            <span>Verified Pro Member • Active Engine: {engine === "sway" ? "Motion (Sway)" : "GSAP Flip"}</span>
           </div>
         </div>
       </div>
@@ -161,7 +161,7 @@ export function ProfileModalExample() {
         <button
           type="button"
           onClick={() => {
-            setGonzaOpen(false);
+            setSwayOpen(false);
             setDavoOpen(false);
           }}
           className="rounded-xl px-4 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
@@ -198,14 +198,14 @@ export function ProfileModalExample() {
           <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/70 p-0.5 text-[11px] dark:border-zinc-700 dark:bg-zinc-800">
             <button
               type="button"
-              onClick={() => setEngine("gonza")}
+              onClick={() => setEngine("sway")}
               className={`rounded-lg px-2.5 py-1 font-semibold transition-all cursor-pointer ${
-                engine === "gonza"
+                engine === "sway"
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              Motion
+              Motion (Sway)
             </button>
             <button
               type="button"
@@ -229,20 +229,20 @@ export function ProfileModalExample() {
         </p>
 
         <div className="mt-2 text-[11px] font-medium text-zinc-400">
-          Selected engine: <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{engine === "gonza" ? "GonzaModal (Motion)" : "DavoModal (GSAP Flip)"}</span>
+          Selected engine: <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{engine === "sway" ? "SwayModal (Motion)" : "DavoModal (GSAP Flip)"}</span>
         </div>
       </div>
 
       <div className="mt-6">
-        {engine === "gonza" ? (
-          <GonzaModalTrigger
+        {engine === "sway" ? (
+          <SwayModalTrigger
             layoutId="example-profile-modal"
-            onClick={() => setGonzaOpen(true)}
+            onClick={() => setSwayOpen(true)}
             className="w-full text-xs"
           >
             <Settings size={14} />
             <span>Edit Profile (Motion)</span>
-          </GonzaModalTrigger>
+          </SwayModalTrigger>
         ) : (
           <button
             ref={davoTriggerRef}
@@ -257,17 +257,17 @@ export function ProfileModalExample() {
         )}
       </div>
 
-      {/* GonzaModal Instance */}
-      <GonzaModal
-        open={gonzaOpen}
-        onClose={() => setGonzaOpen(false)}
+      {/* SwayModal Instance */}
+      <SwayModal
+        open={swayOpen}
+        onClose={() => setSwayOpen(false)}
         layoutId="example-profile-modal"
         title="Account Preferences (Motion Spring)"
         maxWidth="max-w-lg"
         footer={formFooter}
       >
         {formContent}
-      </GonzaModal>
+      </SwayModal>
 
       {/* DavoModal Instance */}
       <DavoModal

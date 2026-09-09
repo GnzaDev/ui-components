@@ -1,10 +1,10 @@
 /**
- * Canonical Animation Tokens for Gonza Engine (Motion) and Davo Engine (GSAP).
+ * Canonical Animation Tokens for Sway Engine (Motion) and Davo Engine (GSAP).
  * Refer to ANIMATION_STANDARDS.md for complete architectural rules.
  */
 
-// 🟠 GONZA ENGINE: Calibrated Euler-Newton Spring Configurations
-export const GONZA_SPRINGS = {
+// 🟠 SWAY ENGINE: Calibrated Euler-Newton Spring Configurations
+export const SWAY_SPRINGS = {
   /** Modals, Dialogs, Wizards */
   modal: {
     type: "spring" as const,
@@ -56,12 +56,18 @@ export const GONZA_SPRINGS = {
   },
 } as const;
 
+// Backwards compatibility alias
+export const GONZA_SPRINGS = SWAY_SPRINGS;
+
 // Standard border-radius tokens for layoutId morphing
-export const GONZA_RADIUS = {
+export const SWAY_RADIUS = {
   trigger: 16,
   card: 24,
   modal: 32,
 } as const;
+
+// Backwards compatibility alias
+export const GONZA_RADIUS = SWAY_RADIUS;
 
 // 🟣 DAVO ENGINE: GSAP Flip Constants
 export { PRETTY_EASE } from "../DavoModal/pretty-modal";

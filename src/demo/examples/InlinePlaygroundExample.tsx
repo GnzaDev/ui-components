@@ -1,15 +1,15 @@
 import { useRef, useState } from "react";
-import { GonzaModal, GonzaModalTrigger } from "../../GonzaModal";
+import { SwayModal, SwayModalTrigger } from "../../SwayModal";
 import { DavoModal } from "../../DavoModal";
 import { Sliders, Monitor, Play, Sparkles, Layers, ArrowRight, Compass } from "lucide-react";
 
-type ModalEngine = "gonza" | "davo";
+type ModalEngine = "sway" | "davo" | "gonza";
 type TriggerPosition = "top-left" | "top-right" | "center" | "bottom-left" | "bottom-right";
 
 export function InlinePlaygroundExample() {
-  const [engine, setEngine] = useState<ModalEngine>("gonza");
+  const [engine, setEngine] = useState<ModalEngine>("sway");
   const [position, setPosition] = useState<TriggerPosition>("center");
-  const [gonzaOpen, setGonzaOpen] = useState(false);
+  const [swayOpen, setSwayOpen] = useState(false);
   const [davoOpen, setDavoOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState("max-w-md");
   const [closeVariant, setCloseVariant] = useState<"spring" | "davo">("spring");
@@ -47,7 +47,7 @@ export function InlinePlaygroundExample() {
             </h3>
           </div>
           <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-            Compare <strong>GonzaModal</strong> (Motion Spring) vs <strong>DavoModal</strong> (GSAP Flip) originating from any viewport corner.
+            Compare <strong>SwayModal</strong> (Motion Spring) vs <strong>DavoModal</strong> (GSAP Flip) originating from any viewport corner.
           </p>
         </div>
 
@@ -55,15 +55,15 @@ export function InlinePlaygroundExample() {
         <div className="flex items-center gap-1 rounded-2xl border border-zinc-200 bg-zinc-100/80 p-1 dark:border-zinc-700 dark:bg-zinc-800">
           <button
             type="button"
-            onClick={() => setEngine("gonza")}
+            onClick={() => setEngine("sway")}
             className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
-              engine === "gonza"
+              engine === "sway" || engine === "gonza"
                 ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
                 : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
             }`}
           >
             <Sparkles size={13} className="text-violet-500" />
-            <span>GonzaModal (Motion)</span>
+            <span>SwayModal (Motion)</span>
           </button>
 
           <button
@@ -200,11 +200,11 @@ export function InlinePlaygroundExample() {
             <div className="h-3 w-3 rounded-full bg-amber-400/80" />
             <div className="h-3 w-3 rounded-full bg-emerald-400/80" />
             <span className="ml-2 font-mono text-[11px] text-zinc-400">
-              engine: {engine === "gonza" ? "GonzaModal (Motion)" : "DavoModal (GSAP Flip)"} • {maxWidth} • origin: {position}
+              engine: {engine === "sway" || engine === "gonza" ? "SwayModal (Motion)" : "DavoModal (GSAP Flip)"} • {maxWidth} • origin: {position}
             </span>
           </div>
           <span className="rounded-md bg-zinc-200/60 px-2 py-0.5 font-mono text-[10px] text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-            {engine === "gonza"
+            {engine === "sway" || engine === "gonza"
               ? isInline
                 ? "inline containment"
                 : "screen portal"
@@ -225,15 +225,15 @@ export function InlinePlaygroundExample() {
 
           {/* Trigger button anchored to chosen position */}
           <div className={`absolute transition-all duration-300 ease-out ${getPositionClasses(position)}`}>
-            {engine === "gonza" ? (
-              <GonzaModalTrigger
+            {engine === "sway" || engine === "gonza" ? (
+              <SwayModalTrigger
                 layoutId="playground-modal-trigger"
-                onClick={() => setGonzaOpen(true)}
+                onClick={() => setSwayOpen(true)}
                 className="text-xs shadow-md"
               >
                 <Play size={14} className="fill-current text-violet-500" />
-                <span>Launch GonzaModal</span>
-              </GonzaModalTrigger>
+                <span>Launch SwayModal</span>
+              </SwayModalTrigger>
             ) : (
               <button
                 ref={davoPlaygroundTriggerRef}
@@ -252,7 +252,7 @@ export function InlinePlaygroundExample() {
         {/* Bottom stats bar */}
         <div className="flex items-center justify-between pt-3 border-t border-zinc-200/60 text-[11px] text-zinc-400 dark:border-zinc-800">
           <span>
-            {engine === "gonza"
+            {engine === "sway" || engine === "gonza"
               ? "Stiffness: 400 | Damping: 30"
               : "GSAP Flip: 0.45s CustomEase (0.56, 0.27, 0, 1)"}
           </span>
@@ -261,13 +261,13 @@ export function InlinePlaygroundExample() {
           </span>
         </div>
 
-        {/* GonzaModal Instance */}
-        {engine === "gonza" && (
-          <GonzaModal
-            open={gonzaOpen}
-            onClose={() => setGonzaOpen(false)}
+        {/* SwayModal Instance */}
+        {(engine === "sway" || engine === "gonza") && (
+          <SwayModal
+            open={swayOpen}
+            onClose={() => setSwayOpen(false)}
             layoutId="playground-modal-trigger"
-            title="GonzaModal Playground"
+            title="SwayModal Playground"
             maxWidth={maxWidth}
             closeVariant={closeVariant}
             disableEscape={disableEscape}
@@ -276,7 +276,7 @@ export function InlinePlaygroundExample() {
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => setGonzaOpen(false)}
+                  onClick={() => setSwayOpen(false)}
                   className="rounded-xl px-4 py-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
                 >
                   Close Modal
@@ -319,10 +319,10 @@ export function InlinePlaygroundExample() {
               </div>
 
               <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                GonzaModal uses Motion’s <code className="font-mono text-zinc-700 dark:text-zinc-300">layoutId</code> to smoothly morph across the full distance between the <strong className="text-zinc-800 dark:text-zinc-200">{position}</strong> trigger and the center viewport.
+                SwayModal uses Motion’s <code className="font-mono text-zinc-700 dark:text-zinc-300">layoutId</code> to smoothly morph across the full distance between the <strong className="text-zinc-800 dark:text-zinc-200">{position}</strong> trigger and the center viewport.
               </p>
             </div>
-          </GonzaModal>
+          </SwayModal>
         )}
       </div>
 

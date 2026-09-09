@@ -33,7 +33,7 @@ export interface ComponentDoc {
   id: NavItem;
   name: string;
   category: string;
-  engine: "gonza" | "davo" | "both";
+  engine: "sway" | "davo" | "both" | "gonza";
   engineLabel: string;
   badge: string;
   shortDesc: string;
@@ -65,23 +65,23 @@ export const COMPONENTS_DATA: ComponentDoc[] = [
     props: [
       { name: "open", type: "boolean", defaultVal: "false", description: "Controls whether the modal dialog is mounted and visible." },
       { name: "onClose", type: "() => void", defaultVal: "required", description: "Invoked on backdrop click, escape key, or close button action." },
-      { name: "engine", type: "'gonza' | 'davo'", defaultVal: "'gonza'", description: "Selects whether Motion Spring or GSAP FLIP drives the expansion." },
+      { name: "engine", type: "'sway' | 'davo'", defaultVal: "'sway'", description: "Selects whether Motion Spring or GSAP FLIP drives the expansion." },
       { name: "title", type: "string", defaultVal: "undefined", description: "Header title text displayed with standardized typography." },
       { name: "maxWidth", type: "string", defaultVal: "'max-w-lg'", description: "Tailwind max width class for dialog boundary constraining." },
       { name: "footer", type: "ReactNode", defaultVal: "undefined", description: "Optional bottom action container for primary and secondary actions." },
     ],
-    code: `import { GonzaModal, DavoModal } from "@gonza/ui-components";
+    code: `import { SwayModal, DavoModal } from "@gonza/ui-components";
 
 // Render with either engine based on user preference:
-{engine === "gonza" ? (
-  <GonzaModal
+{engine === "sway" ? (
+  <SwayModal
     open={isOpen}
     onClose={() => setIsOpen(false)}
     layoutId="account-dialog"
     title="Account Settings"
   >
     <UserForm />
-  </GonzaModal>
+  </SwayModal>
 ) : (
   <DavoModal
     open={isOpen}
@@ -111,7 +111,7 @@ export const COMPONENTS_DATA: ComponentDoc[] = [
       { name: "title", type: "string", defaultVal: "'Actions'", description: "Title displayed in the header of the expanded menu panel." },
       { name: "actions", type: "FabAction[]", defaultVal: "required", description: "Array of action items with id, label, icon, badge, and onClick handlers." },
       { name: "position", type: "'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'", defaultVal: "'bottom-right'", description: "Fixed corner placement on the viewport." },
-      { name: "engine", type: "'gonza' | 'davo'", defaultVal: "'gonza'", description: "Switches between Motion spring physics and GSAP cubic bezier expansion." },
+      { name: "engine", type: "'sway' | 'davo'", defaultVal: "'sway'", description: "Switches between Motion spring physics and GSAP cubic bezier expansion." },
       { name: "icon", type: "ReactNode", defaultVal: "<Plus />", description: "Icon rendered inside the closed 56x56 circular trigger state." },
     ],
     code: `import { MorphFab, type FabAction } from "@gonza/ui-components";
@@ -125,18 +125,18 @@ const actions: FabAction[] = [
   title="Quick Actions"
   actions={actions}
   position="bottom-right"
-  engine="davo" // or 'gonza'
+  engine="davo" // or 'sway'
 />`,
   },
   {
     id: "popover",
-    name: "GonzaPopover & DavoPopover",
+    name: "SwayPopover & DavoPopover",
     category: "Dual-Engine Primitives",
     engine: "both",
     engineLabel: "Dual Engine (Motion & GSAP)",
     badge: "Contextual Floating",
     shortDesc: "Contextual floating popover anchored directly to its trigger button with click-outside dismissal and optical bloom.",
-    description: "Lightweight floating popover rendered directly in DOM flow next to its trigger, eliminating top-layer <dialog> clipping. Features optical bloom (blur transition) in Davo mode and snappy spring rebound in Gonza mode.",
+    description: "Lightweight floating popover rendered directly in DOM flow next to its trigger, eliminating top-layer <dialog> clipping. Features optical bloom (blur transition) in Davo mode and snappy spring rebound in Sway mode.",
     physics: {
       engine: "Motion Spring / GSAP CustomEase",
       concept: "Optical Bloom & Anchor Transforms",
@@ -147,11 +147,11 @@ const actions: FabAction[] = [
       { name: "onClose", type: "() => void", defaultVal: "required", description: "Invoked when clicking outside the popover card or on escape key." },
       { name: "trigger", type: "ReactNode", defaultVal: "required", description: "The anchor element (button, avatar, icon) that toggles the popover." },
       { name: "placement", type: "'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'", defaultVal: "'bottom-right'", description: "Placement position relative to the trigger bounding box." },
-      { name: "engine", type: "'gonza' | 'davo'", defaultVal: "'gonza'", description: "Selects spring physics (Gonza) or GSAP optical bloom (Davo)." },
+      { name: "engine", type: "'sway' | 'davo'", defaultVal: "'sway'", description: "Selects spring physics (Sway) or GSAP optical bloom (Davo)." },
     ],
-    code: `import { GonzaPopover } from "@gonza/ui-components";
+    code: `import { SwayPopover } from "@gonza/ui-components";
 
-<GonzaPopover
+<SwayPopover
   open={open}
   onClose={() => setOpen(false)}
   placement="bottom-right"
@@ -162,17 +162,17 @@ const actions: FabAction[] = [
     <button className="w-full text-left px-3 py-2 text-xs">Profile</button>
     <button className="w-full text-left px-3 py-2 text-xs">Settings</button>
   </div>
-</GonzaPopover>`,
+</SwayPopover>`,
   },
   {
     id: "core-primitives",
-    name: "GonzaModal vs DavoModal",
+    name: "SwayModal vs DavoModal",
     category: "Dual-Engine Primitives",
     engine: "both",
     engineLabel: "Benchmark Comparison",
     badge: "Core Primitives",
     shortDesc: "Foundational centered modal dialog primitives comparing Motion layoutId morphing against HTML5 dialog + GSAP Flip.",
-    description: "The foundational building blocks of the library. GonzaModal uses Motion's layoutId projection with spring damping, while DavoModal uses the browser's native <dialog> element combined with GSAP Flip.",
+    description: "The foundational building blocks of the library. SwayModal uses Motion's layoutId projection with spring damping, while DavoModal uses the browser's native <dialog> element combined with GSAP Flip.",
     physics: {
       engine: "Motion layoutId vs GSAP Flip",
       concept: "Physical Origin Expansion",
@@ -181,25 +181,25 @@ const actions: FabAction[] = [
     props: [
       { name: "open", type: "boolean", defaultVal: "false", description: "Controls dialog visibility." },
       { name: "onClose", type: "() => void", defaultVal: "required", description: "Close event callback." },
-      { name: "layoutId", type: "string", defaultVal: "undefined", description: "Shared layout identifier for GonzaModal spring connection." },
+      { name: "layoutId", type: "string", defaultVal: "undefined", description: "Shared layout identifier for SwayModal spring connection." },
       { name: "triggerRef", type: "RefObject<HTMLElement>", defaultVal: "undefined", description: "DOM trigger reference used by DavoModal GSAP FLIP calculation." },
       { name: "title", type: "string", defaultVal: "undefined", description: "Dialog header text." },
     ],
-    code: `import { GonzaModal, GonzaModalTrigger, DavoModal } from "@gonza/ui-components";
+    code: `import { SwayModal, SwayModalTrigger, DavoModal } from "@gonza/ui-components";
 
-// GonzaModal (Motion Spring)
-<GonzaModalTrigger layoutId="my-dialog" onClick={() => setOpen(true)}>
+// SwayModal (Motion Spring)
+<SwayModalTrigger layoutId="my-dialog" onClick={() => setOpen(true)}>
   Open Dialog
-</GonzaModalTrigger>
-<GonzaModal open={open} onClose={() => setOpen(false)} layoutId="my-dialog">
+</SwayModalTrigger>
+<SwayModal open={open} onClose={() => setOpen(false)} layoutId="my-dialog">
   <p>Modal content</p>
-</GonzaModal>`,
+</SwayModal>`,
   },
   {
     id: "morph-tabs",
     name: "MorphTabs",
     category: "Navigation & Controls",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring",
     badge: "Segmented Control",
     shortDesc: "Segmented tab control with a continuous sliding pill indicator powered by Motion layoutId spring physics.",
@@ -235,7 +235,7 @@ const tabs: TabItem[] = [
     id: "command-palette",
     name: "CommandPalette",
     category: "Navigation & Controls",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring",
     badge: "Spotlight ⌘K",
     shortDesc: "Spotlight command launcher dialog with keyboard shortcut (Cmd+K), fuzzy search, and arrow key navigation.",
@@ -266,7 +266,7 @@ const tabs: TabItem[] = [
     id: "side-sheet",
     name: "SideSheet",
     category: "Overlays & Drawers",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring",
     badge: "Slide-over Drawer",
     shortDesc: "Slide-over drawer sliding smoothly from screen edges with backdrop blur and responsive dimensions.",
@@ -331,11 +331,11 @@ const tabs: TabItem[] = [
     id: "nested-modal",
     name: "NestedModal Composition",
     category: "Overlays & Drawers",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring",
     badge: "Layered Overlays",
-    shortDesc: "SideSheet combined with GonzaModal using inline mode, eliminating z-index traps.",
-    description: "Demonstrates advanced overlay composition. A GonzaModal opens on top of an active SideSheet using inline={true}, keeping both interactive and free of backdrop conflicts.",
+    shortDesc: "SideSheet combined with SwayModal using inline mode, eliminating z-index traps.",
+    description: "Demonstrates advanced overlay composition. A SwayModal opens on top of an active SideSheet using inline={true}, keeping both interactive and free of backdrop conflicts.",
     physics: {
       engine: "Motion Spring Physics",
       concept: "Multi-Tier Overlay Stacking",
@@ -346,23 +346,23 @@ const tabs: TabItem[] = [
       { name: "open", type: "boolean", defaultVal: "false", description: "Controls modal visibility." },
       { name: "onClose", type: "() => void", defaultVal: "required", description: "Close handler for nested dialog." },
     ],
-    code: `import { SideSheet, GonzaModal, GonzaModalTrigger } from "@gonza/ui-components";
+    code: `import { SideSheet, SwayModal, SwayModalTrigger } from "@gonza/ui-components";
 
 <SideSheet open={sheetOpen} onClose={() => setSheetOpen(false)} title="Checkout Drawer">
-  <GonzaModalTrigger layoutId="nested-coupon" onClick={() => setModalOpen(true)}>
+  <SwayModalTrigger layoutId="nested-coupon" onClick={() => setModalOpen(true)}>
     Apply Discount Code
-  </GonzaModalTrigger>
+  </SwayModalTrigger>
 
-  <GonzaModal open={modalOpen} onClose={() => setModalOpen(false)} inline={true} layoutId="nested-coupon">
+  <SwayModal open={modalOpen} onClose={() => setModalOpen(false)} inline={true} layoutId="nested-coupon">
     <CouponInputForm />
-  </GonzaModal>
+  </SwayModal>
 </SideSheet>`,
   },
   {
     id: "confirm-dialog",
     name: "ConfirmDialog",
     category: "Overlays & Drawers",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring",
     badge: "Destructive Alert",
     shortDesc: "High-urgency alert modal for irreversible actions with loading states and keyboard traps.",
@@ -393,9 +393,9 @@ const tabs: TabItem[] = [
   },
   {
     id: "expandable-card",
-    name: "GonzaCard",
+    name: "SwayCard",
     category: "Cards & Media",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring",
     badge: "Feed Expansion",
     shortDesc: "Feed article card that seamlessly morphs from a compact preview into a full reading dialog.",
@@ -411,9 +411,9 @@ const tabs: TabItem[] = [
       { name: "title", type: "string", defaultVal: "required", description: "Article headline title." },
       { name: "author", type: "string", defaultVal: "undefined", description: "Author attribution string." },
     ],
-    code: `import { GonzaCard } from "@gonza/ui-components";
+    code: `import { SwayCard } from "@gonza/ui-components";
 
-<GonzaCard
+<SwayCard
   layoutId="article-42"
   title="The Architecture of Fluid Interactions"
   thumbnail="https://images.unsplash.com/..."
@@ -421,7 +421,7 @@ const tabs: TabItem[] = [
   readTime="5 min read"
 >
   <FullArticleMarkdown />
-</GonzaCard>`,
+</SwayCard>`,
   },
   {
     id: "project-modal",
@@ -540,14 +540,14 @@ const tabs: TabItem[] = [
     physics: {
       engine: "Motion 11 Spring & GSAP 3 FLIP",
       concept: "Dual-Engine Coordinate Morphing",
-      details: "In Gonza mode, the calendar pops elastically from the trigger button with Motion springs. In Davo mode, it morphs directly from the button bounding rect into the full calendar grid using GSAP Flip coordinates.",
+      details: "In Sway mode, the calendar pops elastically from the trigger button with Motion springs. In Davo mode, it morphs directly from the button bounding rect into the full calendar grid using GSAP Flip coordinates.",
     },
     props: [
       { name: "value", type: "Date | null", defaultVal: "null", description: "Currently selected Date object." },
       { name: "onChange", type: "(date: Date | null) => void", defaultVal: "undefined", description: "Event callback on date or time selection." },
       { name: "showTime", type: "boolean", defaultVal: "false", description: "Enables integrated hour and minute selection controls." },
       { name: "inline", type: "boolean", defaultVal: "false", description: "Renders calendar directly without popover trigger button." },
-      { name: "engine", type: "'gonza' | 'davo'", defaultVal: "'gonza'", description: "Selects animation engine for popover opening and closing." },
+      { name: "engine", type: "'sway' | 'davo'", defaultVal: "'sway'", description: "Selects animation engine for popover opening and closing." },
     ],
     code: `import { DavoDatePicker } from "@gonza/ui-components";
 
@@ -576,7 +576,7 @@ const tabs: TabItem[] = [
       { name: "open", type: "boolean", defaultVal: "required", description: "Controls modal visibility state." },
       { name: "onClose", type: "() => void", defaultVal: "required", description: "Callback triggered when backdrop, close button, or Escape is pressed." },
       { name: "steps", type: "StepItem[]", defaultVal: "required", description: "Array of step definitions containing id, title, description, and content." },
-      { name: "engine", type: "'gonza' | 'davo'", defaultVal: "'gonza'", description: "Selects animation engine (Motion springs vs GSAP FLIP dialog)." },
+      { name: "engine", type: "'sway' | 'davo'", defaultVal: "'sway'", description: "Selects animation engine (Motion springs vs GSAP FLIP dialog)." },
       { name: "triggerRef", type: "RefObject<HTMLElement>", defaultVal: "undefined", description: "Origin trigger element for GSAP FLIP morphing." },
       { name: "onComplete", type: "() => void", defaultVal: "undefined", description: "Callback fired when the user completes the final step." },
     ],
@@ -593,7 +593,7 @@ const tabs: TabItem[] = [
     id: "sortable-list",
     name: "SortableSpringList",
     category: "Navigation & Commands",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Reorder Springs",
     badge: "Drag & Drop",
     shortDesc: "Fluid drag-and-drop sortable list where neighboring items gracefully part ways in real-time.",
@@ -619,7 +619,7 @@ const tabs: TabItem[] = [
     id: "floating-action-bar",
     name: "FloatingActionBar",
     category: "Feedback & Lab",
-    engine: "gonza",
+    engine: "sway",
     engineLabel: "Motion Spring Entrance",
     badge: "Contextual Toolbar",
     shortDesc: "Floating action toolbar appearing elastically when items are selected, inspired by Notion and Figma.",

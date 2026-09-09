@@ -4,7 +4,7 @@ import { Plus, MessageSquarePlus, Upload, UserPlus, Sparkles, Check, Layers } fr
 
 export function MorphFabExample() {
   const [enabled, setEnabled] = useState(false);
-  const [engine, setEngine] = useState<"gonza" | "davo">("gonza");
+  const [engine, setEngine] = useState<"sway" | "davo">("sway");
   const [feedback, setFeedback] = useState<string | null>(null);
 
   const triggerFeedback = (msg: string) => {
@@ -38,23 +38,23 @@ export function MorphFabExample() {
     <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <div>
         <div className="flex items-center justify-between">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 dark:bg-orange-950/60 dark:text-orange-400">
-            <Sparkles size={20} />
-          </div>
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 dark:bg-orange-950/60 dark:text-orange-400">
+            <Plus size={20} />
+          </span>
 
-          {/* Engine Selector */}
-          <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/70 p-0.5 text-[11px] dark:border-zinc-700 dark:bg-zinc-800">
+          {/* Engine Selector Pills */}
+          <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-1 text-[11px] font-semibold dark:border-zinc-800 dark:bg-zinc-800">
             <button
               type="button"
-              onClick={() => setEngine("gonza")}
+              onClick={() => setEngine("sway")}
               className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 font-semibold transition-all cursor-pointer ${
-                engine === "gonza"
+                engine === "sway"
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
               <Sparkles size={11} className="text-orange-500" />
-              <span>Motion (Gonza)</span>
+              <span>Motion (Sway)</span>
             </button>
             <button
               type="button"
@@ -79,7 +79,7 @@ export function MorphFabExample() {
         </p>
 
         <div className="mt-2 text-[11px] font-medium text-zinc-400">
-          Active animation: <span className="text-orange-600 dark:text-orange-400 font-semibold">{engine === "gonza" ? "Gonza (Motion Spring Physics)" : "Davo (GSAP Flip Matrix)"}</span>
+          Active animation: <span className="text-orange-600 dark:text-orange-400 font-semibold">{engine === "sway" ? "Sway (Motion Spring Physics)" : "Davo (GSAP Flip Matrix)"}</span>
         </div>
 
         {feedback && (

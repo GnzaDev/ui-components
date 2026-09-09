@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GonzaPopover, type PopoverPlacement } from "../../GonzaPopover";
+import { SwayPopover, type PopoverPlacement } from "../../SwayPopover";
 import {
   Sliders,
   User,
@@ -13,7 +13,7 @@ import {
 
 export function PopoverExample() {
   const [open, setOpen] = useState(false);
-  const [engine, setEngine] = useState<"gonza" | "davo">("gonza");
+  const [engine, setEngine] = useState<"sway" | "davo">("sway");
   const [placement, setPlacement] = useState<PopoverPlacement>("bottom-center");
   const [preset, setPreset] = useState<"dimensions" | "profile">("dimensions");
 
@@ -32,9 +32,9 @@ export function PopoverExample() {
         <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-0.5 font-semibold dark:border-zinc-800 dark:bg-zinc-800/80">
           <button
             type="button"
-            onClick={() => setEngine("gonza")}
+            onClick={() => setEngine("sway")}
             className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-              engine === "gonza"
+              engine === "sway"
                 ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
                 : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
             }`}
@@ -103,7 +103,7 @@ export function PopoverExample() {
 
       {/* Popover Centered Anchor Stage */}
       <div className="min-h-[360px] flex items-start justify-center pt-8 pb-32">
-        <GonzaPopover
+        <SwayPopover
           open={open}
           onClose={() => setOpen(false)}
           placement={placement}
@@ -140,7 +140,7 @@ export function PopoverExample() {
                     Dimensions
                   </h4>
                   <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                    {engine === "gonza" ? "Motion" : "GSAP"}
+                    {engine === "sway" ? "Motion" : "GSAP"}
                   </span>
                 </div>
                 <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -194,7 +194,7 @@ export function PopoverExample() {
                   <p className="text-[11px] text-zinc-400">alex@example.com</p>
                 </div>
                 <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                  {engine === "gonza" ? "Motion" : "GSAP"}
+                  {engine === "sway" ? "Motion" : "GSAP"}
                 </span>
               </div>
 
@@ -237,7 +237,7 @@ export function PopoverExample() {
               </div>
             </div>
           )}
-        </GonzaPopover>
+        </SwayPopover>
       </div>
     </div>
   );

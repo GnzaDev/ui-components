@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { GonzaModal, GonzaModalTrigger } from "../GonzaModal";
+import { SwayModal, SwayModalTrigger } from "../SwayModal";
 import { DavoModal } from "../DavoModal";
 import {
   Sparkles,
@@ -48,7 +48,7 @@ interface SidebarCategory {
     id: NavItem;
     label: string;
     badge?: string;
-    engine?: "both" | "gonza" | "davo";
+    engine?: "both" | "sway" | "davo" | "gonza";
   }[];
 }
 
@@ -67,31 +67,31 @@ const CATEGORIES: SidebarCategory[] = [
       { id: "step-dialog", label: "MorphingStepDialog", badge: "Dual", engine: "both" },
       { id: "date-picker", label: "DavoDatePicker", badge: "Dual", engine: "both" },
       { id: "morph-fab", label: "MorphFab", badge: "Dual", engine: "both" },
-      { id: "popover", label: "GonzaPopover", badge: "Dual", engine: "both" },
+      { id: "popover", label: "SwayPopover", badge: "Dual", engine: "both" },
       { id: "core-primitives", label: "Modal Benchmark", engine: "both" },
     ],
   },
   {
     title: "Navigation & Controls",
     items: [
-      { id: "morph-tabs", label: "MorphTabs", badge: "Spring", engine: "gonza" },
-      { id: "sortable-list", label: "SortableSpringList", badge: "Drag", engine: "gonza" },
-      { id: "command-palette", label: "CommandPalette", engine: "gonza" },
+      { id: "morph-tabs", label: "MorphTabs", badge: "Spring", engine: "sway" },
+      { id: "sortable-list", label: "SortableSpringList", badge: "Drag", engine: "sway" },
+      { id: "command-palette", label: "CommandPalette", engine: "sway" },
     ],
   },
   {
     title: "Overlays & Drawers",
     items: [
-      { id: "side-sheet", label: "SideSheet (Cart)", engine: "gonza" },
+      { id: "side-sheet", label: "SideSheet (Cart)", engine: "sway" },
       { id: "action-sheet", label: "DavoActionSheet", badge: "GSAP", engine: "davo" },
-      { id: "nested-modal", label: "NestedModal", engine: "gonza" },
-      { id: "confirm-dialog", label: "ConfirmDialog", engine: "gonza" },
+      { id: "nested-modal", label: "NestedModal", engine: "sway" },
+      { id: "confirm-dialog", label: "ConfirmDialog", engine: "sway" },
     ],
   },
   {
     title: "Cards & Media",
     items: [
-      { id: "expandable-card", label: "GonzaCard (Feed)", engine: "gonza" },
+      { id: "expandable-card", label: "SwayCard (Feed)", engine: "sway" },
       { id: "project-modal", label: "ProjectCardModal", badge: "GSAP", engine: "davo" },
       { id: "lightbox", label: "FlipLightbox", badge: "Zoom", engine: "davo" },
     ],
@@ -99,8 +99,8 @@ const CATEGORIES: SidebarCategory[] = [
   {
     title: "Feedback & Lab",
     items: [
-      { id: "floating-action-bar", label: "FloatingActionBar", badge: "Toolbar", engine: "gonza" },
-      { id: "toast", label: "FlipToast", engine: "gonza" },
+      { id: "floating-action-bar", label: "FloatingActionBar", badge: "Toolbar", engine: "sway" },
+      { id: "toast", label: "FlipToast", engine: "sway" },
       { id: "playground", label: "Corner Matrix Lab", badge: "5-Pos", engine: "both" },
     ],
   },
@@ -113,7 +113,7 @@ export function ShowcaseDemo() {
   const [copiedCode, setCopiedCode] = useState(false);
 
   // Quick modals for Core Primitives Benchmark
-  const [gonzaOpen, setGonzaOpen] = useState(false);
+  const [swayOpen, setSwayOpen] = useState(false);
   const [davoOpen, setDavoOpen] = useState(false);
   const davoTriggerRef = useRef<HTMLButtonElement>(null);
 
@@ -306,7 +306,7 @@ export function ShowcaseDemo() {
               prevDoc={prevDoc}
               nextDoc={nextDoc}
               onNavigate={selectItem}
-              setGonzaOpen={setGonzaOpen}
+              setSwayOpen={setSwayOpen}
               setDavoOpen={setDavoOpen}
               davoTriggerRef={davoTriggerRef}
             />
@@ -315,15 +315,15 @@ export function ShowcaseDemo() {
       </div>
 
       {/* Global Benchmark Modals */}
-      <GonzaModal
-        open={gonzaOpen}
-        onClose={() => setGonzaOpen(false)}
-        layoutId="benchmark-gonza-modal"
-        title="GonzaModal (Motion Spring)"
+      <SwayModal
+        open={swayOpen}
+        onClose={() => setSwayOpen(false)}
+        layoutId="benchmark-sway-modal"
+        title="SwayModal (Motion Spring)"
         footer={
           <div className="flex justify-end">
             <button
-              onClick={() => setGonzaOpen(false)}
+              onClick={() => setSwayOpen(false)}
               className="rounded-xl px-4 py-2 text-xs font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer"
             >
               Close
@@ -334,7 +334,7 @@ export function ShowcaseDemo() {
         <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
           This modal physically blooms from the trigger button using Motion layoutId projection with calibrated spring dynamics (stiffness: 400, damping: 30).
         </p>
-      </GonzaModal>
+      </SwayModal>
 
       <DavoModal
         open={davoOpen}
@@ -368,7 +368,7 @@ function ComponentDocPage({
   prevDoc,
   nextDoc,
   onNavigate,
-  setGonzaOpen,
+  setSwayOpen,
   setDavoOpen,
   davoTriggerRef,
 }: {
@@ -376,7 +376,7 @@ function ComponentDocPage({
   prevDoc: ComponentDoc | null;
   nextDoc: ComponentDoc | null;
   onNavigate: (id: NavItem) => void;
-  setGonzaOpen: (open: boolean) => void;
+  setSwayOpen: (open: boolean) => void;
   setDavoOpen: (open: boolean) => void;
   davoTriggerRef: React.RefObject<HTMLButtonElement | null>;
 }) {
@@ -404,14 +404,14 @@ function ComponentDocPage({
               Trigger both foundational dialog implementations side by side to compare spring physics against GSAP FLIP.
             </p>
             <div className="flex gap-4">
-              <GonzaModalTrigger
-                layoutId="benchmark-gonza-modal"
-                onClick={() => setGonzaOpen(true)}
+              <SwayModalTrigger
+                layoutId="benchmark-sway-modal"
+                onClick={() => setSwayOpen(true)}
                 className="text-xs"
               >
-                <span>Trigger GonzaModal</span>
+                <span>Trigger SwayModal</span>
                 <ArrowRight size={13} />
-              </GonzaModalTrigger>
+              </SwayModalTrigger>
               <button
                 ref={davoTriggerRef}
                 type="button"
@@ -725,7 +725,7 @@ function CatalogOverview({
         <div className="rounded-3xl border border-orange-200/70 bg-gradient-to-br from-orange-50/40 to-amber-50/20 p-6 dark:border-orange-950/60 dark:bg-orange-950/20">
           <div className="flex items-center justify-between">
             <span className="text-xs font-extrabold uppercase tracking-wider text-orange-600 dark:text-orange-400">
-              Gonza Engine (Motion 12)
+              Sway Engine (Motion 12)
             </span>
             <span className="rounded-lg bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-orange-700 dark:bg-orange-900/60 dark:text-orange-300">
               Euler-Newton Dynamics

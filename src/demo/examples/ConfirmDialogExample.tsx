@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GonzaModal, GonzaModalTrigger } from "../../GonzaModal";
+import { SwayModal, SwayModalTrigger } from "../../SwayModal";
 import { AlertTriangle, Trash2, Shield, CheckCircle2 } from "lucide-react";
 
 export function ConfirmDialogExample() {
@@ -40,7 +40,7 @@ export function ConfirmDialogExample() {
       </div>
 
       <div className="mt-6">
-        <GonzaModalTrigger
+        <SwayModalTrigger
           layoutId="example-confirm-dialog"
           onClick={() => {
             setConfirmText("");
@@ -50,10 +50,10 @@ export function ConfirmDialogExample() {
         >
           <Trash2 size={14} />
           <span>Delete Cluster</span>
-        </GonzaModalTrigger>
+        </SwayModalTrigger>
       </div>
 
-      <GonzaModal
+      <SwayModal
         open={open}
         onClose={() => setOpen(false)}
         layoutId="example-confirm-dialog"
@@ -113,7 +113,7 @@ export function ConfirmDialogExample() {
             />
           </div>
         </div>
-      </GonzaModal>
+      </SwayModal>
     </div>
   );
 }

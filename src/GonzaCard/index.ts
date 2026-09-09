@@ -1,2 +1,2 @@
-export { GonzaCard } from "./GonzaCard";
-export type { GonzaCardProps } from "./GonzaCard";
+export { SwayCard as GonzaCard } from "../SwayCard";
+export type { SwayCardProps as GonzaCardProps } from "../SwayCard";

@@ -9,7 +9,7 @@ import { Layers, ArrowRight, User, Sparkles } from "lucide-react";
 
 export function StepDialogExample() {
   const [open, setOpen] = useState(false);
-  const [engine, setEngine] = useState<"gonza" | "davo">("gonza");
+  const [engine, setEngine] = useState<"sway" | "davo">("sway");
   const [name, setName] = useState("");
   const [plan, setPlan] = useState("pro");
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -139,14 +139,14 @@ export function StepDialogExample() {
           <div className="flex items-center rounded-xl border border-zinc-200 bg-zinc-100/80 p-1 text-[11px] font-semibold dark:border-zinc-800 dark:bg-zinc-800">
             <button
               type="button"
-              onClick={() => setEngine("gonza")}
+              onClick={() => setEngine("sway")}
               className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                engine === "gonza"
+                engine === "sway"
                   ? "bg-white text-zinc-900 shadow-xs dark:bg-zinc-900 dark:text-white"
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              Motion Spring
+              Motion (Sway)
             </button>
             <button
               type="button"
@@ -171,7 +171,7 @@ export function StepDialogExample() {
 
         <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
           <span className="rounded-md bg-indigo-50 px-2 py-0.5 font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
-            Dual Engine: {engine === "gonza" ? "Motion Springs" : "GSAP FLIP"}
+            Dual Engine: {engine === "sway" ? "Sway Springs" : "GSAP FLIP"}
           </span>
           <span>•</span>
           <span>Wizard Flow</span>
@@ -179,14 +179,14 @@ export function StepDialogExample() {
       </div>
 
       <div className="mt-6">
-        {engine === "gonza" ? (
+        {engine === "sway" ? (
           <MorphingStepDialogTrigger
             layoutId="step-dialog-morph"
             onClick={() => setOpen(true)}
             className="w-full text-xs"
           >
             <Sparkles size={14} />
-            <span>Launch Wizard (Motion Springs)</span>
+            <span>Launch Wizard (Sway Springs)</span>
             <ArrowRight size={14} />
           </MorphingStepDialogTrigger>
         ) : (
@@ -209,7 +209,7 @@ export function StepDialogExample() {
         steps={steps}
         engine={engine}
         triggerRef={triggerRef}
-        layoutId={engine === "gonza" ? "step-dialog-morph" : undefined}
+        layoutId={engine === "sway" ? "step-dialog-morph" : undefined}
         onComplete={() => alert(`¡Listo! Espacio configurado para ${name}.`)}
       />
     </div>

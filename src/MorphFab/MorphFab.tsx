@@ -25,7 +25,7 @@ export interface MorphFabProps {
   title?: string;
   position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
   icon?: ReactNode;
-  engine?: "gonza" | "davo";
+  engine?: "sway" | "davo" | "gonza";
   className?: string;
 }
 
@@ -34,7 +34,7 @@ export function MorphFab({
   title = "Quick Actions",
   position = "bottom-right",
   icon = <Plus size={20} />,
-  engine = "gonza",
+  engine = "sway",
   className,
 }: MorphFabProps) {
   const [open, setOpen] = useState(false);
@@ -259,8 +259,8 @@ export function MorphFab({
     </div>
   );
 
-  /* Engine 1: Gonza (Motion Spring with layoutId) */
-  if (engine === "gonza") {
+  /* Engine 1: Sway (Motion Spring with layoutId) */
+  if (engine === "sway" || engine === "gonza") {
     return createPortal(
       <div className={cn("fixed z-50", getPositionClasses(), className)}>
         {/* Backdrop when opened */}

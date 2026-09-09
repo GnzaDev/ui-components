@@ -1,2 +1,8 @@
-export { GonzaPopover, DavoPopover } from "./GonzaPopover";
-export type { GonzaPopoverProps, PopoverPlacement } from "./GonzaPopover";
+export {
+  SwayPopover as GonzaPopover,
+  DavoPopover,
+} from "../SwayPopover";
+export type {
+  SwayPopoverProps as GonzaPopoverProps,
+  PopoverPlacement,
+} from "../SwayPopover";

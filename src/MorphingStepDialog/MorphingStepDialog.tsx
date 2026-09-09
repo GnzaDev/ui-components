@@ -6,7 +6,7 @@ import { X, ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { cn } from "../utils/cn";
 import { prettyModalService } from "../DavoModal/pretty-modal";
 import "../DavoModal/davo-modal.css";
-import { GONZA_SPRINGS } from "../utils/animationTokens";
+import { SWAY_SPRINGS } from "../utils/animationTokens";
 
 export interface StepItem {
   id: string;
@@ -23,7 +23,7 @@ export interface MorphingStepDialogProps {
   onComplete?: () => void;
   maxWidth?: string;
   className?: string;
-  engine?: "gonza" | "davo";
+  engine?: "sway" | "davo" | "gonza";
   triggerRef?: RefObject<HTMLElement | null>;
   layoutId?: string;
 }
@@ -35,7 +35,7 @@ export function MorphingStepDialog({
   onComplete,
   maxWidth = "max-w-lg",
   className,
-  engine = "gonza",
+  engine = "sway",
   triggerRef,
   layoutId,
 }: MorphingStepDialogProps) {
@@ -195,7 +195,7 @@ export function MorphingStepDialog({
       <div className="relative mt-5 w-full overflow-hidden min-h-[220px]">
         <motion.div
           animate={{ x: `-${currentStepIndex * 100}%` }}
-          transition={GONZA_SPRINGS.stepSlide}
+          transition={SWAY_SPRINGS.stepSlide}
           className="flex w-full items-start"
         >
           {steps.map((step, idx) => (
@@ -232,18 +232,11 @@ export function MorphingStepDialog({
           className={cn(
             "inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2 text-xs font-semibold text-white shadow-xs transition-all hover:bg-zinc-800 active:scale-98 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 cursor-pointer",
             (currentStep.isValid === false || isSubmitting) &&
-              "opacity-50 cursor-not-allowed"
+              "opacity-50 pointer-events-none cursor-not-allowed"
           )}
         >
-          <span>
-            {isSubmitting
-              ? "Guardando..."
-              : isLastStep
-              ? "Finalizar"
-              : "Continuar"}
-          </span>
-          {!isLastStep && <ArrowRight size={14} />}
-          {isLastStep && !isSubmitting && <Check size={14} />}
+          <span>{isLastStep ? "Finalizar" : "Siguiente"}</span>
+          <ArrowRight size={14} />
         </button>
       </div>
     </>
@@ -271,7 +264,7 @@ export function MorphingStepDialog({
     );
   }
 
-  // Engine 2: Gonza (Motion Spring Physics & Layout Projection)
+  // Engine 2: Sway (Motion Spring Physics & Layout Projection)
   return createPortal(
     <AnimatePresence>
       {open && (
