@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "../utils/cn";
 import { prettyModalService } from "./pretty-modal";
+import { useScrollLock } from "../utils/useScrollLock";
 import "./davo-modal.css";
 
 export interface DavoModalProps {
@@ -31,6 +32,8 @@ export function DavoModal({
 }: DavoModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isClosingRef = useRef(false);
+
+  useScrollLock(open);
 
   useEffect(() => {
     const dialog = dialogRef.current;

@@ -7,6 +7,7 @@ import { cn } from "../utils/cn";
 import { prettyModalService } from "../DavoModal/pretty-modal";
 import "../DavoModal/davo-modal.css";
 import { SWAY_SPRINGS } from "../utils/animationTokens";
+import { useScrollLock } from "../utils/useScrollLock";
 
 export interface StepItem {
   id: string;
@@ -44,6 +45,8 @@ export function MorphingStepDialog({
 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isClosingRef = useRef(false);
+
+  useScrollLock(open);
 
   // Reset step index when opened
   useEffect(() => {

@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Search, Command, ArrowRight } from "lucide-react";
 import { cn } from "../utils/cn";
+import { useScrollLock } from "../utils/useScrollLock";
 
 export interface CommandItem {
   id: string;
@@ -73,15 +74,14 @@ export function CommandPalette({
       }
     }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [open, filtered, selectedIndex, onClose]);
+
+  useScrollLock(open);
 
   // Group by category
   const categories = Array.from(new Set(filtered.map((item) => item.category)));

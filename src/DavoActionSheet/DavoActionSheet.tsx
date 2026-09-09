@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "../utils/cn";
 import { prettyModalService } from "../DavoModal/pretty-modal";
+import { useScrollLock } from "../utils/useScrollLock";
 import "../DavoModal/davo-modal.css";
 
 export interface DavoActionSheetProps {
@@ -32,6 +33,8 @@ export function DavoActionSheet({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
   const isClosingRef = useRef(false);
+
+  useScrollLock(open);
 
   const isDraggingRef = useRef(false);
   const dragStartYRef = useRef(0);

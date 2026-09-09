@@ -20,6 +20,9 @@ export type {
 export { DavoModal, prettyModalService, PrettyModalService } from "./DavoModal";
 export type { DavoModalProps } from "./DavoModal";
 
+export { FamilyDialog, FamilyStepperDialog } from "./FamilyDialog";
+export type { FamilyDialogProps, FamilyStepperDialogProps } from "./FamilyDialog";
+
 // Drawers & Sheets
 export { SideSheet } from "./SideSheet";
 export type { SideSheetProps } from "./SideSheet";

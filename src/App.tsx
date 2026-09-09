@@ -16,7 +16,7 @@ export function App() {
   return (
     <div className="min-h-screen bg-zinc-50 transition-colors dark:bg-zinc-950 font-sans antialiased text-zinc-900 dark:text-zinc-100">
       {/* Header bar */}
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-zinc-200/80 bg-white/80 px-6 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/80">
+      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-zinc-200/80 bg-white/95 px-6 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/95">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-zinc-900 dark:bg-white" />

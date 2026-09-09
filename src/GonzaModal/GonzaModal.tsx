@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { cn } from "../utils/cn";
+import { useScrollLock } from "../utils/useScrollLock";
 
 export interface GonzaModalProps {
   open: boolean;
@@ -65,20 +66,14 @@ export function GonzaModal({
       }
     }
 
-    let previousOverflow = "";
-    if (!inline) {
-      previousOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-    }
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      if (!inline) {
-        document.body.style.overflow = previousOverflow;
-      }
     };
-  }, [open, disableEscape, inline]);
+  }, [open, disableEscape]);
+
+  useScrollLock(open && !inline);
 
   const content = (
     <AnimatePresence>

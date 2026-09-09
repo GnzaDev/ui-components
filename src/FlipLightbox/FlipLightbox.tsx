@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { X, ZoomIn } from "lucide-react";
 import { cn } from "../utils/cn";
 import { prettyModalService } from "../DavoModal/pretty-modal";
+import { useScrollLock } from "../utils/useScrollLock";
 import "../DavoModal/davo-modal.css";
 
 export interface LightboxImage {
@@ -23,6 +24,8 @@ export function FlipLightbox({ images, className }: FlipLightboxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const activeTriggerRef = useRef<HTMLElement | null>(null);
   const isClosingRef = useRef(false);
+
+  useScrollLock(!!activeImage);
 
   useEffect(() => {
     const dialog = dialogRef.current;

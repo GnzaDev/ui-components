@@ -16,4 +16,4 @@ export { DatePickerExample } from "./DatePickerExample";
 export { StepDialogExample } from "./StepDialogExample";
 export { SortableListExample } from "./SortableListExample";
 export { FloatingActionBarExample } from "./FloatingActionBarExample";
-
+export { FamilyDialogExample } from "./FamilyDialogExample";

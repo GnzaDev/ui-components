@@ -26,7 +26,8 @@ export type NavItem =
   | "date-picker"
   | "step-dialog"
   | "sortable-list"
-  | "floating-action-bar";
+  | "floating-action-bar"
+  | "family-dialog";
 
 
 export interface ComponentDoc {
@@ -92,6 +93,46 @@ export const COMPONENTS_DATA: ComponentDoc[] = [
     <UserForm />
   </DavoModal>
 )}`,
+  },
+  {
+    id: "family-dialog",
+    name: "FamilyDialog",
+    category: "Dual-Engine Primitives",
+    engine: "both",
+    engineLabel: "View Transition & Motion Spring",
+    badge: "Button Morph",
+    shortDesc: "Trigger button at the bottom smoothly expands and morphs into the modal's primary action button.",
+    description: "Recreates the iconic Family-style confirmation modal using the browser's View Transition API (document.startViewTransition) or Motion's shared layoutId spring projection. The trigger button seamlessly travels and expands into the modal dialog action button.",
+    physics: {
+      engine: "View Transition API / Motion Spring",
+      concept: "Shared Element Morphing & View Transitions",
+      details: "In View Transition mode, pairs view-transition-name: family-button and family-label to compute GPU-accelerated boundary interpolation on native dialogs. In Motion mode, projects continuous momentum with layoutId springs (stiffness: 400, damping: 30).",
+    },
+    props: [
+      { name: "open", type: "boolean", defaultVal: "undefined", description: "Controlled open state of the dialog." },
+      { name: "onOpenChange", type: "(open: boolean) => void", defaultVal: "undefined", description: "Callback invoked when open state changes." },
+      { name: "engine", type: "'view-transition' | 'spring'", defaultVal: "'view-transition'", description: "Strategy: Native View Transition API or Motion layoutId springs." },
+      { name: "title", type: "string", defaultVal: "'Confirm'", description: "Header title displayed next to the icon." },
+      { name: "description", type: "ReactNode", defaultVal: "'Are you sure...'", description: "Body text or confirmation message." },
+      { name: "actionLabel", type: "string", defaultVal: "'Receive'", description: "Action button label that morphs with the trigger button." },
+      { name: "cancelLabel", type: "string", defaultVal: "'Cancel'", description: "Secondary dismiss button label." },
+      { name: "onConfirm", type: "() => void", defaultVal: "undefined", description: "Callback invoked when primary action button is clicked." },
+      { name: "inline", type: "boolean", defaultVal: "false", description: "Confines the dialog within its parent container for showcase/sandboxes." },
+    ],
+    code: `import { FamilyDialog } from "@gonza/ui-components";
+
+export function Example() {
+  return (
+    <FamilyDialog
+      title="Confirm"
+      description="Are you sure you want to receive a load of money?"
+      actionLabel="Receive"
+      cancelLabel="Cancel"
+      engine="view-transition" // or "spring"
+      onConfirm={() => console.log("Received!")}
+    />
+  );
+}`,
   },
   {
     id: "morph-fab",

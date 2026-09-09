@@ -33,12 +33,14 @@ import {
   StepDialogExample,
   SortableListExample,
   FloatingActionBarExample,
+  FamilyDialogExample,
 } from "./examples";
 import {
   COMPONENTS_DATA,
   type ComponentDoc,
   type NavItem,
 } from "./componentsData";
+import { useScrollLock } from "../utils/useScrollLock";
 
 interface SidebarCategory {
   title: string;
@@ -54,13 +56,14 @@ const CATEGORIES: SidebarCategory[] = [
   {
     title: "Overview",
     items: [
-      { id: "all", label: "Component Catalog", badge: "19" },
+      { id: "all", label: "Component Catalog", badge: "20" },
       { id: "getting-started", label: "Installation & Guide" },
     ],
   },
   {
     title: "Dual-Engine Primitives",
     items: [
+      { id: "family-dialog", label: "FamilyDialog", badge: "Morph", engine: "both" },
       { id: "profile-modal", label: "ProfileModal", badge: "Switch", engine: "both" },
       { id: "step-dialog", label: "MorphingStepDialog", badge: "Dual", engine: "both" },
       { id: "date-picker", label: "DavoDatePicker", badge: "Dual", engine: "both" },
@@ -109,6 +112,8 @@ export function ShowcaseDemo() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+
+  useScrollLock(mobileMenuOpen);
 
   // Quick modals for Core Primitives Benchmark
   const [swayOpen, setSwayOpen] = useState(false);
@@ -172,11 +177,19 @@ export function ShowcaseDemo() {
         </span>
       </div>
 
+      {/* Mobile Backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Main Grid: Sidebar + Content */}
       <div className="flex gap-8 items-start">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-0 left-0 z-40 w-72 bg-white/95 p-6 backdrop-blur-xl transition-transform lg:static lg:block lg:w-64 lg:shrink-0 lg:bg-transparent lg:p-0 lg:backdrop-blur-none dark:bg-zinc-950/95 lg:dark:bg-transparent ${
+          className={`fixed inset-y-0 left-0 z-50 w-72 bg-white/95 p-6 backdrop-blur-xl transition-transform dark:bg-zinc-950/95 lg:sticky lg:top-14 lg:z-10 lg:block lg:w-64 lg:shrink-0 lg:self-start lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto lg:p-0 lg:py-6 lg:pr-4 lg:bg-transparent lg:backdrop-blur-none lg:dark:bg-transparent ${
             mobileMenuOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"
           }`}
         >
@@ -193,7 +206,7 @@ export function ShowcaseDemo() {
             </button>
           </div>
 
-          <div className="sticky top-20 space-y-6 max-h-[calc(100vh-6rem)] overflow-y-auto pr-3">
+          <div className="space-y-6">
             {/* Search Input */}
             <div className="relative">
               <Search
@@ -448,6 +461,8 @@ function ComponentDocPage({
         return <SortableListExample />;
       case "floating-action-bar":
         return <FloatingActionBarExample />;
+      case "family-dialog":
+        return <FamilyDialogExample />;
       default:
         return null;
     }
@@ -669,7 +684,7 @@ function CatalogOverview({
             <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
               <span>CATALOG</span>
               <span>•</span>
-              <span>19 PRIMITIVES</span>
+              <span>20 PRIMITIVES</span>
               <span>•</span>
               <span>REACT 19</span>
             </div>
@@ -752,7 +767,7 @@ function CatalogOverview({
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              All (19)
+              All (20)
             </button>
             <button
               type="button"
@@ -763,7 +778,7 @@ function CatalogOverview({
                   : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              Dual-Engine (6)
+              Dual-Engine (7)
             </button>
             <button
               type="button"
@@ -918,7 +933,7 @@ function GettingStartedView({
           onClick={onExplore}
           className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-2.5 text-xs font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 cursor-pointer shadow-xs transition-colors"
         >
-          <span>Browse All 19 Primitives</span>
+          <span>Browse All 20 Primitives</span>
           <ArrowRight size={13} />
         </button>
       </div>

@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { cn } from "../utils/cn";
+import { useScrollLock } from "../utils/useScrollLock";
 
 export interface SideSheetProps {
   open: boolean;
@@ -61,15 +62,14 @@ export function SideSheet({
       }
     }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
     };
   }, [open, disableEscape]);
+
+  useScrollLock(open);
 
   const isLeft = side === "left";
 
