@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ArrowRight, ArrowLeft, Check, Coins, ShieldCheck, Zap, Wallet } from "lucide-react";
 import { cn } from "../utils/cn";
 import { SWAY_SPRINGS } from "../utils/animationTokens";
-import { useScrollLock } from "../utils/useScrollLock";
 
 export interface FamilyStepperDialogProps {
   open?: boolean;
@@ -38,8 +37,6 @@ export function FamilyStepperDialog({
 }: FamilyStepperDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
-
-  useScrollLock(isOpen && !inline);
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [direction, setDirection] = useState<1 | -1>(1);
@@ -86,6 +83,18 @@ export function FamilyStepperDialog({
     }
   };
 
+  // Escape key listener for fast dismissal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        e.preventDefault();
+        handleOpenChange(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   const slideVariants = {
     enter: (dir: number) => ({
       x: dir > 0 ? 28 : -28,
@@ -103,7 +112,7 @@ export function FamilyStepperDialog({
 
   return (
     <div className={cn("w-full flex flex-col items-center justify-center", inline ? "relative min-h-[460px]" : "")}>
-      {/* TRIGGER BUTTON: Initial resting state */}
+      {/* TRIGGER BUTTON: Clean emerald pill */}
       {!isOpen && (
         <div className="w-full flex items-center justify-center py-6">
           <motion.button
@@ -137,24 +146,33 @@ export function FamilyStepperDialog({
         </div>
       )}
 
-      {/* MODAL WITH SHARED ELEMENTS & LOCKED-HEIGHT STEPS */}
+      {/* MODAL DIALOG */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+          <div
             className={cn(
               "flex items-center justify-center z-50",
               inline
-                ? "absolute inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-xs p-4"
-                : "fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm p-4"
+                ? "absolute inset-0 p-4"
+                : "fixed inset-0 p-4"
             )}
-            onClick={(e) => {
-              if (e.target === e.currentTarget) handleOpenChange(false);
-            }}
           >
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className={cn(
+                "absolute inset-0",
+                inline
+                  ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs"
+                  : "bg-black/40 dark:bg-black/70 backdrop-blur-sm"
+              )}
+              onClick={() => handleOpenChange(false)}
+            />
+
+            {/* Modal Card */}
             <motion.div
               initial={{ opacity: 0, y: 32, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -165,7 +183,7 @@ export function FamilyStepperDialog({
                 damping: SWAY_SPRINGS.modal.damping,
                 mass: SWAY_SPRINGS.modal.mass,
               }}
-              className="w-full max-w-[420px] rounded-3xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 dark:text-white select-none"
+              className="relative z-10 w-full max-w-[420px] rounded-3xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 dark:text-white select-none overflow-hidden"
               role="dialog"
               aria-modal="true"
             >
@@ -190,45 +208,53 @@ export function FamilyStepperDialog({
                 </button>
               </div>
 
-              {/* SHARED ELEMENT STEPPER TRACK */}
-              <div className="mt-4 flex items-center justify-between rounded-xl border border-zinc-200/80 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-800/40">
-                {[
-                  { num: 1, label: "Asset" },
-                  { num: 2, label: "Amount" },
-                  { num: 3, label: "Confirm" },
-                ].map((s) => {
-                  const isActive = step === s.num;
-                  const isPast = step > s.num;
-                  return (
-                    <button
-                      key={s.num}
-                      type="button"
-                      onClick={() => goToStep(s.num as 1 | 2 | 3)}
-                      className={cn(
-                        "relative flex-1 py-1.5 text-center text-xs font-medium transition-colors cursor-pointer z-10",
-                        isActive
-                          ? "text-zinc-900 dark:text-white font-semibold"
-                          : isPast
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-                      )}
-                    >
-                      {/* Shared Layout Pill indicator */}
-                      {isActive && (
+              {/* APPLE-STYLE SEGMENTED PROGRESS TRACK */}
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                  <span className="font-mono uppercase tracking-wider text-[10px] text-zinc-400">
+                    Step {step} of 3
+                  </span>
+                  <span className="text-zinc-700 dark:text-zinc-200 font-medium">
+                    {step === 1 ? "Select Asset" : step === 2 ? "Set Amount & Speed" : "Review & Transfer"}
+                  </span>
+                </div>
+
+                {/* 3 Thin Segments */}
+                <div className="grid grid-cols-3 gap-1.5">
+                  {[1, 2, 3].map((s) => {
+                    const isCompleted = step > s;
+                    const isCurrent = step === s;
+                    return (
+                      <div
+                        key={s}
+                        onClick={() => {
+                          if (s < step) goToStep(s as 1 | 2 | 3);
+                        }}
+                        className={cn(
+                          "relative h-1 w-full overflow-hidden rounded-full bg-zinc-200/80 dark:bg-zinc-800 transition-all",
+                          s < step && "cursor-pointer hover:h-1.5"
+                        )}
+                        title={s < step ? `Return to Step ${s}` : undefined}
+                      >
                         <motion.div
-                          layoutId="stepper-indicator-pill"
+                          initial={false}
+                          animate={{
+                            width: isCompleted || isCurrent ? "100%" : "0%",
+                          }}
                           transition={{
                             type: "spring",
-                            stiffness: 500,
+                            stiffness: 400,
                             damping: 35,
                           }}
-                          className="absolute inset-0 rounded-lg bg-white shadow-xs dark:bg-zinc-700 -z-10"
+                          className={cn(
+                            "h-full rounded-full bg-emerald-500",
+                            isCurrent && "shadow-[0_0_8px_rgba(16,185,129,0.5)]"
+                          )}
                         />
-                      )}
-                      <span>{s.num}. {s.label}</span>
-                    </button>
-                  );
-                })}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* FIXED CALIBRATED STEP VIEWPORT (215px exact height across all steps - NO JUMPS) */}
@@ -478,7 +504,7 @@ export function FamilyStepperDialog({
                 </motion.button>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

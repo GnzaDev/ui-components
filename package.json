@@ -3,11 +3,30 @@
   "version": "1.0.0",
   "description": "Standalone UI components: GonzaModal (Motion spring morphing), DavoModal (GSAP Flip dialog), and SideSheet drawer.",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./*": "./dist/*"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build --config vite.config.lib.ts",
+    "build:lib": "tsc --noEmit && vite build --config vite.config.lib.ts",
+    "build:app": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },
@@ -34,6 +53,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.7.3",
-    "vite": "^8.2.2"
+    "vite": "^8.2.2",
+    "vite-plugin-dts": "^5.1.0"
   }
 }

@@ -1,5 +1,14 @@
+// Stylesheet imports for library CSS bundle extraction
+import "./DavoModal/davo-modal.css";
+import "./FamilyDialog/family-dialog.css";
+
 // Utilities & Animation Tokens
 export { cn } from "./utils/cn";
+export {
+  useScrollLock,
+  lockBodyScroll,
+  unlockBodyScroll,
+} from "./utils/useScrollLock";
 export {
   SWAY_SPRINGS,
   SWAY_RADIUS,
@@ -17,7 +26,12 @@ export type {
   GonzaModalTriggerProps,
 } from "./SwayModal";
 
-export { DavoModal, prettyModalService, PrettyModalService } from "./DavoModal";
+export {
+  DavoModal,
+  prettyModalService,
+  PrettyModalService,
+  PRETTY_EASE,
+} from "./DavoModal";
 export type { DavoModalProps } from "./DavoModal";
 
 export { FamilyDialog, FamilyStepperDialog } from "./FamilyDialog";
@@ -81,5 +95,3 @@ export type { SortableSpringListProps, SortableItem } from "./SortableSpringList
 export { FloatingActionBar } from "./FloatingActionBar";
 export type { FloatingActionBarProps, FloatingAction } from "./FloatingActionBar";
 
-// Demo & Showcase
-export { ShowcaseDemo } from "./demo/ShowcaseDemo";

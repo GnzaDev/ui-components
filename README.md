@@ -1,103 +1,93 @@
-# UI Components Showcase
+﻿# @gonza/ui-components
 
-Colección de componentes animados independientes para React y Tailwind CSS, listos para copiar y pegar o importar en tu portafolio / web de showcase.
-
----
-
-## 📦 Componentes incluidos
-
-1. **`GonzaModal`**: Modal elástico con morphing originado desde su botón trigger (`GonzaModal.Trigger`) utilizando resortes elásticos de **Motion** (`motion/react`), curvas de 32px y protección de recorte con `[isolation:isolate]`.
-2. **`DavoModal`**: Modal morphing nativo basado en el elemento HTML `<dialog>` impulsado por **GSAP Flip** + **CustomEase**, con desenfoque cinematográfico y animación fluida al abrir y cerrar.
-3. **`SideSheet`**: Drawer lateral flotante moderno con bordes redondeados (`rounded-[2.5rem]`), backdrop blur sutil y soporte para superponer modales internos.
-4. **`GonzaCard`**: Card expandible interactiva que hace morphing fluido desde una tarjeta de feed / artículo hacia una vista de lectura modal completa con resortes de Motion.
-5. **`DavoActionSheet`**: Bottom sheet / panel de acciones inferior estilo mobile con morphing cinemático impulsado por GSAP Flip sobre el elemento nativo `<dialog>`.
-6. **`GonzaPopover`**: Menú flotante contextual con física de resortes, soporte para esquinas (`bottom-left`, `bottom-right`, `top-left`, etc.) y detección de click afuera.
-7. **`CommandPalette`**: Buscador tipo Raycast/Linear (`Cmd+K` / `Ctrl+K`) con filtro difuso, categorías y navegación por teclado.
-8. **`MorphTabs`**: Control segmentado de pestañas con píldora activa deslizante impulsada por `layoutId`.
-9. **`MorphFab`**: Botón flotante de esquina (FAB) que hace morphing hacia un menú de acciones rápidas.
-10. **`FlipToast`**: Sistema interactivo de notificaciones apilables con auto-descarte y salida suave.
-11. **`FlipLightbox`**: Galería de imágenes con zoom cinemático por GSAP Flip directo a pantalla completa.
-12. **`ShowcaseDemo`**: Showcase interactivo completo con pestañas de filtrado, primitivas centrales, casos de uso de producción y playground en vivo con matriz de esquinas.
+Production-grade, dual-engine animated UI components for React and Tailwind CSS. Combines **Sway Motion Euler-Newton springs** with **Davo GSAP FLIP theatrical dialogs** in a unified, typed architecture.
 
 ---
 
-## 🚀 Instalación de dependencias
-
-En la web donde vayas a integrar estos componentes, ejecutá:
+## 🚀 Installation
 
 ```bash
-# Con pnpm
-pnpm add motion lucide-react clsx tailwind-merge gsap
+# Using pnpm
+pnpm add @gonza/ui-components motion gsap lucide-react clsx tailwind-merge
 
-# O con npm
-npm install motion lucide-react clsx tailwind-merge gsap
+# Using npm
+npm install @gonza/ui-components motion gsap lucide-react clsx tailwind-merge
+
+# Using yarn
+yarn add @gonza/ui-components motion gsap lucide-react clsx tailwind-merge
+```
+
+### 🎨 Stylesheet Setup
+
+Import the compiled animations stylesheet once in your application root (`main.tsx`, `App.tsx`, or `layout.tsx`):
+
+```tsx
+import "@gonza/ui-components/styles.css";
+```
+
+Ensure your Tailwind CSS configuration scans the package if you customize utility classes:
+
+```ts
+// tailwind.config.js or tailwind.config.ts
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@gonza/ui-components/**/*.{js,cjs,mjs}",
+  ],
+  // ...
+};
 ```
 
 ---
 
-## 📁 Estructura de carpetas
+## ⚡ Animation Engines & Rules
 
-```
-ui-components/
-├── README.md
-├── package.json
-└── src/
-    ├── index.ts                 # Export central de toda la librería
-    ├── utils/
-    │   └── cn.ts                # Helper para mergear clases de Tailwind
-    ├── GonzaModal/              # Modal elástico con Motion
-    ├── DavoModal/               # Modal <dialog> con GSAP Flip
-    ├── SideSheet/               # Drawer lateral flotante con Motion
-    ├── GonzaCard/               # Card expandible con Motion layoutId
-    ├── DavoActionSheet/         # Bottom action sheet con GSAP Flip
-    ├── GonzaPopover/            # Popover flotante con resortes
-    ├── CommandPalette/          # Buscador Cmd+K spotlight
-    ├── MorphTabs/               # Segmented controls con píldora activa
-    ├── MorphFab/                # FAB de esquina con morphing a toolbar
-    ├── FlipToast/               # Toasts apilables con física de salida
-    ├── FlipLightbox/            # Lightbox con zoom cinemático GSAP
-    └── demo/
-        ├── ShowcaseDemo.tsx     # Demo interactiva completa
-        └── examples/            # 13 Casos de uso reales y playground
-```
+This library exposes two distinct physical models with predictable constraints:
+
+| Engine | Primary Primitive | Physics / Math | Golden Rule |
+| :--- | :--- | :--- | :--- |
+| **Sway** | `SwayModal`, `SwayCard`, `MorphTabs` | Euler-Newton springs (`stiffness: 400`, `damping: 30`, `mass: 0.8`) | When using `layoutId`, trigger and target MUST share the identical `layoutId`. Never duplicate `scale` and `y` in `initial`. |
+| **Davo** | `DavoModal`, `DavoDatePicker`, `FlipLightbox` | GSAP FLIP + `PRETTY_EASE` curve (`duration: 0.7s`) | Native `<dialog>` top-layer with physical DOM node origin passed via `triggerRef`. Close strictly through `prettyModalService.close()`. |
+| **Dual** | `FamilyDialog`, `FamilyStepperDialog`, `MorphingStepDialog` | Motion Springs OR View Transitions / GSAP | Unified `engine?: "sway" \| "davo"` or `engine?: "spring" \| "view-transition"` prop. |
 
 ---
 
-## 💻 Ejemplos de uso
+## 💻 Quickstart Examples
 
-### 1. `GonzaModal` (Motion Spring Morphing)
+### 1. SwayModal (Motion Spring Morphing with `layoutId`)
 
 ```tsx
 import { useState } from "react";
-import { GonzaModal, GonzaModalTrigger } from "./GonzaModal";
+import { SwayModal, SwayModalTrigger } from "@gonza/ui-components";
 import { Plus } from "lucide-react";
 
-export function MiVista() {
+export function SwayExample() {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* 1. Botón con morphing y física de resorte */}
-      <GonzaModalTrigger
-        layoutId="mi-modal-id"
+      {/* Trigger button sharing the layoutId */}
+      <SwayModalTrigger
+        layoutId="create-project-modal"
         onClick={() => setOpen(true)}
       >
         <Plus size={16} />
-        <span>Abrir modal</span>
-      </GonzaModalTrigger>
+        <span>Create Project</span>
+      </SwayModalTrigger>
 
-      {/* 2. El modal que se expande desde el botón */}
-      <GonzaModal
+      {/* Modal expanding physically from the trigger */}
+      <SwayModal
         open={open}
         onClose={() => setOpen(false)}
-        layoutId="mi-modal-id"
-        title="Editar elemento"
+        layoutId="create-project-modal"
+        title="New Project"
         footer={
-          <button onClick={() => setOpen(false)}>Listo</button>
+          <button onClick={() => setOpen(false)}>Done</button>
         }
       >
-        <p>Contenido con esquinas redondeadas y scroll limpio.</p>
-      </GonzaModal>
+        <p>Modal content with calibrated Euler-Newton spring physics.</p>
+      </SwayModal>
     </>
   );
 }
@@ -105,29 +95,31 @@ export function MiVista() {
 
 ---
 
-### 2. `DavoModal` (GSAP Flip)
+### 2. DavoModal (Native `<dialog>` + GSAP FLIP)
 
 ```tsx
 import { useRef, useState } from "react";
-import { DavoModal } from "./DavoModal";
+import { DavoModal } from "@gonza/ui-components";
 
-export function MiVistaDavo() {
+export function DavoExample() {
   const [open, setOpen] = useState(false);
-  const btnRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
-      <button ref={btnRef} onClick={() => setOpen(true)}>
-        Abrir con Flip
+      {/* Physical DOM trigger ref */}
+      <button ref={triggerRef} onClick={() => setOpen(true)}>
+        Open Theatrical Modal
       </button>
 
+      {/* Native HTML5 <dialog> with GSAP Flip morphing */}
       <DavoModal
         open={open}
         onClose={() => setOpen(false)}
-        triggerRef={btnRef}
-        title="Modal cinemático"
+        triggerRef={triggerRef}
+        title="Cinematic Modal"
       >
-        <p>Morphing fluido desde el botón usando GSAP Flip.</p>
+        <p>Native top-layer isolation with PRETTY_EASE and backdrop blur.</p>
       </DavoModal>
     </>
   );
@@ -136,42 +128,73 @@ export function MiVistaDavo() {
 
 ---
 
-### 3. `SideSheet` (Drawer lateral flotante)
+### 3. FamilyDialog (Dual-Engine Morphing Confirmation)
 
 ```tsx
 import { useState } from "react";
-import { SideSheet } from "./SideSheet";
+import { FamilyDialog } from "@gonza/ui-components";
 
-export function MiVistaSideSheet() {
+export function FamilyExample() {
   const [open, setOpen] = useState(false);
 
   return (
-    <>
-      <button onClick={() => setOpen(true)}>Ver detalles</button>
-
-      <SideSheet
-        open={open}
-        onClose={() => setOpen(false)}
-        title="Detalles del registro"
-        maxWidth="max-w-2xl"
-      >
-        <p>Panel deslizante desde la derecha.</p>
-      </SideSheet>
-    </>
+    <FamilyDialog
+      open={open}
+      onOpenChange={setOpen}
+      title="Transfer Assets"
+      description="Are you sure you want to transfer $2,500 to Vault?"
+      actionLabel="Send Transfer"
+      variant="mint"
+      engine="spring" // or "view-transition"
+      onConfirm={() => console.log("Confirmed")}
+    />
   );
 }
 ```
 
 ---
 
-### 4. Mostrar todo junto (`ShowcaseDemo`)
-
-Para exhibirlos todos juntos en una sola página de tu web o portafolio:
+### 4. DavoDatePicker (FLIP Morphing Calendar)
 
 ```tsx
-import { ShowcaseDemo } from "./demo/ShowcaseDemo";
+import { useState } from "react";
+import { DavoDatePicker } from "@gonza/ui-components";
 
-export default function PaginaComponentes() {
-  return <ShowcaseDemo />;
+export function DatePickerExample() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+
+  return (
+    <DavoDatePicker
+      selected={selectedDate}
+      onSelect={setSelectedDate}
+      placeholder="Select departure date"
+    />
+  );
 }
 ```
+
+---
+
+## 📦 Exported Primitives
+
+- **Modals & Dialogs**: `SwayModal`, `SwayModalTrigger`, `DavoModal`, `FamilyDialog`, `FamilyStepperDialog`, `MorphingStepDialog`
+- **Drawers & Sheets**: `SideSheet`, `DavoActionSheet`
+- **Cards & Popovers**: `SwayCard`, `SwayPopover`, `DavoPopover`
+- **Controls & Navigation**: `CommandPalette`, `MorphTabs`, `DavoDatePicker`, `SortableSpringList`
+- **Actions & Feedback**: `MorphFab`, `FlipToast`, `FlipLightbox`, `FloatingActionBar`
+- **Animation Tokens & Utilities**: `SWAY_SPRINGS`, `SWAY_RADIUS`, `DAVO_TIMINGS`, `PRETTY_EASE`, `useScrollLock`, `lockBodyScroll`, `unlockBodyScroll`, `cn`
+
+---
+
+## 🛠️ Scripts in Repository
+
+- `pnpm dev`: Start the interactive showcase documentation application (`http://localhost:5174`).
+- `pnpm build:lib`: Compile the standalone installable npm package into `dist/` with ESM, CJS, `.d.ts` types, and `styles.css`.
+- `pnpm build:app`: Build the static showcase web SPA.
+- `pnpm typecheck`: Run strict TypeScript checks across the entire codebase.
+
+---
+
+## 📄 License
+
+MIT © Gonzalo
