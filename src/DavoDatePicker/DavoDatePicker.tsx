@@ -438,14 +438,17 @@ export function DavoDatePicker({
           else setIsOpen(true);
         }}
         className={cn(
-          "inline-flex h-10 items-center gap-2.5 rounded-2xl border border-zinc-200/80 bg-white px-3.5 text-xs font-medium text-zinc-800 shadow-xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800/80 cursor-pointer",
+          "inline-flex h-11 w-full max-w-[320px] items-center justify-between rounded-2xl border border-zinc-200/80 bg-white px-3.5 text-xs font-medium text-zinc-800 shadow-xs transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800/80 cursor-pointer",
           isOpen && "ring-2 ring-zinc-900/10 dark:ring-white/10"
         )}
       >
-        <CalendarIcon size={14} className="text-zinc-400" />
-        <span className={!selectedDate ? "text-zinc-400" : "font-semibold"}>
-          {formatDisplay(selectedDate)}
+        <span className="flex items-center gap-2.5">
+          <CalendarIcon size={14} className="text-zinc-400" />
+          <span className={!selectedDate ? "text-zinc-400" : "font-semibold text-zinc-900 dark:text-white"}>
+            {formatDisplay(selectedDate)}
+          </span>
         </span>
+        <ChevronRight size={14} className={cn("text-zinc-400 transition-transform duration-200", isOpen ? "-rotate-90" : "rotate-90")} />
       </button>
 
       {/* Engine 1: Davo (GSAP FLIP Matrix Projection on element) */}

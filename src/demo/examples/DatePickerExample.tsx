@@ -29,11 +29,7 @@ export function DatePickerExample() {
   };
 
   return (
-    <div
-      className={`w-full flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 transition-all ${
-        isInline ? "min-h-[500px]" : "min-h-[640px]"
-      }`}
-    >
+    <div className="w-full max-w-md mx-auto space-y-5 rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <div>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
