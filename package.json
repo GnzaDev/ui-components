@@ -15,9 +15,12 @@
     "./styles.css": "./dist/styles.css",
     "./*": "./dist/*"
   },
+  "author": "Gonzalo",
+  "license": "MIT",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "sideEffects": [
     "*.css"
