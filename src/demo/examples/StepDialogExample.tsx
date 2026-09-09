@@ -5,26 +5,45 @@ import {
 } from "../../MorphingStepDialog";
 import type { StepItem } from "../../MorphingStepDialog";
 
-import { Layers, ArrowRight, User, Sparkles } from "lucide-react";
+import {
+  Layers,
+  ArrowRight,
+  User,
+  Sparkles,
+  GitBranch,
+  Server,
+  Rocket,
+  ShieldCheck,
+} from "lucide-react";
+
+type WizardScenario = "onboarding" | "deploy";
 
 export function StepDialogExample() {
+  const [scenario, setScenario] = useState<WizardScenario>("onboarding");
   const [open, setOpen] = useState(false);
   const [engine, setEngine] = useState<"sway" | "davo">("sway");
+
+  // Onboarding state
   const [name, setName] = useState("");
   const [plan, setPlan] = useState("pro");
+
+  // Deploy pipeline state
+  const [branch, setBranch] = useState("main");
+  const [environment, setEnvironment] = useState("production");
+
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const steps: StepItem[] = [
+  const onboardingSteps: StepItem[] = [
     {
       id: "account",
-      title: "Paso 1: Tu cuenta",
-      description: "Ingresá tu nombre para configurar tu nuevo espacio de trabajo.",
+      title: "Step 1: Your Account",
+      description: "Enter your username to configure your new workspace.",
       isValid: name.trim().length > 0,
       content: (
         <div className="space-y-3 pt-2">
           <div>
             <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-              Nombre de usuario
+              User Handle
             </label>
             <div className="relative mt-1.5">
               <User
@@ -33,7 +52,7 @@ export function StepDialogExample() {
               />
               <input
                 type="text"
-                placeholder="ej. Gonzalo Pozzo"
+                placeholder="e.g. Gonzalo Pozzo"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full rounded-2xl border border-zinc-200 bg-zinc-50/50 pl-9 pr-3.5 py-2.5 text-xs text-zinc-900 outline-none transition-all focus:border-zinc-900 focus:bg-white dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-white dark:focus:border-white"
@@ -41,7 +60,7 @@ export function StepDialogExample() {
             </div>
             {name.trim().length === 0 && (
               <p className="mt-1 text-[11px] text-amber-500">
-                * Por favor completá tu nombre para continuar.
+                * Please enter your name to unlock the next step.
               </p>
             )}
           </div>
@@ -50,28 +69,28 @@ export function StepDialogExample() {
     },
     {
       id: "plan",
-      title: "Paso 2: Elegí tu plan",
-      description: "Transición horizontal continua sin saltos de layout.",
+      title: "Step 2: Choose Plan",
+      description: "Continuous directional sliding with zero layout shift.",
       content: (
         <div className="space-y-2 pt-2">
           {[
             {
               id: "starter",
               name: "Starter",
-              price: "Gratis",
-              desc: "1 proyecto, 3 miembros del equipo.",
+              price: "Free",
+              desc: "1 project, 3 team members.",
             },
             {
               id: "pro",
               name: "Pro",
-              price: "$29/mes",
-              desc: "Proyectos ilimitados, animaciones avanzadas, soporte 24/7.",
+              price: "$29/mo",
+              desc: "Unlimited projects, advanced springs, 24/7 support.",
             },
             {
               id: "enterprise",
               name: "Enterprise",
               price: "Custom",
-              desc: "SLA garantizado, despliegues dedicados y auditoría.",
+              desc: "Dedicated SLA, custom clusters, compliance audits.",
             },
           ].map((p) => (
             <div
@@ -101,31 +120,119 @@ export function StepDialogExample() {
     },
     {
       id: "confirm",
-      title: "Paso 3: Confirmación",
-      description: "Verificá los detalles antes de crear tu suscripción.",
+      title: "Step 3: Verification",
+      description: "Inspect configuration parameters before provisioning.",
       content: (
         <div className="space-y-3 pt-2">
           <div className="rounded-2xl border border-zinc-100 bg-zinc-50/70 p-4 dark:border-zinc-800 dark:bg-zinc-800/40">
             <div className="flex items-center justify-between text-xs py-1">
-              <span className="text-zinc-500">Usuario:</span>
+              <span className="text-zinc-500">Account:</span>
               <span className="font-bold text-zinc-900 dark:text-white">
-                {name || "Sin nombre"}
+                {name || "Anonymous"}
               </span>
             </div>
             <div className="flex items-center justify-between text-xs py-1 border-t border-zinc-200/50 dark:border-zinc-700/50">
-              <span className="text-zinc-500">Plan elegido:</span>
+              <span className="text-zinc-500">Selected Plan:</span>
               <span className="font-bold uppercase text-teal-600 dark:text-teal-400">
                 {plan}
               </span>
             </div>
           </div>
           <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-            Al finalizar se creará el entorno con las configuraciones seleccionadas.
+            Clicking complete will provision the container sandbox immediately.
           </p>
         </div>
       ),
     },
   ];
+
+  const deploySteps: StepItem[] = [
+    {
+      id: "target",
+      title: "Step 1: Release Branch",
+      description: "Select target git branch and revision hash.",
+      content: (
+        <div className="space-y-2 pt-2">
+          {[
+            { id: "main", label: "main (production)", hash: "7f4c9a2" },
+            { id: "staging", label: "staging (candidate)", hash: "3e1b8c0" },
+            { id: "preview", label: "feature/motion (canary)", hash: "8a02d41" },
+          ].map((b) => (
+            <button
+              key={b.id}
+              type="button"
+              onClick={() => setBranch(b.id)}
+              className={`flex w-full items-center justify-between p-3 rounded-2xl border cursor-pointer text-left transition-all ${
+                branch === b.id
+                  ? "border-zinc-900 bg-zinc-50 dark:border-white dark:bg-zinc-800"
+                  : "border-zinc-200/80 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900"
+              }`}
+            >
+              <span className="flex items-center gap-2.5 text-xs font-semibold text-zinc-900 dark:text-white">
+                <GitBranch size={13} className="text-zinc-400" />
+                <span>{b.label}</span>
+              </span>
+              <span className="font-mono text-[11px] text-zinc-400">{b.hash}</span>
+            </button>
+          ))}
+        </div>
+      ),
+    },
+    {
+      id: "env",
+      title: "Step 2: Destination Cluster",
+      description: "Choose deployment zone and compute specs.",
+      content: (
+        <div className="space-y-2 pt-2">
+          {[
+            { id: "production", title: "Production (us-east-1)", spec: "8 vCPU • 32 GB RAM" },
+            { id: "staging", title: "Staging Sandbox (eu-central-1)", spec: "4 vCPU • 16 GB RAM" },
+          ].map((e) => (
+            <button
+              key={e.id}
+              type="button"
+              onClick={() => setEnvironment(e.id)}
+              className={`flex w-full items-center justify-between p-3 rounded-2xl border cursor-pointer text-left transition-all ${
+                environment === e.id
+                  ? "border-zinc-900 bg-zinc-50 dark:border-white dark:bg-zinc-800"
+                  : "border-zinc-200/80 bg-white hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900"
+              }`}
+            >
+              <span className="flex items-center gap-2.5 text-xs font-semibold text-zinc-900 dark:text-white">
+                <Server size={13} className="text-zinc-400" />
+                <span>{e.title}</span>
+              </span>
+              <span className="font-mono text-[10px] text-zinc-400">{e.spec}</span>
+            </button>
+          ))}
+        </div>
+      ),
+    },
+    {
+      id: "summary",
+      title: "Step 3: Trigger Deployment",
+      description: "Verify security checksums and launch container swap.",
+      content: (
+        <div className="space-y-3 pt-2">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-3.5 text-xs text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300">
+            <div className="flex items-center gap-1.5 font-semibold">
+              <ShieldCheck size={14} />
+              <span>Pipeline Gate Passed</span>
+            </div>
+            <p className="mt-1 text-[11px] leading-relaxed text-emerald-700/90 dark:text-emerald-300/90">
+              Zero vulnerabilities detected in 148 lockfile packages. Ready for zero-downtime rolling update.
+            </p>
+          </div>
+          <div className="rounded-xl border border-zinc-200/80 bg-zinc-50 p-3 text-xs space-y-1 font-mono text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <div>Branch: <strong className="text-zinc-900 dark:text-white">{branch}</strong></div>
+            <div>Cluster: <strong className="text-zinc-900 dark:text-white">{environment}</strong></div>
+          </div>
+        </div>
+      ),
+    },
+  ];
+
+  const activeSteps = scenario === "onboarding" ? onboardingSteps : deploySteps;
 
   return (
     <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -169,24 +276,45 @@ export function StepDialogExample() {
           Multi-step wizard modal with dynamically morphing container dimensions and directional step slides.
         </p>
 
-        <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-          <span className="rounded-md bg-indigo-50 px-2 py-0.5 font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
-            Dual Engine: {engine === "sway" ? "Sway Springs" : "GSAP FLIP"}
-          </span>
-          <span>•</span>
-          <span>Wizard Flow</span>
+        {/* Scenario Switcher */}
+        <div className="mt-4 flex items-center justify-between border-t border-zinc-100 pt-3 dark:border-zinc-800">
+          <span className="text-xs font-semibold text-zinc-400">Scenario:</span>
+          <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-100/80 p-0.5 text-xs dark:border-zinc-800 dark:bg-zinc-800">
+            <button
+              type="button"
+              onClick={() => setScenario("onboarding")}
+              className={`rounded-md px-2.5 py-1 font-medium transition-colors cursor-pointer ${
+                scenario === "onboarding"
+                  ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-700 dark:text-white"
+                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+              }`}
+            >
+              Onboarding Flow
+            </button>
+            <button
+              type="button"
+              onClick={() => setScenario("deploy")}
+              className={`rounded-md px-2.5 py-1 font-medium transition-colors cursor-pointer ${
+                scenario === "deploy"
+                  ? "bg-white text-zinc-950 shadow-xs dark:bg-zinc-700 dark:text-white"
+                  : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+              }`}
+            >
+              Deploy Pipeline
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="mt-6">
         {engine === "sway" ? (
           <MorphingStepDialogTrigger
-            layoutId="step-dialog-morph"
+            layoutId={`step-dialog-${scenario}`}
             onClick={() => setOpen(true)}
             className="w-full text-xs"
           >
-            <Sparkles size={14} />
-            <span>Launch Wizard (Sway Springs)</span>
+            {scenario === "onboarding" ? <Sparkles size={14} /> : <Rocket size={14} />}
+            <span>Launch {scenario === "onboarding" ? "Onboarding" : "Deploy Pipeline"} (Sway)</span>
             <ArrowRight size={14} />
           </MorphingStepDialogTrigger>
         ) : (
@@ -196,8 +324,8 @@ export function StepDialogExample() {
             onClick={() => setOpen(true)}
             className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl border border-zinc-200/80 bg-white px-4 text-xs font-semibold text-zinc-900 shadow-xs hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700/80 cursor-pointer"
           >
-            <Sparkles size={14} />
-            <span>Launch Wizard (GSAP Flip)</span>
+            {scenario === "onboarding" ? <Sparkles size={14} /> : <Rocket size={14} />}
+            <span>Launch {scenario === "onboarding" ? "Onboarding" : "Deploy Pipeline"} (Davo)</span>
             <ArrowRight size={14} />
           </button>
         )}
@@ -206,11 +334,18 @@ export function StepDialogExample() {
       <MorphingStepDialog
         open={open}
         onClose={() => setOpen(false)}
-        steps={steps}
+        steps={activeSteps}
         engine={engine}
         triggerRef={triggerRef}
-        layoutId={engine === "sway" ? "step-dialog-morph" : undefined}
-        onComplete={() => alert(`¡Listo! Espacio configurado para ${name}.`)}
+        layoutId={engine === "sway" ? `step-dialog-${scenario}` : undefined}
+        onComplete={() => {
+          setOpen(false);
+          alert(
+            scenario === "onboarding"
+              ? `Done! Workspace configured for ${name || "Anonymous"}.`
+              : `Deploying branch ${branch} to ${environment}!`
+          );
+        }}
       />
     </div>
   );

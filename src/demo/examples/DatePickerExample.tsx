@@ -1,12 +1,31 @@
 import { useState } from "react";
 import { DavoDatePicker } from "../../DavoDatePicker";
-import { Calendar, Clock } from "lucide-react";
-
+import { Calendar, Clock, Zap } from "lucide-react";
 
 export function DatePickerExample() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [showTime, setShowTime] = useState(true);
   const [engine, setEngine] = useState<"sway" | "davo">("sway");
+
+  const setPreset = (type: "now" | "tomorrow" | "week" | "month") => {
+    const d = new Date();
+    if (type === "now") {
+      setSelectedDate(new Date());
+    } else if (type === "tomorrow") {
+      d.setDate(d.getDate() + 1);
+      d.setHours(9, 0, 0, 0);
+      setSelectedDate(d);
+    } else if (type === "week") {
+      d.setDate(d.getDate() + 7);
+      d.setHours(14, 30, 0, 0);
+      setSelectedDate(d);
+    } else if (type === "month") {
+      d.setMonth(d.getMonth() + 1);
+      d.setDate(1);
+      d.setHours(10, 0, 0, 0);
+      setSelectedDate(d);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-between rounded-3xl border border-zinc-200/80 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -50,12 +69,39 @@ export function DatePickerExample() {
           Interactive calendar with fluid sliding month transitions, day selection, and integrated time wheel picker.
         </p>
 
-        <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-          <span className="rounded-md bg-amber-50 px-2 py-0.5 font-medium text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
-            Dual Engine: {engine === "sway" ? "Sway Springs" : "GSAP FLIP"}
+        {/* Quick presets buttons */}
+        <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+          <span className="flex items-center gap-1 text-[11px] font-semibold text-zinc-400">
+            <Zap size={11} /> Shortcuts:
           </span>
-          <span>•</span>
-          <span>Time Picker</span>
+          <button
+            type="button"
+            onClick={() => setPreset("now")}
+            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[11px] font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+          >
+            Today
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreset("tomorrow")}
+            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[11px] font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+          >
+            Tomorrow 09:00
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreset("week")}
+            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[11px] font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+          >
+            In 1 Week
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreset("month")}
+            className="rounded-lg border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[11px] font-medium text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 cursor-pointer"
+          >
+            Next Month
+          </button>
         </div>
       </div>
 

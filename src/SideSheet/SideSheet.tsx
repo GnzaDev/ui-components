@@ -14,6 +14,7 @@ export interface SideSheetProps {
   maxWidth?: string;
   className?: string;
   overlay?: ReactNode;
+  side?: "right" | "left";
 }
 
 export function SideSheet({
@@ -25,6 +26,7 @@ export function SideSheet({
   maxWidth = "max-w-2xl",
   className,
   overlay,
+  side = "right",
 }: SideSheetProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
@@ -69,6 +71,8 @@ export function SideSheet({
     };
   }, [open, disableEscape]);
 
+  const isLeft = side === "left";
+
   return createPortal(
     <AnimatePresence>
       {open && (
@@ -88,13 +92,14 @@ export function SideSheet({
             aria-label={title}
             tabIndex={-1}
             className={cn(
-              "fixed right-3 top-3 bottom-3 flex w-full flex-col overflow-hidden rounded-[2.5rem] border border-zinc-200/80 bg-white shadow-[0_25px_70px_rgba(0,0,0,0.14)] outline-none dark:border-white/10 dark:bg-zinc-900 dark:shadow-[0_25px_80px_rgba(0,0,0,0.85)]",
+              "fixed top-3 bottom-3 flex w-full flex-col overflow-hidden rounded-[2.5rem] border border-zinc-200/80 bg-white shadow-[0_25px_70px_rgba(0,0,0,0.14)] outline-none dark:border-white/10 dark:bg-zinc-900 dark:shadow-[0_25px_80px_rgba(0,0,0,0.85)]",
+              isLeft ? "left-3" : "right-3",
               maxWidth,
               className
             )}
-            initial={{ x: "100%", opacity: 0, filter: "blur(8px)" }}
+            initial={{ x: isLeft ? "-100%" : "100%", opacity: 0, filter: "blur(8px)" }}
             animate={{ x: 0, opacity: 1, filter: "blur(0px)" }}
-            exit={{ x: "100%", opacity: 0, filter: "blur(10px)" }}
+            exit={{ x: isLeft ? "-100%" : "100%", opacity: 0, filter: "blur(10px)" }}
             transition={{ type: "spring", stiffness: 350, damping: 32, mass: 0.8 }}
           >
             {title && (
